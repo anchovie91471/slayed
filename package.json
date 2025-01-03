@@ -7,8 +7,8 @@
   "type": "module",
   "scripts": {
     "dev": "run-p shopify:dev vite:watch",
-    "build": "run-s vite:build",
-    "deploy": "run-s vite:build && shopify theme push -e production",
+    "build": "run-s vite:build && schematic",
+    "deploy": "run-s vite:build && schematic && shopify theme push -e production",
     "deploy:dev": "run-s vite:build && shopify theme push -e development",
     "deploy:staging": "run-s vite:build && shopify theme push --path shopify -e staging",
     "deploy:new": "run-s vite:build && shopify theme push --unpublished",
@@ -19,6 +19,7 @@
     "shopify:pull-dev": "shopify theme pull -d"
   },
   "devDependencies": {
+    "@alleyford/schematic": "github:AlleyFord/schematic",
     "@alpinejs/collapse": "^3.14.1",
     "@alpinejs/focus": "^3.14.1",
     "@alpinejs/morph": "^3.14.1",

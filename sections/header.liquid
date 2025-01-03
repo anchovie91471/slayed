@@ -1,17 +1,3 @@
-{% schema %}
-  {
-    "name": "header",
-    "class": "section-header sticky top-0 z-20 shadow-md",
-    "tag": "header",
-    "settings": [
-      {
-      "type": "paragraph",
-      "content": "t:sections.header.settings.paragraph"
-      }
-    ]
-  }
-{% endschema %}
-
 {% if settings.show_promo_bar %}
   {% render 'promo-bar' %}
 {% endif %}
@@ -194,3 +180,22 @@
     }
   </style>
 </div>
+{%- comment -%} schematic {%- endcomment -%}
+{% schema %}
+{
+  "name": "header",
+  "tag": "header",
+  "class": "section-header sticky top-0 z-20 shadow-md",
+  "presets": [
+    {
+      "name": "header"
+    }
+  ],
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:sections.header.settings.paragraph"
+    }
+  ]
+}
+{% endschema %}

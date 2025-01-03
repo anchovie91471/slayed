@@ -1,12 +1,3 @@
-{% schema %}
-{
-  "name": "Search Section",
-  "class": "section-main-search",
-  "tag": "section",
-  "settings": []
-}
-{% endschema %}
-
 {% comment %}
   Docs on the Shopify search object
   https://shopify.dev/api/liquid/objects/search#search-results
@@ -116,3 +107,17 @@
     {% endif %}
   </div>
 </div>
+{%- comment -%} schematic {%- endcomment -%}
+{% schema %}
+{
+  "name": "Search Section",
+  "tag": "section",
+  "class": "section-main-search",
+  "presets": [
+    {
+      "name": "Search Section"
+    }
+  ],
+  "settings": []
+}
+{% endschema %}

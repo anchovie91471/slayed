@@ -1,14 +1,19 @@
-{% schema %}
-  {
-    "name": "404 Section",
-    "class": "section-404",
-    "tag": "section",
-    "settings": []
-  }
-{% endschema %}
-
 <div class="px-6 md:px-8 py-8">
   <div class="container">
     <h1>404 Page Not Found</h1>
   </div>
 </div>
+{%- comment -%} schematic {%- endcomment -%}
+{% schema %}
+{
+  "name": "404 Section",
+  "tag": "section",
+  "class": "section-404",
+  "presets": [
+    {
+      "name": "404 Section"
+    }
+  ],
+  "settings": []
+}
+{% endschema %}

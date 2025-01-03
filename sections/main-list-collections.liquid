@@ -1,11 +1,3 @@
-{% schema %}
-{
-  "name": "Main List Collections",
-  "class": "section-main-list-collections",
-  "tag": "section"
-}
-{% endschema %}
-
 {% unless collection %}
   {% assign collection = collections.all %}
 {% endunless %}
@@ -58,4 +50,16 @@
     }
   </style>
 </div>
-
+{%- comment -%} schematic {%- endcomment -%}
+{% schema %}
+{
+  "name": "Main List Collections",
+  "tag": "section",
+  "class": "section-main-list-collections",
+  "presets": [
+    {
+      "name": "Main List Collections"
+    }
+  ]
+}
+{% endschema %}
