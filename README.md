@@ -89,6 +89,6 @@ Prodify is a Slayed rework of the Shopify Dawn theme's custom element logic for 
 Dynamically import scripts. See demo in **src/entrypoints/theme.js**
 
 ### Schematic
-[Schematic](https://github.com/AlleyFord/schematic) is a Javascript-driven, Shopify CLI-friendly, vite/grunt/webpack/etc-friendly schema management tool. Define schema with javascript and compile it. No more duplicated JSON!
+[Schematic](https://www.npmjs.com/package/@anchovie/schematic) is a Javascript-driven, Shopify CLI-friendly, vite/grunt/webpack/etc-friendly schema management tool. Define schema with javascript and compile it. No more duplicated JSON!
 
 All the schema for this theme can be found in **src/schema**. Run `npx schematic` to re-compile after you make changes.

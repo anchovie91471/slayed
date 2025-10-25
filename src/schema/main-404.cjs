@@ -1,4 +1,4 @@
-const { app } = require('@alleyford/schematic');
+const { app } = require('@anchovie/schematic');
 
 module.exports = {
     ...app.section("404 Section", {
