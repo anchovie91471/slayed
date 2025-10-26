@@ -1,8 +1,8 @@
 <div class="px-6 md:px-8 py-12">
-  <div class="collection-inner container">
-    <h2 class="mb-12 max-w-max mx-auto">
+  <div class="collection-inner container mx-auto">
+    <h1 class="mb-12 mx-auto max-w-max">
       {{ collection.title }}
-    </h2>
+    </h1>
     <div class="grid-wrapper">
       {%- paginate collection.products by 12 -%}
         <div class="product-grid">

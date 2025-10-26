@@ -41,7 +41,7 @@
       </div>
       <div class="info flex-1" id="product-info-{{ section.id }}">
         <p class="caption tracking-wide text-[10px] leading-3 text-gray-500">{{ product.type | upcase }}</p>
-        <h1 class="text-4xl leading-normal font-medium">{{ product.title }}</h1>
+        <h1>{{ product.title }}</h1>
         <div class="flex items-center py-2" data-prodify-price-container>
           <span class="sr-only">Regular Price</span>
           {% if product.selected_or_first_available_variant.compare_at_price %}

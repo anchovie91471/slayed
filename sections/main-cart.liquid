@@ -3,7 +3,7 @@
     action="{{ routes.cart_url }}"
     method="post"
     id="cart">
-    <div class="cart-inner container">
+    <div class="cart-inner container mx-auto">
       {% if cart.item_count > 0 %}
         <table style="width:100%">
           <tr style="text-align: left;">
@@ -94,7 +94,7 @@
           </button>
         </div>
       {% else %}
-        <h2>You have no items in your cart.</h2>
+        <h1>You have no items in your cart.</h1>
       {% endif %}
     </div>
   </form>

@@ -55,6 +55,34 @@ Slayed uses [@vitejs/plugin-basic-ssl](https://www.npmjs.com/package/@vitejs/plu
 
 If your assets aren't loading due to ssl errors, visit https://127.0.0.1:3000, click Advanced and proceed, then navigate back to your Shopify CLI dev server at http://127.0.0.1:9292 and you should see your assets loaded properly.
 
+### CORS Configuration for Custom Domains
+
+If you're using a custom domain (not `*.myshopify.com`) and accessing your theme via preview URLs like `https://yourdomain.com/?preview_theme_id=123`, you'll need to add your custom domain to the CORS configuration in `vite.config.js`.
+
+By default, the Vite dev server allows requests from:
+- Localhost variations (`127.0.0.1`, `localhost`, etc.)
+- Any `*.myshopify.com` domain
+
+To add your custom domain, edit `vite.config.js` and add it to the `server.cors.origin` array:
+
+```javascript
+server: {
+  host: '127.0.0.1',
+  https: true,
+  port: 3000,
+  hmr: true,
+  cors: {
+    origin: [
+      /^https?:\/\/(?:(?:[^:]+\.)?localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/,
+      /^https:\/\/[^\/]+\.myshopify\.com$/,
+      'https://yourdomain.com'  // Add your custom domain here
+    ]
+  }
+}
+```
+
+After adding your domain, restart the dev server for the changes to take effect.
+
 ## CSS
 
 The standard Tailwind boilerplate is provided.

@@ -1,10 +1,63 @@
-@import 'tailwindcss/base';
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+
+@custom-variant scrolled .scrolled &;
+@custom-variant mobile-menu-visible .mobile-menu-visible &;
+
+@theme {
+  /* Cloud Burst Color Scale */
+  --color-cloud-burst: #252A59;
+  --color-cloud-burst-50: #7179C4;
+  --color-cloud-burst-100: #636CBE;
+  --color-cloud-burst-200: #4953AF;
+  --color-cloud-burst-300: #3D4593;
+  --color-cloud-burst-400: #313876;
+  --color-cloud-burst-500: #252A59;
+  --color-cloud-burst-600: #151731;
+  --color-cloud-burst-700: #04050A;
+  --color-cloud-burst-800: #000000;
+  --color-cloud-burst-900: #000000;
+
+  /* Woodland Color Scale */
+  --color-woodland: #595425;
+  --color-woodland-50: #C4BC71;
+  --color-woodland-100: #BEB563;
+  --color-woodland-200: #AFA649;
+  --color-woodland-300: #938A3D;
+  --color-woodland-400: #766F31;
+  --color-woodland-500: #595425;
+  --color-woodland-600: #312F15;
+  --color-woodland-700: #0A0904;
+  --color-woodland-800: #000000;
+  --color-woodland-900: #000000;
+  --color-woodland-950: #000000;
+
+  /* Custom Font */
+  --font-family-open-sans: "Open Sans", sans-serif;
+}
+
+/* Typography Plugin Customization */
+.prose {
+  max-width: none;
+  color: var(--color-neutral-400);
+}
+
+.prose a {
+  color: var(--color-secondary-500);
+}
+
+.prose a:hover {
+  color: var(--color-secondary-200);
+}
+
+.prose iframe {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16/9;
+}
+
 @import '../css/base.css';
-
-@import 'tailwindcss/components';
 @import '../css/components.css';
-
-@import 'tailwindcss/utilities';
 @import '../css/utilities.css';
-
 @import '../css/global.css';

@@ -1,127 +1,141 @@
-{{ 'accounts.css' | asset_url | stylesheet_tag }}
+<div class="bg-white px-6 md:px-8 py-12">
+  <div class="container mx-auto max-w-5xl">
 
-<div class="account-register">
-  <div class="account-register-inner shell">
+    <header class="mb-8">
+      <h1 class="mb-4">
+        My Account
+      </h1>
+      <div class="flex flex-wrap gap-3">
+        <a
+          href="{{ routes.account_logout_url }}"
+          class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-indigo-900 focus:ring-4 focus:outline-none focus:ring-gray-200">
+          Logout
+        </a>
+        <a
+          href="{{ routes.account_addresses_url }}"
+          class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-indigo-900 focus:ring-4 focus:outline-none focus:ring-gray-200">
+          Manage Addresses
+        </a>
+      </div>
+    </header>
 
-    <h1>Orders</h1>
-    
-    <a href="/account/logout" style="margin-bottom: 20px;">Logout</a>
-    <a href="/account/addresses" style="margin-bottom: 20px;">Manage Addresses</a>
+    <div class="mb-8">
+      <h2 class="mb-4">Order History</h2>
+
       {% paginate customer.orders by 20 %}
         {%- if customer.orders.size > 0 -%}
-          <table role="table" class="order-history">
-            <caption class="visually-hidden">{{ 'customer.orders.title' | t }}</caption>
-            <thead role="rowgroup">
-              <tr role="row">
-                <th id="ColumnOrder" scope="col" role="columnheader">{{ 'customer.orders.order_number' | t }}</th>
-                <th id="ColumnDate" scope="col" role="columnheader">{{ 'customer.orders.date' | t }}</th>
-                <th id="ColumnPayment" scope="col" role="columnheader">{{ 'customer.orders.payment_status' | t }}</th>
-                <th id="ColumnFulfillment" scope="col" role="columnheader">{{ 'customer.orders.fulfillment_status' | t }}</th>
-                <th id="ColumnTotal" scope="col" role="columnheader">{{ 'customer.orders.total' | t }}</th>
-              </tr>
-            </thead>
-            <tbody role="rowgroup">
-              {%- for order in customer.orders -%}
-                <tr role="row">
-                  <td
-                    id="RowOrder"
-                    role="cell" 
-                    headers="ColumnOrder"
-                    data-label="{{ 'customer.orders.order_number' | t }}"
-                  >
-                    <a href="{{ order.customer_url }}" aria-label="{{ 'customer.orders.order_number_link' | t: number: order.name }}">
-                      {{ order.name }}
-                    </a>
-                  </td>
-                  <td headers="RowOrder ColumnDate" role="cell" data-label="{{ 'customer.orders.date' | t }}">
-                    {{ order.created_at | time_tag: format: 'date' }}
-                  </td>
-                  <td headers="RowOrder ColumnPayment" role="cell" data-label="{{ 'customer.orders.payment_status' | t }}">
-                    {{ order.financial_status_label }}
-                  </td>
-                  <td headers="RowOrder ColumnFulfillment" role="cell" data-label="{{ 'customer.orders.fulfillment_status' | t }}">
-                    {{ order.fulfillment_status_label }}
-                  </td>
-                  <td headers="RowOrder ColumnTotal" role="cell" data-label="{{ 'customer.orders.total' | t }}">
-                    {{ order.total_price | money_with_currency }}</td>
+          <div class="overflow-x-auto shadow-md rounded-lg">
+            <table class="w-full text-sm text-left text-gray-500">
+              <caption class="sr-only">{{ 'customer.orders.title' | t }}</caption>
+              <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                <tr>
+                  <th id="ColumnOrder" scope="col" class="px-6 py-3">
+                    {{ 'customer.orders.order_number' | t }}
+                  </th>
+                  <th id="ColumnDate" scope="col" class="px-6 py-3">
+                    {{ 'customer.orders.date' | t }}
+                  </th>
+                  <th id="ColumnPayment" scope="col" class="px-6 py-3">
+                    {{ 'customer.orders.payment_status' | t }}
+                  </th>
+                  <th id="ColumnFulfillment" scope="col" class="px-6 py-3">
+                    {{ 'customer.orders.fulfillment_status' | t }}
+                  </th>
+                  <th id="ColumnTotal" scope="col" class="px-6 py-3">
+                    {{ 'customer.orders.total' | t }}
+                  </th>
                 </tr>
-              {%- endfor -%}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {%- for order in customer.orders -%}
+                  <tr class="bg-white border-b hover:bg-gray-50">
+                    <td
+                      headers="ColumnOrder"
+                      class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                      <a
+                        href="{{ order.customer_url }}"
+                        class="text-indigo-900 hover:underline"
+                        aria-label="{{ 'customer.orders.order_number_link' | t: number: order.name }}">
+                        {{ order.name }}
+                      </a>
+                    </td>
+                    <td headers="ColumnDate" class="px-6 py-4">
+                      {{ order.created_at | time_tag: format: 'date' }}
+                    </td>
+                    <td headers="ColumnPayment" class="px-6 py-4">
+                      <span class="px-2 py-1 text-xs font-medium rounded-full {% if order.financial_status == 'paid' %}bg-green-100 text-green-800{% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                        {{ order.financial_status_label }}
+                      </span>
+                    </td>
+                    <td headers="ColumnFulfillment" class="px-6 py-4">
+                      <span class="px-2 py-1 text-xs font-medium rounded-full {% if order.fulfillment_status == 'fulfilled' %}bg-green-100 text-green-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                        {{ order.fulfillment_status_label }}
+                      </span>
+                    </td>
+                    <td headers="ColumnTotal" class="px-6 py-4 font-medium text-gray-900">
+                      {{ order.total_price | money_with_currency }}
+                    </td>
+                  </tr>
+                {%- endfor -%}
+              </tbody>
+            </table>
+          </div>
         {%- else -%}
-          <p>{{ 'customer.orders.none' | t }}</p>
+          <div class="text-center py-12 bg-gray-50 rounded-lg">
+            <p class="text-gray-600">{{ 'customer.orders.none' | t }}</p>
+            <a
+              href="{{ routes.all_products_collection_url }}"
+              class="inline-block mt-4 py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-indigo-900 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300">
+              Start Shopping
+            </a>
+          </div>
         {%- endif -%}
 
         {%- if paginate.pages > 1 -%}
-          {%- if paginate.parts.size > 0 -%}
-              <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
-                <ul role="list">
-                {%- if paginate.previous -%}
-                  <li>
-                    <a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}">
-                      <svg aria-hidden="true" focusable="false" viewBox="0 0 10 6">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
-                      </svg>
-                    </a>
-                  </li>
-                {%- endif -%}
+          <nav class="flex items-center justify-center mt-6 space-x-2" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+            {%- if paginate.previous -%}
+              <a
+                href="{{ paginate.previous.url }}"
+                class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-indigo-900"
+                aria-label="{{ 'general.pagination.previous' | t }}">
+                Previous
+              </a>
+            {%- endif -%}
 
-                {%- for part in paginate.parts -%}
-                  <li>
-                    {%- if part.is_link -%}
-                      <a href="{{ part.url }}" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">{{ part.title }}</a>
-                    {%- else -%}
-                      {%- if part.title == paginate.current_page -%}
-                        <span aria-current="page" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">{{ part.title }}</span>
-                      {%- else -%}
-                        <span>{{ part.title }}</span>
-                      {%- endif -%}
-                    {%- endif -%}
-                  </li>
-                {%- endfor -%}
-
-                {%- if paginate.next -%}
-                  <li>
-                    <a href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t }}" >
-                      <svg aria-hidden="true" focusable="false" viewBox="0 0 10 6">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
-                      </svg>
-                    </a>
-                  </li>
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}
+                <a
+                  href="{{ part.url }}"
+                  class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-indigo-900"
+                  aria-label="{{ 'general.pagination.page' | t: number: part.title }}">
+                  {{ part.title }}
+                </a>
+              {%- else -%}
+                {%- if part.title == paginate.current_page -%}
+                  <span
+                    class="px-3 py-2 text-sm font-medium text-white bg-indigo-900 border border-indigo-900 rounded-lg"
+                    aria-current="page"
+                    aria-label="{{ 'general.pagination.page' | t: number: part.title }}">
+                    {{ part.title }}
+                  </span>
+                {%- else -%}
+                  <span class="px-3 py-2 text-sm font-medium text-gray-400">{{ part.title }}</span>
                 {%- endif -%}
-                </ul>
-              </nav>
-          {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- if paginate.next -%}
+              <a
+                href="{{ paginate.next.url }}"
+                class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-indigo-900"
+                aria-label="{{ 'general.pagination.next' | t }}">
+                Next
+              </a>
+            {%- endif -%}
+          </nav>
         {%- endif -%}
       {% endpaginate %}
+    </div>
+
   </div>
 </div>
-
-<style>
-  /* Center tables for demo */
-table {
-  margin: 0 auto;
-}
-
-/* Default Table Style */
-table {
-  color: #333;
-  background: white;
-  border: 1px solid grey;
-  font-size: 12pt;
-  border-collapse: collapse;
-}
-table thead th,
-table tfoot th {
-  color: #777;
-  background: rgba(0,0,0,.1);
-}
-table caption {
-  padding:.5em;
-}
-table th,
-table td {
-  padding: .5em;
-  border: 1px solid lightgrey;
-}
-</style>

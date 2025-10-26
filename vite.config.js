@@ -2,6 +2,7 @@ import shopify from 'vite-plugin-shopify'
 import cleanup from '@by-association-only/vite-plugin-shopify-clean'
 import pageReload from 'vite-plugin-page-reload'
 import basicSsl from '@vitejs/plugin-basic-ssl'
+import tailwindcss from "@tailwindcss/vite"
 
 import fs from 'fs';
 import path from 'path';
@@ -67,7 +68,13 @@ export default {
     host: '127.0.0.1',
     https: true,
     port: 3000,
-    hmr: true
+    hmr: true,
+    cors: {
+      origin: [
+        /^https?:\/\/(?:(?:[^:]+\.)?localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/,
+        /^https:\/\/[^\/]+\.myshopify\.com$/
+      ]
+    }
   },
   publicDir: 'public',
   build: {
@@ -85,6 +92,7 @@ export default {
     basicSsl(),
     cleanup(),
     copyPublicToAssetsPlugin(),
+    tailwindcss(),
     shopify({
       sourceCodeDir: "src",
       entrypointsDir: 'src/entrypoints',
