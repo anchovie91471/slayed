@@ -68,18 +68,13 @@
       name="{{ option.name }}"
       value="{{ value | escape }}"
       form="{{ product_form_id }}"
-      data-prodify-shopify-section-main-product-inner
-      {% if option.selected_value == value %}
-        checked
-      {% endif %}
-      {% if option_disabled %}
-        class="disabled hidden [&:checked+label]:bg-indigo-900 [&:checked+label]:text-white"
-      {% else %}
-        class="hidden [&.disabled+label]:line-through [&:checked+label]:bg-indigo-900 [&:checked+label]:text-white"
-      {% endif %}
+      @change="updateVariant('{{ option.name }}', '{{ value | escape }}')"
+      :checked="selectedOptions['{{ option.name }}'] === '{{ value | escape }}'"
+      :disabled="!isOptionAvailable('{{ option.name }}', '{{ value | escape }}', $store.productData.product)"
+      class="hidden [&.disabled+label]:line-through [&:checked+label]:bg-indigo-900 [&:checked+label]:text-white"
     >
-    <label 
-      for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}" 
+    <label
+      for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
       @keyup.enter="$el.click()"
       tabindex="0"
       class="bg-slate-100 text-black"

@@ -96,9 +96,6 @@ export default {
     shopify({
       sourceCodeDir: "src",
       entrypointsDir: 'src/entrypoints',
-      additionalEntrypoints: [
-        'src/js/prodify/index.ts'
-      ],
       snippetFile: "vite.liquid",
     }),
     pageReload('/tmp/theme.update', {

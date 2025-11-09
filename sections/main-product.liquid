@@ -1,21 +1,30 @@
+<script>
+  document.addEventListener('alpine:init', () => {
+    let prod = {{ product | json }};
+    prod.options_with_values = {{ product.options_with_values | json }};
+
+    Alpine.store('productData', {
+      product: prod,
+      currentVariant: {{ product.selected_or_first_available_variant | json }},
+      sectionId: '{{ section.id }}',
+      optionsWithValues: {{ product.options_with_values | json }},
+    });
+  });
+</script>
+
 <div class="px-6 md:px-8 py-12">
   <div
     class="shopify-section-main-product-inner container mx-auto"
     data-handle="{{ product.handle }}"
     data-id="{{ product.id }}"
     data-url="{{ product.url }}"
-    data-section="{{ section.id }}"
-    data-prodify="{{ section.settings.picker_type }}">
-
-    <script type="application/json" data-prodify-variants-json>
-      {{ product.variants | json }}
-    </script>
+    data-section="{{ section.id }}">
 
     <a class="skip-to-content-link" href="#product-info-{{ section.id }}">
       Skip to product info
     </a>
     <div class="md:flex md:gap-12 pdp-main relative">
-      <div class="media flex-1 mb-8 md:mb-0" data-prodify-media-container>
+      <div class="media flex-1 mb-8 md:mb-0" x-data="productGallery" x-init="init()">
         <div class="image-wrapper relative overflow-hidden pt-[137%]">
           {% if product.selected_variant and product.selected_variant.image %}
             {% assign media = product.selected_variant.image %}
@@ -42,97 +51,86 @@
       <div class="info flex-1" id="product-info-{{ section.id }}">
         <p class="caption tracking-wide text-[10px] leading-3 text-gray-500">{{ product.type | upcase }}</p>
         <h1>{{ product.title }}</h1>
-        <div class="flex items-center py-2" data-prodify-price-container>
+        <div class="flex items-center py-2" x-data="priceComponent()" x-init="init()">
           <span class="sr-only">Regular Price</span>
-          {% if product.selected_or_first_available_variant.compare_at_price %}
-            <span class="line-through">
-              {{ product.selected_or_first_available_variant.compare_at_price | money }}
-            </span>
-          {% endif %}
-          <span>
-            {{ product.selected_or_first_available_variant.price | money }}
+          <span
+            x-show="compareAtPrice"
+            x-text="formatMoney(compareAtPrice)"
+            class="line-through mr-2">
+          </span>
+          <span
+            x-text="formatMoney(displayPrice)"
+            :class="{ 'transition-colors duration-300': flash }">
           </span>
         </div>
         {% render 'product-variant-picker'
           , product: product
           , product_form_id: 'product-form-id'
           , picker_type: section.settings.picker_type %}
-        <div class="quantity-row">
-          <label for="quantity-control-input">Quantity</label>
-          <div class="quantity-control-container">
-            <button type="button" data-prodify-quantity-decrement>
-              {% render 'icon-minus' %}
-            </button>
-            <input
-              tabindex="-1"
-              type="number"
-              id="quantity-control-input"
-              value="1"
-              disabled=""
-              data-prodify-quantity-presentation>
-            <button type="button" data-prodify-quantity-increment>
-              {% render 'icon-plus' %}
-            </button>
-          </div>
-        </div>
 
-        <ajax-cart-product-form>
-          <form
-            action="{{ routes.cart_add_url }}"
-            id="product_form_id"
-            class="product-form"
-            novalidate="novalidate"
-            data-prodify-product-form>
-            <input
-              type="hidden"
-              name="id"
-              value="{{ product.selected_or_first_available_variant.id }}">
-            <input
-              type="hidden"
-              name="quantity"
-              value="1"
-              data-prodify-quantity-hidden-input>
-            <div class="mb-[10px]">
-              <button
-                type="submit"
-                name="add"
-                class="px-6 hover:bg-cloud-burst-400 bg-indigo-900 text-white w-full h-12 cursor-pointer disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-black"
-                {% if product.selected_or_first_available_variant.available == false %}
-                disabled
-                {% endif %}>
-                <span class="[[processing]_&]:hidden">
-                  {%- if product.selected_or_first_available_variant.available -%}
-                    Add to cart
-                  {%- else -%}
-                    Sold out
-                  {%- endif -%}
-                </span>
-                <span class="hidden [[processing]_&]:block [[processing]_&]:cursor-not-allowed">
-                  Adding to cart...
-                </span>
+        <div x-data="productForm()" x-init="init()">
+          <div class="quantity-row">
+            <label for="quantity-control-input">Quantity</label>
+            <div class="quantity-control-container">
+              <button type="button" @click="decrementQuantity()">
+                {% render 'icon-minus' %}
+              </button>
+              <input
+                tabindex="-1"
+                type="number"
+                id="quantity-control-input"
+                x-model.number="quantity"
+                disabled="">
+              <button type="button" @click="incrementQuantity()">
+                {% render 'icon-plus' %}
               </button>
             </div>
-            <div data-ajax-cart-errors="form" class="text-red-500">
-              <!-- Error messages appear here -->
-            </div>
+          </div>
 
-            {%- if product.selected_or_first_available_variant.available -%}
+          <ajax-cart-product-form>
+            <form
+              action="{{ routes.cart_add_url }}"
+              id="product_form_id"
+              class="product-form"
+              novalidate="novalidate"
+              data-product-form>
+              <input
+                type="hidden"
+                name="id"
+                x-bind:value="variantId">
+              <input
+                type="hidden"
+                name="quantity"
+                x-bind:value="quantity">
+              <div class="mb-[10px]">
+                <button
+                  type="submit"
+                  name="add"
+                  class="px-6 hover:bg-cloud-burst-400 bg-indigo-900 text-white w-full h-12 cursor-pointer disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-black"
+                  x-bind:disabled="!isAvailable || isProcessing">
+                  <span x-show="!isProcessing">
+                    <span x-show="isAvailable">Add to cart</span>
+                    <span x-show="!isAvailable">Sold out</span>
+                  </span>
+                  <span x-show="isProcessing">Adding to cart...</span>
+                </button>
+              </div>
+              <div data-ajax-cart-errors="form" class="text-red-500">
+                <!-- Error messages appear here -->
+              </div>
+
               <button
                 type="button"
+                x-show="isAvailable"
                 class="w-full h-12 px-6 text-white bg-indigo-900 flex items-center justify-center hover:after:border-offset-1"
-                onclick="onBuyNowClicked()">
+                @click="buyNow()">
                 Buy it now
               </button>
-              <script>
-                const onBuyNowClicked = () => {
-                  window.location.href = `/cart/${window?.prodify?.currentVariant?.id}:1`;
-                }
-              </script>
-            {%- endif -%}
 
-            {{ form | payment_button }}
-          </form>
-        </ajax-cart-product-form>
+              {{ form | payment_button }}
+            </form>
+          </ajax-cart-product-form>
+        </div>
 
         <div class="description prose">
           {{ product.description }}
