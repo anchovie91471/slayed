@@ -2,7 +2,7 @@
 
 **V**ite + **A**lpine + **S**chematic + **T**ailwind
 
-A modern, performance-focused Shopify starter theme combining the best tools in modern web development. VAST brings together Vite's lightning-fast build system, AlpineJS's lightweight reactivity, Schematic's schema-driven architecture, and Tailwind CSS v4's cutting-edge utility classes to create a powerful foundation for building Shopify stores.
+A minimal, modern, performance-focused Shopify starter theme combining the best tools in modern web development. VAST brings together Vite's lightning-fast build system, AlpineJS's lightweight reactivity, Schematic's schema-driven architecture, and Tailwind CSS v4's cutting-edge utility classes to create a powerful foundation for building Shopify stores.
 
 ## Key Technologies
 
@@ -17,6 +17,7 @@ A modern, performance-focused Shopify starter theme combining the best tools in 
 
 ### Core Architecture
 
+- **Minimal Foundation**: A lean starting point that's easy to customize and extend without unnecessary bloat
 - **AlpineJS Components**: Lightweight, reactive components with automatic registration from modular directories
 - **Schema-Driven Development**: JavaScript-based schema definitions with Schematic—define once, deploy everywhere
 - **Tailwind CSS v4**: Latest utility-first CSS with enhanced performance and modern class names
