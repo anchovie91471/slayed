@@ -1,8 +1,10 @@
-# Modern Shopify Starter Theme
+# ViSTA - Shopify Starter Theme
 
-A modern, performance-focused Shopify theme built with Vite, AlpineJS, Tailwind CSS v4, and schema-driven architecture.
+**Vi**te + **S**chematic + **T**ailwind + **A**lpine
 
-Originally forked from [james0r/slayed](https://github.com/james0r/slayed), this theme has been extensively modernized with AlpineJS replacing custom element logic, Tailwind v4 integration, and a complete shift to schema-driven development using Schematic.
+A modern, performance-focused Shopify theme built with Vite, Schematic, Tailwind CSS v4, and AlpineJS.
+
+Originally forked from [james0r/slayed](https://github.com/james0r/slayed), ViSTA has been extensively modernized with AlpineJS replacing custom element logic, Tailwind v4 integration, and a complete shift to schema-driven development using Schematic.
 
 ## Key Technologies
 
