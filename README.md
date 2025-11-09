@@ -2,9 +2,7 @@
 
 **V**ite + **A**lpine + **S**chematic + **T**ailwind
 
-A modern, performance-focused Shopify theme built with Vite, AlpineJS, Schematic, and Tailwind CSS v4.
-
-Originally forked from [james0r/slayed](https://github.com/james0r/slayed), VAST has been extensively modernized with AlpineJS replacing custom element logic, Tailwind v4 integration, and a complete shift to schema-driven development using Schematic.
+A modern, performance-focused Shopify starter theme combining the best tools in modern web development. VAST brings together Vite's lightning-fast build system, AlpineJS's lightweight reactivity, Schematic's schema-driven architecture, and Tailwind CSS v4's cutting-edge utility classes to create a powerful foundation for building Shopify stores.
 
 ## Key Technologies
 
@@ -17,13 +15,13 @@ Originally forked from [james0r/slayed](https://github.com/james0r/slayed), VAST
 
 ## Features
 
-### What's Changed from Original Slayed
+### Core Architecture
 
-- **AlpineJS Architecture**: Replaced custom element logic (Prodify) with AlpineJS components for better maintainability and smaller bundle size
-- **Tailwind v4**: Updated to the latest Tailwind with new class names and improved performance
-- **Schema-Driven Development**: All section schemas now managed via Schematic in `src/schema/`—no more duplicated JSON
-- **Complete Account Pages**: Finished and polished account page templates
-- **Modular Structure**: Enhanced project organization with clear separation of concerns
+- **AlpineJS Components**: Lightweight, reactive components with automatic registration from modular directories
+- **Schema-Driven Development**: JavaScript-based schema definitions with Schematic—define once, deploy everywhere
+- **Tailwind CSS v4**: Latest utility-first CSS with enhanced performance and modern class names
+- **Complete Theme Templates**: Production-ready templates including polished account pages and checkout flows
+- **Modular Structure**: Clean separation of concerns with organized directory structure for maintainability
 
 ### Built-in Functionality
 
@@ -228,7 +226,7 @@ All modules are auto-registered in `src/js/alpine/index.js` using Vite's glob im
 
 **Global styles**: `src/css/global.css` - For styles not tree-shaken, supports nesting via `@tailwindcss/nesting`
 
-**Note**: Class names have changed from Tailwind v3 to v4. Refer to the [Tailwind v4 migration guide](https://tailwindcss.com/docs/upgrade-guide) if updating from v3.
+For more information on Tailwind v4's features and syntax, see the [Tailwind v4 documentation](https://tailwindcss.com/docs).
 
 ### JavaScript Entry Points
 
@@ -254,9 +252,7 @@ During development, a custom Vite plugin watches `public/` and syncs changes to 
 
 ## Product Variant Handling
 
-The theme includes **Prodify** (`src/js/prodify/`), a TypeScript-based variant picker system adapted from Shopify Dawn's custom element logic.
-
-While most of the theme has moved to AlpineJS, Prodify remains for robust product variant management on PDPs.
+The theme includes **Prodify** (`src/js/prodify/`), a TypeScript-based variant picker system that provides robust product variant management on PDPs.
 
 **Entry point**: Configured as an additional entry point in `vite.config.js`
 
@@ -340,7 +336,7 @@ To remove it, delete the reference in `layout/theme.liquid`.
 
 ## Contributing
 
-This is a personal fork with significant changes from the original. If you'd like to contribute or report issues, please open an issue or pull request.
+Contributions are welcome! If you'd like to contribute or report issues, please open an issue or pull request.
 
 ## License
 
@@ -348,9 +344,9 @@ MIT
 
 ## Credits
 
-- Original theme: [james0r/slayed](https://github.com/james0r/slayed)
-- Maintained by: anchovie91471
-- Built with modern tooling and best practices for Shopify theme development
+- Built and maintained by [anchovie91471](https://github.com/anchovie91471)
+- Inspired by [james0r/slayed](https://github.com/james0r/slayed)
+- Powered by modern tooling and best practices for Shopify theme development
 
 ## Support
 
