@@ -2,16 +2,16 @@
 
 **V**ite + **A**lpine + **S**chematic + **T**ailwind
 
-A minimal, modern, performance-focused Shopify starter theme combining the best tools in modern web development. VAST brings together Vite's lightning-fast build system, AlpineJS's lightweight reactivity, Schematic's schema-driven architecture, and Tailwind CSS v4's cutting-edge utility classes to create a powerful foundation for building Shopify stores.
+A minimal, modern Shopify starter theme built for speed and developer experience.
 
 ## Key Technologies
 
-- **[Vite](https://vitejs.dev/)** - Lightning-fast build tool with HMR
-- **[AlpineJS](https://alpinejs.dev/)** - Lightweight reactive framework for interactive components
-- **[Tailwind CSS v4](https://tailwindcss.com/)** - Latest utility-first CSS framework
-- **[Schematic](https://www.npmjs.com/package/@anchovie/schematic)** - JavaScript-driven schema management
-- **[Liquid AJAX Cart](https://liquid-ajax-cart.js.org/v2/)** - Out-of-the-box AJAX cart functionality
-- **[Shopify Vite Plugin](https://github.com/barrel/shopify-vite)** - Seamless Vite integration for Shopify
+- **[Vite v6](https://vitejs.dev/)** - Blazing-fast HMR during development and optimized production builds that keep your workflow smooth and your bundles lean
+- **[AlpineJS v3](https://alpinejs.dev/)** - Powerful reactivity with minimal overhead—build interactive components without the framework bloat
+- **[Tailwind CSS v4](https://tailwindcss.com/)** - The latest generation of utility-first CSS with native cascade layers, improved performance, and zero-config styling
+- **[Schematic v2](https://www.npmjs.com/package/@anchovie/schematic)** - Define section schemas once in JavaScript and deploy everywhere—eliminate JSON duplication and streamline your workflow
+- **[Liquid AJAX Cart v2](https://liquid-ajax-cart.js.org/v2/)** - Production-ready cart with zero configuration—dynamic updates, minicart, and seamless Shopify integration out of the box
+- **[Shopify Vite Plugin v4](https://github.com/barrel/shopify-vite)** - Rock-solid integration between Vite and Shopify CLI with SSL support and intelligent asset handling
 
 ## Features
 
