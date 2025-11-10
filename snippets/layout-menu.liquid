@@ -1,19 +1,19 @@
 <div class="{{ class | default: '' }}" style="{{ style | default: '' }}">
-  {% for link in linklists.main-menu.links %}
-    <div>
-      <a href="{{ link.url }}">
-        {{ link.title | escape }}
-      </a>
-
-      {% if link.levels >= 1 %}
+    {% for link in linklists.main-menu.links %}
         <div>
-          {% for sub_link in link.links %}
-            <a href="{{ sub_link.url }}">
-              {{ sub_link.title | escape }}
+            <a href="{{ link.url }}">
+                {{ link.title | escape }}
             </a>
-          {% endfor %}
+
+            {% if link.levels >= 1 %}
+                <div>
+                    {% for sub_link in link.links %}
+                        <a href="{{ sub_link.url }}">
+                            {{ sub_link.title | escape }}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
-      {% endif %}
-    </div>
-  {% endfor %}
+    {% endfor %}
 </div>

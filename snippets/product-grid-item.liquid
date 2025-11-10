@@ -7,35 +7,35 @@
 
 <div class="product-grid-item relative group">
     <div class="block image-wrapper relative pt-[140%]">
-      <img
-        width="{{ prod.featured_image.width }}"
-        height="{{ prod.featured_image.height }}"
-        src="{{ prod.featured_image | image_url: width: 410 }}"
-        srcset="{{ prod.featured_image | image_url: width: 205 }} 1x, {{ prod.featured_image | image_url: width: 410 }} 2x"
-        alt="{{ prod.featured_image.alt }}"
-        class="absolute inset-0 object-cover h-full"
-        loading="lazy"
-      >
+        <img
+                width="{{ prod.featured_image.width }}"
+                height="{{ prod.featured_image.height }}"
+                src="{{ prod.featured_image | image_url: width: 410 }}"
+                srcset="{{ prod.featured_image | image_url: width: 205 }} 1x, {{ prod.featured_image | image_url: width: 410 }} 2x"
+                alt="{{ prod.featured_image.alt }}"
+                class="absolute inset-0 object-cover h-full"
+                loading="lazy"
+        >
     </div>
     <div class="content">
-      <a href="{{ prod.url }}" class="after:content-[''] after:inset-0 after:absolute">
-        <div class="h3 dark text-blue-500 hover:text-blue-400 mt-2 text-[14px] group-hover:underline">
-          {{ prod.title }}
-        </div>
-      </a>
-      <p class="flex flex-wrap items-center space-x-1 [&>*]:whitespace-nowrap">
-        {% if prod.price_varies %}
-          <span class="text-[14px]">
+        <a href="{{ prod.url }}" class="after:content-[''] after:inset-0 after:absolute">
+            <div class="h3 dark text-blue-500 hover:text-blue-400 mt-2 text-[14px] group-hover:underline">
+                {{ prod.title }}
+            </div>
+        </a>
+        <p class="flex flex-wrap items-center space-x-1 [&>*]:whitespace-nowrap">
+            {% if prod.price_varies %}
+                <span class="text-[14px]">
             From
           </span>
-        {% endif %}
-        <span class="text-[14px]">
+            {% endif %}
+            <span class="text-[14px]">
           {{ prod.price | money_with_currency }}
         </span>
-        {% if prod.compare_at_price_max != blank and prod.compare_at_price_max > prod.price %}
-          <s class="text-[13px]">{{ prod.compare_at_price_max | money_with_currency }}</s>
-        {% endif %}
-      </p>
+            {% if prod.compare_at_price_max != blank and prod.compare_at_price_max > prod.price %}
+                <s class="text-[13px]">{{ prod.compare_at_price_max | money_with_currency }}</s>
+            {% endif %}
+        </p>
     </div>
     {% comment %}
       {% form 'product', prod %}

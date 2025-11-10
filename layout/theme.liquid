@@ -1,23 +1,27 @@
 <!doctype html>
 <html lang="{{ request.locale.iso_code }}" class="no-js font-open-sans">
-  <head>
+<head>
     {% render 'head-meta' %}
+    <link rel="icon" href="{{ 'favicon.ico' | asset_url }}" sizes="any"/>
+    <link rel="icon" href="{{ 'icon.svg' | asset_url }}" type="image/svg+xml"/>
+    <link rel="apple-touch-icon" href="{{ 'apple-touch-icon.png' | asset_url }}"/>
+    <link rel="manifest" href="{{ '/manifest.webmanifest' | asset_url }}"/>
+    <meta name="apple-mobile-web-app-title" content="VAST"/>
 
-    <link rel="icon" href="{{ 'favicon.ico' | asset_url }}">
     <link rel="canonical" href="{{ canonical_url }}">
     <link
-      rel="preconnect"
-      href="https://cdn.shopify.com"
-      crossorigin>
+            rel="preconnect"
+            href="https://cdn.shopify.com"
+            crossorigin>
 
     <title>
-      {{ page_title }}
-      {%- if current_tags %}
-        &ndash; tagged "{{ current_tags | join: ', ' }}"{%- endif -%}
-      {%- if current_page != 1 %}
-        &ndash; Page {{ current_page -}}{%- endif -%}
-      {%- unless page_title contains shop.name %}
-        &ndash; {{ shop.name -}}{%- endunless -%}
+        {{ page_title }}
+        {%- if current_tags %}
+            &ndash; tagged "{{ current_tags | join: ', ' }}"{%- endif -%}
+        {%- if current_page != 1 %}
+            &ndash; Page {{ current_page -}}{%- endif -%}
+        {%- unless page_title contains shop.name %}
+            &ndash; {{ shop.name -}}{%- endunless -%}
     </title>
 
     <!-- header hook for Shopify plugins -->
@@ -27,69 +31,69 @@
     {% render 'head-scripts' %}
 
     {% liquid
-      render 'vite' with 'theme.css'
-      render 'vite' with 'theme.js'
-    %} 
-  </head> 
+        render 'vite' with 'theme.css'
+        render 'vite' with 'theme.js'
+    %}
+</head>
 
-  {% liquid
+{% liquid
     assign bodyClasses = template | handleize | append: '-template'
     assign bodyClasses = bodyClasses | append: ' antialiased using-mouse'
 
     if settings.show_promo_bar
-      assign bodyClasses = bodyClasses | append: ' promo-bar-visible'
+        assign bodyClasses = bodyClasses | append: ' promo-bar-visible'
     endif
-  %}
+%}
 
-  <body
-    class="{{ bodyClasses }}"
-    :class="$store.global.bodyClasses"
-    x-data
-    x-scrolled
-    >
+<body
+        class="{{ bodyClasses }}"
+        :class="$store.global.bodyClasses"
+        x-data
+        x-scrolled
+>
 
-    <a class="skip-to-content-link" href="#main-content">
-      Skip to content
-    </a>
+<a class="skip-to-content-link" href="#main-content">
+    Skip to content
+</a>
 
-    {% section 'header' %}
+{% section 'header' %}
 
-    <main
-      id="main-content"
-      role="main"
-      class="site-main relative">
-      {{ content_for_layout }}
-    </main>
+<main
+        id="main-content"
+        role="main"
+        class="site-main relative">
+    {{ content_for_layout }}
+</main>
 
-    {% section 'footer' %}
+{% section 'footer' %}
 
-    {% comment %} Styles for minicart wrapper in sections/minicart.liquid {% endcomment %}
-    <div
-      class="minicart-wrapper"
-      x-data
-      x-show="$store.global.isMinicartVisible"
-      x-on:click.outside="$store.global.isMinicartVisible = false"
-      x-transition:enter="transition ease-out duration-300"
-      x-transition:enter-start="off-screen-right"
-      x-transition:enter-end="right-50"
-      x-transition:leave="transition ease-in duration-300"
-      x-transition:leave-start="right-50"
-      x-transition:leave-end="off-screen-right"
-      x-cloak
-      :aria-hidden="$store.global.isMinicartVisible ? 'false' : 'true'"
-      aria-modal="true"
-      role="dialog">
-      {% section 'minicart' %}
-    </div>
+{% comment %} Styles for minicart wrapper in sections/minicart.liquid {% endcomment %}
+<div
+        class="minicart-wrapper"
+        x-data
+        x-show="$store.global.isMinicartVisible"
+        x-on:click.outside="$store.global.isMinicartVisible = false"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="off-screen-right"
+        x-transition:enter-end="right-50"
+        x-transition:leave="transition ease-in duration-300"
+        x-transition:leave-start="right-50"
+        x-transition:leave-end="off-screen-right"
+        x-cloak
+        :aria-hidden="$store.global.isMinicartVisible ? 'false' : 'true'"
+        aria-modal="true"
+        role="dialog">
+    {% section 'minicart' %}
+</div>
 
-    {% if settings.enable_predictive_search %}
-      {% section 'predictive-search-main' %}
-    {% endif %}
+{% if settings.enable_predictive_search %}
+    {% section 'predictive-search-main' %}
+{% endif %}
 
-    {% if settings.enable_modal %}
-      {% section 'modal' %}
-    {% endif %}
+{% if settings.enable_modal %}
+    {% section 'modal' %}
+{% endif %}
 
-    {% render 'liquid-ajax-cart' %}
-  </body>
+{% render 'liquid-ajax-cart' %}
+</body>
 </html>

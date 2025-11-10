@@ -1,241 +1,241 @@
 <script>
-  document.addEventListener('alpine:init', () => {
-    let prod = {{ product | json }};
-    prod.options_with_values = {{ product.options_with_values | json }};
+    document.addEventListener('alpine:init', () => {
+        let prod = {{ product | json }};
+        prod.options_with_values = {{ product.options_with_values | json }};
 
-    Alpine.store('productData', {
-      product: prod,
-      currentVariant: {{ product.selected_or_first_available_variant | json }},
-      sectionId: '{{ section.id }}',
-      optionsWithValues: {{ product.options_with_values | json }},
+        Alpine.store('productData', {
+            product: prod,
+            currentVariant: {{ product.selected_or_first_available_variant | json }},
+            sectionId: '{{ section.id }}',
+            optionsWithValues: {{ product.options_with_values | json }},
+        });
     });
-  });
 </script>
 
 <div class="px-6 md:px-8 py-12">
-  <div
-    class="shopify-section-main-product-inner container mx-auto"
-    data-handle="{{ product.handle }}"
-    data-id="{{ product.id }}"
-    data-url="{{ product.url }}"
-    data-section="{{ section.id }}">
+    <div
+            class="shopify-section-main-product-inner container mx-auto"
+            data-handle="{{ product.handle }}"
+            data-id="{{ product.id }}"
+            data-url="{{ product.url }}"
+            data-section="{{ section.id }}">
 
-    <a class="skip-to-content-link" href="#product-info-{{ section.id }}">
-      Skip to product info
-    </a>
-    <div class="md:flex md:gap-12 pdp-main relative">
-      <div class="media flex-1 mb-8 md:mb-0" x-data="productGallery" x-init="init()">
-        <div class="image-wrapper relative overflow-hidden pt-[137%]">
-          {% if product.selected_variant and product.selected_variant.image %}
-            {% assign media = product.selected_variant.image %}
-          {% else %}
-            {% assign media = product.featured_image %}
-          {% endif %}
-          <img
-            src="{{ media | image_url }}"
-            alt="{{ media.alt }}"
-            srcset="{{ media | image_url: width: 800 }} 800w, {{ media | image_url: width: 1000 }} 1000w, {{ media | image_url: width: 1426 }} 1426w"
-            sizes="(min-width: 768px) 55vw, 100vw"
-            height="{{ media.height }}"
-            width="{{ media.width }}"
-            class="absolute h-full w-full object-cover inset-0"
-            loading="eager">
-          <h1 class="text-4xl z-50 relative">
-            {{ product.selected_or_first_available_variant.options }}
-          </h1>
-        </div>
-        <span class="absolute top-0 left-0 z-100 text-[10px]">
+        <a class="skip-to-content-link" href="#product-info-{{ section.id }}">
+            Skip to product info
+        </a>
+        <div class="md:flex md:gap-12 pdp-main relative">
+            <div class="media flex-1 mb-8 md:mb-0" x-data="productGallery" x-init="init()">
+                <div class="image-wrapper relative overflow-hidden pt-[137%]">
+                    {% if product.selected_variant and product.selected_variant.image %}
+                        {% assign media = product.selected_variant.image %}
+                    {% else %}
+                        {% assign media = product.featured_image %}
+                    {% endif %}
+                    <img
+                            src="{{ media | image_url }}"
+                            alt="{{ media.alt }}"
+                            srcset="{{ media | image_url: width: 800 }} 800w, {{ media | image_url: width: 1000 }} 1000w, {{ media | image_url: width: 1426 }} 1426w"
+                            sizes="(min-width: 768px) 55vw, 100vw"
+                            height="{{ media.height }}"
+                            width="{{ media.width }}"
+                            class="absolute h-full w-full object-cover inset-0"
+                            loading="eager">
+                    <h1 class="text-4xl z-50 relative">
+                        {{ product.selected_or_first_available_variant.options }}
+                    </h1>
+                </div>
+                <span class="absolute top-0 left-0 z-100 text-[10px]">
           {{ product.selected_or_first_available_variant.id }}
         </span>
-      </div>
-      <div class="info flex-1" id="product-info-{{ section.id }}">
-        <p class="caption tracking-wide text-[10px] leading-3 text-gray-500">{{ product.type | upcase }}</p>
-        <h1>{{ product.title }}</h1>
-        <div class="flex items-center py-2" x-data="priceComponent()" x-init="init()">
-          <span class="sr-only">Regular Price</span>
-          <span
-            x-show="compareAtPrice"
-            x-text="formatMoney(compareAtPrice)"
-            class="line-through mr-2">
-          </span>
-          <span
-            x-text="formatMoney(displayPrice)"
-            :class="{ 'transition-colors duration-300': flash }">
-          </span>
-        </div>
-        {% render 'product-variant-picker'
-          , product: product
-          , product_form_id: 'product-form-id'
-          , picker_type: section.settings.picker_type %}
-
-        <div x-data="productForm()" x-init="init()">
-          <div class="quantity-row">
-            <label for="quantity-control-input">Quantity</label>
-            <div class="quantity-control-container">
-              <button type="button" @click="decrementQuantity()">
-                {% render 'icon-minus' %}
-              </button>
-              <input
-                tabindex="-1"
-                type="number"
-                id="quantity-control-input"
-                x-model.number="quantity"
-                disabled="">
-              <button type="button" @click="incrementQuantity()">
-                {% render 'icon-plus' %}
-              </button>
             </div>
-          </div>
+            <div class="info flex-1" id="product-info-{{ section.id }}">
+                <p class="caption tracking-wide text-[10px] leading-3 text-gray-500">{{ product.type | upcase }}</p>
+                <h1>{{ product.title }}</h1>
+                <div class="flex items-center py-2" x-data="priceComponent()" x-init="init()">
+                    <span class="sr-only">Regular Price</span>
+                    <span
+                            x-show="compareAtPrice"
+                            x-text="formatMoney(compareAtPrice)"
+                            class="line-through mr-2">
+          </span>
+                    <span
+                            x-text="formatMoney(displayPrice)"
+                            :class="{ 'transition-colors duration-300': flash }">
+          </span>
+                </div>
+                {% render 'product-variant-picker'
+                        , product: product
+                        , product_form_id: 'product-form-id'
+                        , picker_type: section.settings.picker_type %}
 
-          <ajax-cart-product-form>
-            <form
-              action="{{ routes.cart_add_url }}"
-              id="product_form_id"
-              class="product-form"
-              novalidate="novalidate"
-              data-product-form>
-              <input
-                type="hidden"
-                name="id"
-                x-bind:value="variantId">
-              <input
-                type="hidden"
-                name="quantity"
-                x-bind:value="quantity">
-              <div class="mb-[10px]">
-                <button
-                  type="submit"
-                  name="add"
-                  class="px-6 hover:bg-cloud-burst-400 bg-blue-500 text-white w-full h-12 cursor-pointer disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-black"
-                  x-bind:disabled="!isAvailable || isProcessing">
+                <div x-data="productForm()" x-init="init()">
+                    <div class="quantity-row">
+                        <label for="quantity-control-input">Quantity</label>
+                        <div class="quantity-control-container">
+                            <button type="button" @click="decrementQuantity()">
+                                {% render 'icon-minus' %}
+                            </button>
+                            <input
+                                    tabindex="-1"
+                                    type="number"
+                                    id="quantity-control-input"
+                                    x-model.number="quantity"
+                                    disabled="">
+                            <button type="button" @click="incrementQuantity()">
+                                {% render 'icon-plus' %}
+                            </button>
+                        </div>
+                    </div>
+
+                    <ajax-cart-product-form>
+                        <form
+                                action="{{ routes.cart_add_url }}"
+                                id="product_form_id"
+                                class="product-form"
+                                novalidate="novalidate"
+                                data-product-form>
+                            <input
+                                    type="hidden"
+                                    name="id"
+                                    x-bind:value="variantId">
+                            <input
+                                    type="hidden"
+                                    name="quantity"
+                                    x-bind:value="quantity">
+                            <div class="mb-[10px]">
+                                <button
+                                        type="submit"
+                                        name="add"
+                                        class="px-6 hover:bg-cloud-burst-400 bg-blue-500 text-white w-full h-12 cursor-pointer disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-black"
+                                        x-bind:disabled="!isAvailable || isProcessing">
                   <span x-show="!isProcessing">
                     <span x-show="isAvailable">Add to cart</span>
                     <span x-show="!isAvailable">Sold out</span>
                   </span>
-                  <span x-show="isProcessing">Adding to cart...</span>
-                </button>
-              </div>
-              <div data-ajax-cart-errors="form" class="text-red-500">
-                <!-- Error messages appear here -->
-              </div>
+                                    <span x-show="isProcessing">Adding to cart...</span>
+                                </button>
+                            </div>
+                            <div data-ajax-cart-errors="form" class="text-red-500">
+                                <!-- Error messages appear here -->
+                            </div>
 
-              <button
-                type="button"
-                x-show="isAvailable"
-                class="w-full h-12 px-6 text-white bg-blue-500 flex items-center justify-center hover:after:border-offset-1"
-                @click="buyNow()">
-                Buy it now
-              </button>
+                            <button
+                                    type="button"
+                                    x-show="isAvailable"
+                                    class="w-full h-12 px-6 text-white bg-blue-500 flex items-center justify-center hover:after:border-offset-1"
+                                    @click="buyNow()">
+                                Buy it now
+                            </button>
 
-              {{ form | payment_button }}
-            </form>
-          </ajax-cart-product-form>
+                            {{ form | payment_button }}
+                        </form>
+                    </ajax-cart-product-form>
+                </div>
+
+                <div class="description prose">
+                    {{ product.description }}
+                </div>
+                {% for block in section.blocks %}
+                    <div class="collapsable-row border border-gray-500 my-4 p-4">
+                        <h2>{{ block.settings.heading }}</h2>
+                        <div>{{ block.settings.content }}</div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
-
-        <div class="description prose">
-          {{ product.description }}
-        </div>
-        {% for block in section.blocks %}
-          <div class="collapsable-row border border-gray-500 my-4 p-4">
-            <h2>{{ block.settings.heading }}</h2>
-            <div>{{ block.settings.content }}</div>
-          </div>
-        {% endfor %}
-      </div>
     </div>
-  </div>
 
 </div>
 
 <style>
-  .section-main-product .shopify-section-main-product-inner .info fieldset label {
-    display: inline-block;
-    padding: 10px 20px;
-    border-radius: 40px;
-    letter-spacing: 1px;
-    font-size: 14px;
-    cursor: pointer;
-  }
+    .section-main-product .shopify-section-main-product-inner .info fieldset label {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 40px;
+        letter-spacing: 1px;
+        font-size: 14px;
+        cursor: pointer;
+    }
 
-  body:not(.using-mouse) .section-main-product .shopify-section-main-product-inner .info fieldset input:focus + label {
-    outline: #08f auto 2px;
-  }
+    body:not(.using-mouse) .section-main-product .shopify-section-main-product-inner .info fieldset input:focus + label {
+        outline: #08f auto 2px;
+    }
 
-  .section-main-product .shopify-section-main-product-inner .info fieldset label[data-unavailable='true'],
-  .section-main-product .shopify-section-main-product-inner .info fieldset input[disabled] + label {
-    background-color: transparent;
-    color: lightgray;
-  }
+    .section-main-product .shopify-section-main-product-inner .info fieldset label[data-unavailable='true'],
+    .section-main-product .shopify-section-main-product-inner .info fieldset input[disabled] + label {
+        background-color: transparent;
+        color: lightgray;
+    }
 
-  .section-main-product .shopify-section-main-product-inner .info .quantity-row label {
-    display: block;
-    font-size: 13px;
-    letter-spacing: 0.4px;
-    line-height: 19.5px;
-    color: rgba(26, 27, 24, 0.75);
-    margin-bottom: 4px;
-  }
+    .section-main-product .shopify-section-main-product-inner .info .quantity-row label {
+        display: block;
+        font-size: 13px;
+        letter-spacing: 0.4px;
+        line-height: 19.5px;
+        color: rgba(26, 27, 24, 0.75);
+        margin-bottom: 4px;
+    }
 
-  .section-main-product .shopify-section-main-product-inner .info .quantity-row .quantity-control-container {
-    display: flex;
-    align-items: center;
-    border: 1px solid rgba(26, 27, 24, 0.55);
-    max-width: max-content;
-    color: rgba(26, 27, 24, 0.75);
-    font-family: Arial;
-    font-size: 14px;
-  }
+    .section-main-product .shopify-section-main-product-inner .info .quantity-row .quantity-control-container {
+        display: flex;
+        align-items: center;
+        border: 1px solid rgba(26, 27, 24, 0.55);
+        max-width: max-content;
+        color: rgba(26, 27, 24, 0.75);
+        font-family: Arial;
+        font-size: 14px;
+    }
 
-  .section-main-product .shopify-section-main-product-inner .info .quantity-row .quantity-control-container button {
-    width: 45px;
-    height: 45px;
-    appearance: none;
-    -webkit-appearance: none;
-    background: transparent;
-    border: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-  }
+    .section-main-product .shopify-section-main-product-inner .info .quantity-row .quantity-control-container button {
+        width: 45px;
+        height: 45px;
+        appearance: none;
+        -webkit-appearance: none;
+        background: transparent;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
 
-  .section-main-product .shopify-section-main-product-inner .info .quantity-row .quantity-control-container button svg {
-    width: 10px;
-  }
+    .section-main-product .shopify-section-main-product-inner .info .quantity-row .quantity-control-container button svg {
+        width: 10px;
+    }
 
-  .section-main-product .shopify-section-main-product-inner .info .quantity-row .quantity-control-container input {
-    appearance: none;
-    -webkit-appearance: none;
-    border: none;
-    pointer-events: none;
-    width: 48px;
-    text-align: center;
-    padding: 0;
-  }
+    .section-main-product .shopify-section-main-product-inner .info .quantity-row .quantity-control-container input {
+        appearance: none;
+        -webkit-appearance: none;
+        border: none;
+        pointer-events: none;
+        width: 48px;
+        text-align: center;
+        padding: 0;
+    }
 
-  .section-main-product .shopify-section-main-product-inner .info .quantity-row .quantity-control-container input[type='number']::-webkit-inner-spin-button,
-  .section-main-product .shopify-section-main-product-inner .info .quantity-row .quantity-control-container input[type='number']::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
+    .section-main-product .shopify-section-main-product-inner .info .quantity-row .quantity-control-container input[type='number']::-webkit-inner-spin-button,
+    .section-main-product .shopify-section-main-product-inner .info .quantity-row .quantity-control-container input[type='number']::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 
-  .section-main-product .shopify-section-main-product-inner .info form {
-    margin: 25px auto;
-  }
+    .section-main-product .shopify-section-main-product-inner .info form {
+        margin: 25px auto;
+    }
 
-  .section-main-product .shopify-section-main-product-inner .info .description {
-    font-size: 16px;
-    line-height: 28.8px;
-  }
+    .section-main-product .shopify-section-main-product-inner .info .description {
+        font-size: 16px;
+        line-height: 28.8px;
+    }
 
-  .section-main-product .shopify-section-main-product-inner .info .description em {
-    font-style: italic;
-  }
+    .section-main-product .shopify-section-main-product-inner .info .description em {
+        font-style: italic;
+    }
 
-  .section-main-product .shopify-section-main-product-inner .info .description a {
-    color: rgba(68, 89, 88, 0.85);
-  }
+    .section-main-product .shopify-section-main-product-inner .info .description a {
+        color: rgba(68, 89, 88, 0.85);
+    }
 </style>
 {%- comment -%} schematic {%- endcomment -%}
 {% schema %}

@@ -1,4 +1,4 @@
-const { app } = require('@anchovie/schematic');
+const {app} = require('@anchovie/schematic');
 
 module.exports = [
     {
@@ -28,12 +28,12 @@ module.exports = [
                 default: true
             }),
             app.make("richtext", {
-               id: "promo_bar_content",
+                id: "promo_bar_content",
                 label: "Promo Bar Content"
             }),
             app.header("Predictive Search"),
             app.make("checkbox", {
-                id:  "enable_predictive_search",
+                id: "enable_predictive_search",
                 label: "Enable Predictive Search"
             }),
             app.header("Modal"),

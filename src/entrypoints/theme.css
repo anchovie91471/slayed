@@ -6,28 +6,28 @@
 @custom-variant mobile-menu-visible .mobile-menu-visible &;
 
 @theme {
-  /* Custom Font */
-  --font-family-open-sans: "Open Sans", sans-serif;
+    /* Custom Font */
+    --font-family-open-sans: "Open Sans", sans-serif;
 }
 
 /* Typography Plugin Customization */
 .prose {
-  max-width: none;
-  color: var(--color-neutral-400);
+    max-width: none;
+    color: var(--color-neutral-400);
 }
 
 .prose a {
-  color: var(--color-blue-500);
+    color: var(--color-blue-500);
 }
 
 .prose a:hover {
-  color: var(--color-blue-400);
+    color: var(--color-blue-400);
 }
 
 .prose iframe {
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 16/9;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16/9;
 }
 
 @import '../css/base.css';

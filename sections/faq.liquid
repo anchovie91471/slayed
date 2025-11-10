@@ -1,28 +1,28 @@
 <div class="section">
-  <div class="px-6 md:px-8">
-    <div class="container mx-auto py-8">
-      <h1>
-        {{ section.settings.heading }}
-      </h1>
-      <div>
-        {% for block in section.blocks %}
-          <div
-            x-data="{ expanded: false }"
-            class="my-4"
-            x-id="['item-trigger', 'item-panel']">
-            <h3 class="cursor-pointer" @click="expanded = !expanded" :aria-controls="$id('item-panel')" :aria-expanded="expanded">
-              {{ block.settings.heading }}
-            </h3>
-            <div x-cloak x-show="expanded" x-collapse :id="$id('item-panel')">
-              <p>
-                {{ block.settings.body }}
-              </p>
+    <div class="px-6 md:px-8">
+        <div class="container mx-auto py-8">
+            <h1>
+                {{ section.settings.heading }}
+            </h1>
+            <div>
+                {% for block in section.blocks %}
+                    <div
+                            x-data="{ expanded: false }"
+                            class="my-4"
+                            x-id="['item-trigger', 'item-panel']">
+                        <h3 class="cursor-pointer" @click="expanded = !expanded" :aria-controls="$id('item-panel')" :aria-expanded="expanded">
+                            {{ block.settings.heading }}
+                        </h3>
+                        <div x-cloak x-show="expanded" x-collapse :id="$id('item-panel')">
+                            <p>
+                                {{ block.settings.body }}
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-          </div>
-        {% endfor %}
-      </div>
+        </div>
     </div>
-  </div>
 </div>
 {%- comment -%} schematic {%- endcomment -%}
 {% schema %}

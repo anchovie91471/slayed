@@ -1,17 +1,17 @@
 <div class="bg-gray-900 text-white px-6 md:px-8 py-12">
-  <div class="container mx-auto">
-    <div>
-      {% for link in linklists.footer.links %}
-        <a href="{{ link.url }}">
-          {{ link.title }}
-        </a>
-      {% endfor %}
+    <div class="container mx-auto">
+        <div>
+            {% for link in linklists.footer.links %}
+                <a href="{{ link.url }}">
+                    {{ link.title }}
+                </a>
+            {% endfor %}
+        </div>
+
+        <small>
+            &copy; {{ "now" | date: "%Y" }} VAST Starter Theme
+        </small>
     </div>
-  
-    <small>
-      &copy; {{ "now" | date: "%Y" }} VAST Starter Theme
-    </small>
-  </div>
 </div>
 {%- comment -%} schematic {%- endcomment -%}
 {% schema %}

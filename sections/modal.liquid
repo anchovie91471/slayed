@@ -1,75 +1,75 @@
 <dialog
-  id="dialog-modal-example"
-  x-data="modal"
-  x-init="init($el)"
-  class="max-w-md rounded-md"
-  @click="close($event)"
-  >
-  <form action="" class="p-12">
-    <div class="prose">
-      <h1>{{ settings.modal_title }}</h1>
-      <p>{{ settings.modal_description }}</p>
-      <button type="button" @click="open = false" class="btn rounded-none">
-        Close
-      </button>
-    </div>
-  </form>
+        id="dialog-modal-example"
+        x-data="modal"
+        x-init="init($el)"
+        class="max-w-md rounded-md"
+        @click="close($event)"
+>
+    <form action="" class="p-12">
+        <div class="prose">
+            <h1>{{ settings.modal_title }}</h1>
+            <p>{{ settings.modal_description }}</p>
+            <button type="button" @click="open = false" class="btn rounded-none">
+                Close
+            </button>
+        </div>
+    </form>
 </dialog>
 
 <script>
-  document.addEventListener('alpine:init', () => {
-    Alpine.data('modal', () => ({
-      componentElement: document.querySelector('#dialog-modal-example'),
-      open: false,
-      init(dialog) {
-        if (!dialog) {
-          return
-        }
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('modal', () => ({
+            componentElement: document.querySelector('#dialog-modal-example'),
+            open: false,
+            init(dialog) {
+                if (!dialog) {
+                    return
+                }
 
-        Alpine.effect(() => {
-          if (this.open) {
-            dialog.showModal()
-            document.querySelectorAll('body > *:not(#shopify-section-modal)').forEach((element) => {
-              element.setAttribute('aria-hidden', 'true')
-              element.setAttribute('inert', '')
-            })
-            document.querySelector('body').classList.add('overflow-hidden')
-          } else {
-            dialog.close()
-            document.querySelectorAll('body > *:not(#shopify-section-modal)').forEach((element) => {
-              element.removeAttribute('aria-hidden')
-              element.removeAttribute('inert')
-            })
-            document.querySelector('body').classList.remove('overflow-hidden')
-          }
-        })
+                Alpine.effect(() => {
+                    if (this.open) {
+                        dialog.showModal()
+                        document.querySelectorAll('body > *:not(#shopify-section-modal)').forEach((element) => {
+                            element.setAttribute('aria-hidden', 'true')
+                            element.setAttribute('inert', '')
+                        })
+                        document.querySelector('body').classList.add('overflow-hidden')
+                    } else {
+                        dialog.close()
+                        document.querySelectorAll('body > *:not(#shopify-section-modal)').forEach((element) => {
+                            element.removeAttribute('aria-hidden')
+                            element.removeAttribute('inert')
+                        })
+                        document.querySelector('body').classList.remove('overflow-hidden')
+                    }
+                })
 
-        document.addEventListener('show-modal', () => {
-          this.open = true
-        })
+                document.addEventListener('show-modal', () => {
+                    this.open = true
+                })
 
-        document.addEventListener('close-modal', () => {
-          this.open = false
-        })
-      },
-      toggle() {
-        this.open = !this.open
-      },
-      close(event) {
-        if (event.target === this.componentElement) {
-          if (this.open) {
-            this.open = false
-          }
-        }
-      }
-    }))
-  })
+                document.addEventListener('close-modal', () => {
+                    this.open = false
+                })
+            },
+            toggle() {
+                this.open = !this.open
+            },
+            close(event) {
+                if (event.target === this.componentElement) {
+                    if (this.open) {
+                        this.open = false
+                    }
+                }
+            }
+        }))
+    })
 </script>
 
 <style>
-  #dialog-modal-example::backdrop {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
+    #dialog-modal-example::backdrop {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
 </style>
 {%- comment -%} schematic {%- endcomment -%}
 {% schema %}

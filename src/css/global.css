@@ -1,12 +1,12 @@
 .some-unused-class {
-  --im-not-tree-shaken: 1;
+    --im-not-tree-shaken: 1;
 }
 
 @font-face {
-  font-family: 'Open Sans';
-  src: url(@/fonts/OpenSans-Regular.woff2) format('woff2'),
-      url(@/fonts/OpenSans-Regular.woff) format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+    font-family: 'Open Sans';
+    src: url(@/fonts/OpenSans-Regular.woff2) format('woff2'),
+    url(@/fonts/OpenSans-Regular.woff) format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }

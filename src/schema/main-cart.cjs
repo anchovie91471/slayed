@@ -1,6 +1,6 @@
-const { app } = require('@anchovie/schematic');
+const {app} = require('@anchovie/schematic');
 
-module.exports =   {
+module.exports = {
     ...app.section("Cart Section", {
         class: "section-main-collection",
         tag: "section"

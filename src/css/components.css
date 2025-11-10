@@ -1,56 +1,56 @@
 @layer components {
-  .skip-to-content-link {
-    @apply absolute z-50 px-4 py-2 text-white bg-blue-500 rounded-lg shadow-lg;
-  }
+    .skip-to-content-link {
+        @apply absolute z-50 px-4 py-2 text-white bg-blue-500 rounded-lg shadow-lg;
+    }
 
-  .skip-to-content-link:not(:focus) {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
-  }
+    .skip-to-content-link:not(:focus) {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
 
-  .btn {
-    @apply py-3 px-12 bg-blue-500 hover:bg-indigo-500 text-white rounded-full transition;
-  }
+    .btn {
+        @apply py-3 px-12 bg-blue-500 hover:bg-indigo-500 text-white rounded-full transition;
+    }
 
-  .input-select {
-    @apply block
-      my-4
-      w-full
-      py-2 
-      px-4 
-      border 
-      border-gray-500 
-      appearance-none
-      rounded-lg;
-  }
+    .input-select {
+        @apply block
+        my-4
+        w-full
+        py-2
+        px-4
+        border
+        border-gray-500
+        appearance-none
+        rounded-lg;
+    }
 
-  .select-arrow {
-    position: absolute;
-    border: solid black;
-    border-width: 0 3px 3px 0;
-    display: inline-block;
-    padding: 3px;
-    transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    pointer-events: none;
-  }
+    .select-arrow {
+        position: absolute;
+        border: solid black;
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 3px;
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        pointer-events: none;
+    }
 
-  .pill-button {
-    @apply bg-blue-500 text-white px-4 rounded-lg cursor-pointer;
-  }
+    .pill-button {
+        @apply bg-blue-500 text-white px-4 rounded-lg cursor-pointer;
+    }
 
-  .vast-input {
-    @apply py-2 px-4 border border-gray-500 rounded-lg;
-  }
+    .vast-input {
+        @apply py-2 px-4 border border-gray-500 rounded-lg;
+    }
 
-  .site-promo-bar-tw-component {
-    @apply flex px-4 py-1 top-0 w-full items-center justify-center bg-blue-500 text-white;
-  }
+    .site-promo-bar-tw-component {
+        @apply flex px-4 py-1 top-0 w-full items-center justify-center bg-blue-500 text-white;
+    }
 }

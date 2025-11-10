@@ -1,16 +1,16 @@
-<div id="site-promo-bar-wrapper" 
-  {% if settings.collapse_promo_bar %}
-    x-data
-    x-show="$store.global.isPromoBarVisible"
-    x-collapse
-  {% endif %}
+<div id="site-promo-bar-wrapper"
+        {% if settings.collapse_promo_bar %}
+            x-data
+            x-show="$store.global.isPromoBarVisible"
+            x-collapse
+        {% endif %}
 >
-  <div
-    id="site-promo-bar"
-    class="site-promo-bar-tw-component"
-  >
-    <div class="text-white [&_a]:text-white font-bold text-base tracking-wide text-center">
-      {{ settings.promo_bar_content }}
+    <div
+            id="site-promo-bar"
+            class="site-promo-bar-tw-component"
+    >
+        <div class="text-white [&_a]:text-white font-bold text-base tracking-wide text-center">
+            {{ settings.promo_bar_content }}
+        </div>
     </div>
-  </div>
 </div>

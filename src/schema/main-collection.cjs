@@ -1,4 +1,4 @@
-const { app } = require('@anchovie/schematic');
+const {app} = require('@anchovie/schematic');
 
 module.exports = {
     ...app.section("Main Collection Section", {

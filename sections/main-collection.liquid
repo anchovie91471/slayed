@@ -1,48 +1,48 @@
 <div class="px-6 md:px-8 py-12">
-  <div class="collection-inner container mx-auto">
-    <h1 class="mb-12 mx-auto max-w-max">
-      {{ collection.title }}
-    </h1>
-    <div class="grid-wrapper">
-      {%- paginate collection.products by 12 -%}
-        <div class="product-grid">
-          {% for prod in collection.products %}
-            {% render 'product-grid-item', prod: prod %}
-          {% endfor %}
+    <div class="collection-inner container mx-auto">
+        <h1 class="mb-12 mx-auto max-w-max">
+            {{ collection.title }}
+        </h1>
+        <div class="grid-wrapper">
+            {%- paginate collection.products by 12 -%}
+                <div class="product-grid">
+                    {% for prod in collection.products %}
+                        {% render 'product-grid-item', prod: prod %}
+                    {% endfor %}
+                </div>
+
+                {% render 'pagination-navigation', paginate: paginate %}
+            {% endpaginate %}
         </div>
-  
-        {% render 'pagination-navigation', paginate: paginate %}
-      {% endpaginate %}
     </div>
-  </div>
-  
-  <style>
-    .collection h1 {
-      margin-bottom: 20px;
-      text-align: center;
-    }
-  
-    .collection {
-      padding: 20px;
-    }
-  
-    .product-grid {
-      display: grid;
-      grid-gap: 1rem;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    }
-  
-    .featured-product-grid .pagination-nav {
-      margin-top: 40px;
-    }
-  
-    .featured-product-grid .pagination-nav .pagination {
-      display: flex;
-      gap: 10px;
-      margin: auto;
-      max-width: max-content;
-    }
-  </style>
+
+    <style>
+        .collection h1 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .collection {
+            padding: 20px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        }
+
+        .featured-product-grid .pagination-nav {
+            margin-top: 40px;
+        }
+
+        .featured-product-grid .pagination-nav .pagination {
+            display: flex;
+            gap: 10px;
+            margin: auto;
+            max-width: max-content;
+        }
+    </style>
 </div>
 {%- comment -%} schematic {%- endcomment -%}
 {% schema %}
