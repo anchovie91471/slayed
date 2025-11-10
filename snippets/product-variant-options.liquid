@@ -62,6 +62,32 @@
   -%}
 
   {%- if picker_type == 'radio' -%}
+    {%- liquid
+      assign stripped_value = value | strip
+      assign is_checked = false
+
+      if option.selected_value == stripped_value
+        assign is_checked = true
+      elsif option.selected_value == blank
+        case option.position
+          when 1
+            assign option1_stripped = product.selected_or_first_available_variant.option1 | strip
+            if option1_stripped == stripped_value
+              assign is_checked = true
+            endif
+          when 2
+            assign option2_stripped = product.selected_or_first_available_variant.option2 | strip
+            if option2_stripped == stripped_value
+              assign is_checked = true
+            endif
+          when 3
+            assign option3_stripped = product.selected_or_first_available_variant.option3 | strip
+            if option3_stripped == stripped_value
+              assign is_checked = true
+            endif
+        endcase
+      endif
+    -%}
     <input
       type="radio"
       id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
@@ -69,13 +95,11 @@
       value="{{ value | escape }}"
       form="{{ product_form_id }}"
       data-prodify-shopify-section-main-product-inner
-      {% if option.selected_value == value %}
-        checked
-      {% endif %}
+      {% if is_checked %}checked{% endif %}
       {% if option_disabled %}
-        class="disabled hidden [&:checked+label]:bg-indigo-900 [&:checked+label]:text-white"
+        class="disabled hidden [&:checked+label]:bg-blue-500 [&:checked+label]:text-white"
       {% else %}
-        class="hidden [&.disabled+label]:line-through [&:checked+label]:bg-indigo-900 [&:checked+label]:text-white"
+        class="hidden [&.disabled+label]:line-through [&:checked+label]:bg-blue-500 [&:checked+label]:text-white"
       {% endif %}
     >
     <label 

@@ -10,10 +10,13 @@ async function fetchHTML(endpoint) {
 }
 
 function compareInputValues() {
+  const firstCheckedInput = window.prodify.el.querySelector(':checked') as HTMLInputElement
+  if (!firstCheckedInput) return // Exit early if no inputs are checked
+
   const variantsMatchingOptionOneSelected = window.prodify.variantData.filter(
     // Grab the first checked input and compare it to the variant option1
     // return an array of variants where the option1 matches the checked input
-    (variant) => (window.prodify.el.querySelector(':checked') as HTMLInputElement).value === variant.option1
+    (variant) => firstCheckedInput.value === variant.option1
   )
 
   const inputWrappers = Array.from(window.prodify.el.querySelectorAll(OPTION_CONTAINER_SELECTOR))
@@ -21,7 +24,9 @@ function compareInputValues() {
   inputWrappers.forEach((option, index) => {
     if (index === 0) return
     const optionInputs = Array.from(option.querySelectorAll('input[type="radio"], option'))
-    const previousOptionSelected = (inputWrappers[index - 1].querySelector(':checked') as HTMLInputElement).value
+    const previousCheckedInput = inputWrappers[index - 1].querySelector(':checked') as HTMLInputElement
+    if (!previousCheckedInput) return // Skip if no previous option is selected
+    const previousOptionSelected = previousCheckedInput.value
     const availableOptionInputsValues = variantsMatchingOptionOneSelected
       .filter(
         // 

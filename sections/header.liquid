@@ -2,7 +2,7 @@
   {% render 'promo-bar' %}
 {% endif %}
 
-<div class="px-6 md:px-8 bg-indigo-900">
+<div class="px-6 md:px-8 bg-gray-900">
   <div class="container flex items-center text-white relative mx-auto">
     <nav
       :class="$store.global.isMobileMenuVisible ? 'open' : 'closed'"
@@ -33,7 +33,21 @@
     </nav>
 
     <a href="{{ routes.root_url }}" class="header-logo">
-      Slayed Dev
+      {% if settings.logo %}
+        <img
+          src="{{ settings.logo | image_url: width: 200 }}"
+          alt="{{ shop.name }}"
+          loading="lazy"
+          class="header-logo-image h-[80px] w-auto mr-4"
+        >
+      {% else %}
+        <img
+          src="{{ 'logo.svg' | asset_url }}"
+          alt="{{ shop.name }}"
+          loading="lazy"
+          class="header-logo-image h-[80px] w-auto mr-4"
+        >
+      {% endif %}
     </a>
 
     <div class="hidden md:block">
@@ -83,7 +97,7 @@
         class="[&>svg]:h-[22px] [&>svg]:w-auto relative text-white p-2"
         x-cloak>
         {% render 'icon-cart' %}
-        <span data-ajax-cart-bind="item_count" class="text-cloud-burst-500 absolute top-[58%] left-1/2 -translate-x-1/2 -translate-y-1/2 text-[12px]">
+        <span data-ajax-cart-bind="item_count" class="text-blue-500 absolute top-[58%] left-1/2 -translate-x-1/2 -translate-y-1/2 text-[12px]">
           {{- cart.item_count -}}
         </span>
       </a>

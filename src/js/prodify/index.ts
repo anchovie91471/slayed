@@ -35,6 +35,20 @@ if (!('prodify' in window) && el) {
 
   updateCurrentOptions()
   updateCurrentVariant()
+
+  // If no variant was found (no options exist), use the first variant for products with only default variant
+  if (!(window as Window).prodify.currentVariant) {
+    const variantDataScript = el.querySelector('[data-prodify-variants-json]')
+    if (variantDataScript) {
+      const variants = JSON.parse(variantDataScript.textContent)
+      if (variants && variants.length === 1) {
+        // Product has only default variant, use it
+        (window as Window).prodify.currentVariant = variants[0]
+        ;(window as Window).prodify.variantData = variants
+      }
+    }
+  }
+
   compareInputValues()
 
   if (!(window as Window).prodify.currentVariant) {

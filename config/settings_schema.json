@@ -1,15 +1,24 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Shopify Theme Lab",
+    "theme_name": "VAST",
     "theme_version": "1.0.0",
-    "theme_author": "THEME_AUTHOR",
+    "theme_author": "Michael Baggett",
     "theme_documentation_url": "https://THEME_DOCUMENTATION_URL.com",
     "theme_support_url": "https://THEME_SUPPORT_URL.com"
   },
   {
     "name": "Theme Settings",
     "settings": [
+      {
+        "type": "header",
+        "content": "Branding"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo Image"
+      },
       {
         "type": "header",
         "content": "Promo Bar"

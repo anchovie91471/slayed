@@ -96,7 +96,7 @@
               <button
                 type="submit"
                 name="add"
-                class="px-6 hover:bg-cloud-burst-400 bg-indigo-900 text-white w-full h-12 cursor-pointer disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-black"
+                class="px-6 hover:bg-indigo-500 bg-blue-500 text-white w-full h-12 cursor-pointer disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-black"
                 {% if product.selected_or_first_available_variant.available == false %}
                 disabled
                 {% endif %}>
@@ -119,7 +119,7 @@
             {%- if product.selected_or_first_available_variant.available -%}
               <button
                 type="button"
-                class="w-full h-12 px-6 text-white bg-indigo-900 flex items-center justify-center hover:after:border-offset-1"
+                class="w-full h-12 px-6 text-white bg-blue-500 flex items-center justify-center hover:after:border-offset-1"
                 onclick="onBuyNowClicked()">
                 Buy it now
               </button>

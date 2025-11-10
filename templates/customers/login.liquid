@@ -35,7 +35,7 @@
               name="customer[email]"
               autocomplete="email"
               placeholder="Email Address"
-              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               required>
           </div>
 
@@ -49,13 +49,13 @@
               name="customer[password]"
               autocomplete="current-password"
               placeholder="Password"
-              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               required>
           </div>
 
           <button
             type="submit"
-            class="w-full py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-indigo-900 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300">
+            class="w-full py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-blue-500 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-blue-300">
             Sign In
           </button>
         {% endform %}
@@ -63,7 +63,7 @@
         <div class="mt-6 text-center space-y-2">
           <p class="text-sm text-gray-600">
             Don't have an account?
-            <a href="{{ routes.account_register_url }}" class="text-indigo-900 hover:underline font-medium">
+            <a href="{{ routes.account_register_url }}" class="text-blue-500 hover:underline font-medium">
               Sign Up
             </a>
           </p>
@@ -71,7 +71,7 @@
             <button
               type="button"
               @click="showPasswordReset = true"
-              class="text-sm text-indigo-900 hover:underline font-medium">
+              class="text-sm text-blue-500 hover:underline font-medium">
               Forgot Password?
             </button>
           </p>
@@ -114,13 +114,13 @@
               name="email"
               autocomplete="email"
               placeholder="Email Address"
-              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               required>
           </div>
 
           <button
             type="submit"
-            class="w-full py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-indigo-900 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300">
+            class="w-full py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-blue-500 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-blue-300">
             Submit
           </button>
         {% endform %}

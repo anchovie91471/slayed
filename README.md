@@ -2,7 +2,7 @@
 
 **V**ite + **A**lpine + **S**chematic + **T**ailwind
 
-A minimal, modern Shopify starter theme built for speed and developer experience.
+A bare-bones, modern Shopify starter theme built for speed and developer experience.
 
 ## Key Technologies
 

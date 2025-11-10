@@ -9,9 +9,9 @@ export default {
       isWindowScrolled: false,
       cart: null,
       init() {
-        console.log('Slayed Global Store Initialized.')
+        console.log('VAST Global Store Initialized.')
 
-        window.addEventListener('scroll', window[window.slayedNamespace].helpers.throttle(this.onWindowScrollHandler.bind(this), 200))
+        window.addEventListener('scroll', window[window.vastNamespace].helpers.throttle(this.onWindowScrollHandler.bind(this), 200))
 
         this.initLiquidAJaxCart()
       },
