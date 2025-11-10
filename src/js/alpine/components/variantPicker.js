@@ -6,12 +6,13 @@ export default {
       variantMap: {},
       availableOptions: {},
       sectionId: null,
+      productData: null,
 
-      initialize() {
-        const productData = Alpine.store('productData')
-        const product = productData.product
-        const currentVariant = productData.currentVariant
-        this.sectionId = productData.sectionId
+      init() {
+        this.productData = Alpine.store('productData')
+        const product = this.productData.product
+        const currentVariant = this.productData.currentVariant
+        this.sectionId = this.productData.sectionId
 
         // Initialize selectedOptions from current variant
         product.options_with_values.forEach((option, index) => {
@@ -51,8 +52,7 @@ export default {
       },
 
       getCurrentVariant() {
-        const productData = Alpine.store('productData')
-        const product = productData.product
+        const product = this.productData.product
         const selectedValues = product.options.map(optionName => this.selectedOptions[optionName])
         const key = selectedValues.join('|')
         const variant = this.variantMap[key]
@@ -76,8 +76,7 @@ export default {
       updateVariant(optionName, value) {
         this.selectedOptions[optionName] = value
 
-        const productData = Alpine.store('productData')
-        const product = productData.product
+        const product = this.productData.product
 
         this.computeAvailableOptions(product)
 
@@ -92,7 +91,7 @@ export default {
         if (!variant) return
 
         // Update store
-        Alpine.store('productData').currentVariant = variant
+        this.productData.currentVariant = variant
 
         // Update form ID input
         const form = document.querySelector('[data-product-form]')
