@@ -1,5 +1,6 @@
 node_modules/
 .DS_Store
+.idea
 *.log
 
 # ignore all files inside shopify/assets/ except files with 'static' keyword in their filename
@@ -8,3 +9,6 @@ node_modules/
 
 # Shopify CLI
 shopify.theme.toml
+
+# Docs
+docs

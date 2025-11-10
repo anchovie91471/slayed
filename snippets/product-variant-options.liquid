@@ -71,7 +71,7 @@
       @change="updateVariant('{{ option.name }}', '{{ value | escape }}')"
       :checked="selectedOptions['{{ option.name }}'] === '{{ value | escape }}'"
       :disabled="!isOptionAvailable('{{ option.name }}', '{{ value | escape }}', $store.productData.product)"
-      class="hidden [&.disabled+label]:line-through [&:checked+label]:bg-indigo-900 [&:checked+label]:text-white"
+      class="hidden [&.disabled+label]:line-through [&:checked+label]:bg-blue-500 [&:checked+label]:text-white"
     >
     <label
       for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"

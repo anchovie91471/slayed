@@ -8,12 +8,12 @@
       <div class="flex flex-wrap gap-3">
         <a
           href="{{ routes.account_logout_url }}"
-          class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-indigo-900 focus:ring-4 focus:outline-none focus:ring-gray-200">
+          class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-blue-500 focus:ring-4 focus:outline-none focus:ring-gray-200">
           Logout
         </a>
         <a
           href="{{ routes.account_addresses_url }}"
-          class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-indigo-900 focus:ring-4 focus:outline-none focus:ring-gray-200">
+          class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-blue-500 focus:ring-4 focus:outline-none focus:ring-gray-200">
           Manage Addresses
         </a>
       </div>
@@ -54,7 +54,7 @@
                       class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                       <a
                         href="{{ order.customer_url }}"
-                        class="text-indigo-900 hover:underline"
+                        class="text-blue-500 hover:underline"
                         aria-label="{{ 'customer.orders.order_number_link' | t: number: order.name }}">
                         {{ order.name }}
                       </a>
@@ -85,7 +85,7 @@
             <p class="text-gray-600">{{ 'customer.orders.none' | t }}</p>
             <a
               href="{{ routes.all_products_collection_url }}"
-              class="inline-block mt-4 py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-indigo-900 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300">
+              class="inline-block mt-4 py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-blue-500 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-blue-300">
               Start Shopping
             </a>
           </div>
@@ -96,7 +96,7 @@
             {%- if paginate.previous -%}
               <a
                 href="{{ paginate.previous.url }}"
-                class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-indigo-900"
+                class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-blue-500"
                 aria-label="{{ 'general.pagination.previous' | t }}">
                 Previous
               </a>
@@ -106,14 +106,14 @@
               {%- if part.is_link -%}
                 <a
                   href="{{ part.url }}"
-                  class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-indigo-900"
+                  class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-blue-500"
                   aria-label="{{ 'general.pagination.page' | t: number: part.title }}">
                   {{ part.title }}
                 </a>
               {%- else -%}
                 {%- if part.title == paginate.current_page -%}
                   <span
-                    class="px-3 py-2 text-sm font-medium text-white bg-indigo-900 border border-indigo-900 rounded-lg"
+                    class="px-3 py-2 text-sm font-medium text-white bg-blue-500 border border-blue-500 rounded-lg"
                     aria-current="page"
                     aria-label="{{ 'general.pagination.page' | t: number: part.title }}">
                     {{ part.title }}
@@ -127,7 +127,7 @@
             {%- if paginate.next -%}
               <a
                 href="{{ paginate.next.url }}"
-                class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-indigo-900"
+                class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-blue-500"
                 aria-label="{{ 'general.pagination.next' | t }}">
                 Next
               </a>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark mode with Tailwind v4 colors: blue-400 to indigo-400 -->
+  <defs>
+    <linearGradient id="vastGradientDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#818cf8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background using Tailwind slate-900 -->
+  <rect width="200" height="60" rx="4" fill="#0f172a"/>
+  
+  <!-- Icon -->
+  <g id="icon">
+    <path d="M10 20 L25 40 L40 20" stroke="url(#vastGradientDark)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <circle cx="25" cy="20" r="2" fill="url(#vastGradientDark)" opacity="0.8"/>
+    <circle cx="10" cy="20" r="1.5" fill="url(#vastGradientDark)" opacity="0.6"/>
+    <circle cx="40" cy="20" r="1.5" fill="url(#vastGradientDark)" opacity="0.6"/>
+  </g>
+  
+  <!-- Text using Tailwind gray-100 -->
+  <text x="55" y="35" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="600" fill="#f3f4f6">
+    VAST
+  </text>
+  
+  <!-- Subtitle using Tailwind gray-400 -->
+  <text x="55" y="48" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#9ca3af">
+    SHOPIFY STARTER THEME
+  </text>
+</svg>

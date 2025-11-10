@@ -8,9 +8,9 @@
     "checkout_logo_position": "center",
     "checkout_logo_size": "medium",
     "checkout_body_background_color": "#ffffff",
-    "checkout_accent_color": "#252a59",
-    "checkout_button_color": "#252a59",
-    "brand_color": "#242a5c",
+    "checkout_accent_color": "#3b82f6",
+    "checkout_button_color": "#3b82f6",
+    "brand_color": "#3b82f6",
     "sections": {
       "header": {
         "type": "header",

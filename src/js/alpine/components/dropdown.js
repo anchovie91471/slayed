@@ -4,7 +4,7 @@ export default {
     return {
       open: false,
       init() {
-        console.log('Slayed Dropdown Component Initialized.')
+        console.log('VAST Dropdown Component Initialized.')
       },
       toggle() {
         this.open = !this.open

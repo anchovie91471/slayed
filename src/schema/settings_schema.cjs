@@ -3,15 +3,20 @@ const { app } = require('@anchovie/schematic');
 module.exports = [
     {
         "name": "theme_info",
-        "theme_name": "Shopify Theme Lab",
+        "theme_name": "VAST",
         "theme_version": "1.0.0",
-        "theme_author": "THEME_AUTHOR",
+        "theme_author": "Michael Baggett",
         "theme_documentation_url": "https://THEME_DOCUMENTATION_URL.com",
         "theme_support_url": "https://THEME_SUPPORT_URL.com"
     },
     {
         "name": "Theme Settings",
         "settings": [
+            app.header("Branding"),
+            app.make("image_picker", {
+                id: "logo",
+                label: "Logo Image"
+            }),
             app.header("Promo Bar"),
             app.make("checkbox", {
                 id: "show_promo_bar",

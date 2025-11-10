@@ -55,7 +55,22 @@ export default {
         const product = productData.product
         const selectedValues = product.options.map(optionName => this.selectedOptions[optionName])
         const key = selectedValues.join('|')
-        return this.variantMap[key] || null
+        const variant = this.variantMap[key]
+
+        // If no variant found and product has only one variant (default-only product), use that variant
+        if (!variant && product.variants.length === 1) {
+          const defaultVariant = product.variants[0]
+          return {
+            id: defaultVariant.id,
+            available: defaultVariant.available,
+            price: defaultVariant.price,
+            compare_at_price: defaultVariant.compare_at_price || null,
+            featured_media: defaultVariant.featured_media,
+            featured_image: defaultVariant.featured_image,
+          }
+        }
+
+        return variant || null
       },
 
       updateVariant(optionName, value) {
