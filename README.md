@@ -6,7 +6,7 @@ A bare-bones, modern Shopify starter theme built for speed and developer experie
 
 ## Key Technologies
 
-- **[Vite v6](https://vitejs.dev/)** - Blazing-fast HMR during development and optimized production builds that keep your workflow smooth and your bundles lean
+- **[Vite v7](https://vitejs.dev/)** - Blazing-fast HMR during development and optimized production builds that keep your workflow smooth and your bundles lean
 - **[AlpineJS v3](https://alpinejs.dev/)** - Powerful reactivity with minimal overhead—build interactive components without the framework bloat
 - **[Tailwind CSS v4](https://tailwindcss.com/)** - The latest generation of utility-first CSS with native cascade layers, improved performance, and zero-config styling
 - **[Schematic v2](https://www.npmjs.com/package/@anchovie/schematic)** - Define section schemas once in JavaScript and deploy everywhere—eliminate JSON duplication and streamline your workflow
@@ -38,12 +38,11 @@ A bare-bones, modern Shopify starter theme built for speed and developer experie
 ├── src/
 │   ├── entrypoints/       # Vite entry points (theme.js, theme.css)
 │   ├── js/
-│   │   ├── alpine/        # AlpineJS modules
-│   │   │   ├── components/   # Alpine.data() components
-│   │   │   ├── stores/       # Alpine.store() state management
-│   │   │   ├── directives/   # Alpine.directive() custom directives
-│   │   │   └── magic/        # Alpine.magic() magic properties
-│   │   └── prodify/       # Product variant handling (TypeScript)
+│   │   └── alpine/        # AlpineJS modules
+│   │       ├── components/   # Alpine.data() components
+│   │       ├── stores/       # Alpine.store() state management
+│   │       ├── directives/   # Alpine.directive() custom directives
+│   │       └── magic/        # Alpine.magic() magic properties
 │   ├── css/
 │   │   └── global.css     # Global styles (not tree-shaken)
 │   ├── schema/            # Schematic schema definitions (.cjs files)
@@ -250,12 +249,6 @@ shopify({
 Static assets in the `public/` directory are automatically copied to `assets/` on build. This is a [Vite convention](https://vitejs.dev/guide/assets.html#the-public-directory).
 
 During development, a custom Vite plugin watches `public/` and syncs changes to `assets/` in real-time.
-
-## Product Variant Handling
-
-The theme includes **Prodify** (`src/js/prodify/`), a TypeScript-based variant picker system that provides robust product variant management on PDPs.
-
-**Entry point**: Configured as an additional entry point in `vite.config.js`
 
 ## Build and Deployment
 
