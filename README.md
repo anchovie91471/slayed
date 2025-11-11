@@ -27,10 +27,14 @@ A bare-bones, modern Shopify starter theme built for speed and developer experie
 ### Built-in Functionality
 
 - **AJAX Cart** - Fully functional minicart with Liquid AJAX Cart v2
-- **Predictive Search** - Shopify's native predictive search ready to enable
+- **Predictive Search** - Shopify's native predictive search with custom web component
 - **Auto-registered Components** - AlpineJS components, stores, and directives auto-load from their directories
 - **Live Reload** - Hot module replacement for CSS/JS and page reload for Liquid changes
 - **SSL Development** - HTTPS-enabled local development environment
+- **SEO Optimized** - Complete Open Graph, Twitter Cards, and meta tag implementation
+- **Accessibility First** - Semantic HTML, ARIA labels, skip links, and keyboard navigation
+- **Customer Account Pages** - Complete account management templates (login, register, addresses, orders)
+- **Gift Card Support** - Dedicated gift card template included
 
 ## Project Structure
 
@@ -54,6 +58,144 @@ A bare-bones, modern Shopify starter theme built for speed and developer experie
 ├── config/                # Theme settings
 └── locales/               # Translation files
 ```
+
+## What's Included
+
+### Sections (20+)
+
+**Page Layout**
+- `header.liquid` - Sticky header with navigation, cart, search, and mobile menu
+- `footer.liquid` - Footer with links and copyright
+
+**Product & Collection**
+- `main-product.liquid` - Full product page with gallery, variants, pricing, and add-to-cart
+- `main-collection.liquid` - Collection listing with pagination
+- `featured-product-grid.liquid` - Featured collection showcase
+- `main-search.liquid` - Search results grouped by type (products, articles, pages)
+
+**Content Pages**
+- `main-page.liquid` - Generic page content
+- `main-page-contact.liquid` - Contact form with validation
+- `main-blog.liquid` - Blog listing
+- `main-article.liquid` - Blog post display
+- `main-list-collections.liquid` - All collections listing
+
+**Shopping**
+- `main-cart.liquid` - Shopping cart with AJAX updates
+- `minicart.liquid` - Slide-in mini cart
+
+**Features**
+- `faq.liquid` - Collapsible FAQ/accordion section
+- `modal.liquid` - Reusable modal dialog with Alpine.js
+- `predictive-search-main.liquid` - Search overlay
+- `predictive-search-results.liquid` - Live search results
+
+**Utility**
+- `main-password.liquid` - Password-protected store
+- `main-404.liquid` - 404 error page
+- `promo-bar.liquid` - Promotional banner with scroll-collapse
+
+### Components & Snippets (23+)
+
+**Icons** - Complete SVG icon set (cart, search, user, close, hamburger, spinner, plus, minus, caret, error, bubble)
+
+**Product Components**
+- `product-variant-picker.liquid` - Smart variant selector with availability tracking
+- `product-variant-options.liquid` - Radio buttons or dropdowns for variants
+- `product-grid-item.liquid` - Product card for grids
+
+**Navigation**
+- `header-menu.liquid` - Desktop navigation
+- `mobile-menu.liquid` - Mobile menu drawer
+- `collections-list.liquid` - Collection navigation
+- `pagination-navigation.liquid` - Pagination controls
+
+**Utilities**
+- `head-meta.liquid` - SEO meta tags, Open Graph, Twitter Cards
+- `head-css.liquid` - Critical CSS and x-cloak styling
+- `head-scripts.liquid` - Inline scripts and design mode detection
+- `liquid-ajax-cart.liquid` - Cart initialization
+
+### Templates (12+)
+
+**Main Templates**
+- `index.json` - Homepage
+- `product.json` - Product detail page
+- `collection.json` - Collection listing
+- `search.json` - Search results
+- `cart.json` - Shopping cart
+- `blog.json` / `article.json` - Blog pages
+- `page.json` / `page.contact.json` - Content pages
+- `list-collections.json` - All collections
+- `404.json` / `password.json` - Utility pages
+
+**Customer Account Templates**
+- `customers/account.liquid` - Account dashboard
+- `customers/login.liquid` / `register.liquid` - Authentication
+- `customers/addresses.liquid` - Address management
+- `customers/order.liquid` - Order history
+- `customers/activate_account.liquid` / `reset_password.liquid` - Account recovery
+
+**Gift Cards**
+- `gift_card.liquid` - Gift card display
+
+### JavaScript Features
+
+**Alpine.js Components** (inline in Liquid)
+- `productGallery` - Variant-aware product image gallery
+- `priceComponent` - Dynamic pricing with flash animation
+- `productForm` - Add to cart with quantity management
+- `variantPicker` - Intelligent variant selection with availability
+- `modal` - Dialog management with click-outside-to-close
+
+**Global Store** (`src/js/alpine/stores/global.js`)
+- Mobile menu state management
+- Minicart visibility control
+- Predictive search toggle
+- Promo bar scroll-collapse
+- Cart data synchronization
+
+**Helper Utilities** (`src/js/helpers.js`)
+- `emitEvent()` - Custom event dispatcher
+- `fetchHTML()` - Async HTML fetching
+- `throttle()` / `debounce()` - Performance utilities
+- `truncateLongTitle()` - String manipulation
+- Body class and random number helpers
+
+**Web Components**
+- `PredictiveSearch` - Custom element for live search (in `public/predictive-search.js`)
+
+**Custom Event System**
+- `variant:change` - Product variant selection
+- `liquid-ajax-cart:*` - Cart operation events
+- `show-modal` / `close-modal` - Modal controls
+
+### CSS Architecture
+
+**Tailwind v4 Layers**
+- `src/css/base.css` - Base element styles
+- `src/css/components.css` - Reusable component classes (`.btn`, `.input-select`, `.pill-button`)
+- `src/css/utilities.css` - Custom utility classes
+- `src/css/global.css` - Non-tree-shaken global styles
+
+**Alpine.js Plugins Included**
+- `@alpinejs/collapse` - Smooth collapse/expand animations (used in FAQ, promo bar)
+- `@alpinejs/focus` - Focus management for modals and dialogs
+- `@alpinejs/morph` - DOM morphing for dynamic content updates
+
+### Theme Settings
+
+Configurable via Shopify theme customizer (`config/settings_schema.json`):
+- Logo image upload
+- Promo bar (toggle, content, scroll behavior)
+- Predictive search (enable/disable)
+- Modal configuration (title, description)
+
+Individual sections have additional settings for:
+- Collection selection
+- Color schemes
+- Layout options
+- Content blocks (FAQ items, collapsible rows, etc.)
 
 ## Getting Started
 
@@ -221,10 +363,20 @@ VAST uses an **inline-first** approach where Alpine components are defined direc
 
 Auto-registration happens in `src/js/alpine/index.js` using Vite's glob imports.
 
-**AlpineJS plugins included**:
-- `@alpinejs/collapse` - Collapse/expand animations
-- `@alpinejs/focus` - Focus management utilities
-- `@alpinejs/morph` - DOM morphing for dynamic content
+**Event-driven architecture**:
+The theme uses custom events for component communication:
+- Product components listen to `variant:change` events to update gallery and pricing
+- Modal components respond to `show-modal` and `close-modal` events
+- Cart components listen to `liquid-ajax-cart:*` events for state updates
+
+This decoupled approach keeps components modular and easier to maintain.
+
+**Variant management**:
+The `variantPicker` component provides sophisticated variant handling:
+- Tracks all possible variant combinations and availability
+- Disables unavailable options based on current selection
+- Updates URL parameters for shareable variant links
+- Dispatches events when variants change for other components to react
 
 ### CSS and Tailwind
 
@@ -324,17 +476,102 @@ JavaScript and TypeScript configurations for better IDE support and module resol
 The theme uses [Liquid AJAX Cart v2](https://liquid-ajax-cart.js.org/v2/) for cart functionality.
 
 **Features**:
-- AJAX add-to-cart
-- Minicart with live updates
-- No page refreshes needed
+- AJAX add-to-cart without page refreshes
+- Slide-in minicart with live updates
+- Automatic cart state synchronization
+- Event-driven updates across all cart UI
+- Quantity adjustments from both cart page and minicart
+- Processing states during cart operations
+
+**Implementation**:
+- Cart state initialized via `liquid-ajax-cart.liquid` snippet
+- Minicart section (`sections/minicart.liquid`) shows/hides automatically on cart changes
+- Product form component listens to `liquid-ajax-cart:request-start/end` events for loading states
+- Global store synchronizes cart data across components
 
 **Note**: v2 has API differences from v1. See [migration guide](https://liquid-ajax-cart.js.org/v2/differences-from-v1/).
 
 ## Predictive Search
 
-Shopify's predictive search is included and ready to enable in the theme customizer.
+Shopify's predictive search is included with a custom web component implementation.
 
-To remove it, delete the reference in `layout/theme.liquid`.
+**Features**:
+- Live search-as-you-type with debouncing (300ms)
+- Custom `PredictiveSearch` web component (`public/predictive-search.js`)
+- Results grouped by product type
+- Keyboard navigation support
+- ARIA-compliant for accessibility
+- Opens in overlay with escape-to-close
+
+**Configuration**:
+- Enable/disable via theme customizer settings
+- Customizable prompt text in section settings
+- To remove entirely, delete the reference in `layout/theme.liquid`
+
+**Technical details**:
+- Uses Shopify's native `/search/suggest` API
+- Implements `HTMLElement` custom element
+- Results render in `predictive-search-results.liquid` section
+- Alpine store controls overlay visibility
+
+## Accessibility Features
+
+VAST is built with accessibility in mind:
+
+**Semantic HTML**:
+- Proper use of `<header>`, `<nav>`, `<main>`, `<footer>` landmarks
+- Heading hierarchy (h1, h2, h3) throughout templates
+- Lists and navigation marked up correctly
+
+**ARIA Support**:
+- ARIA labels on interactive elements (buttons, links, form controls)
+- ARIA roles for dynamic content (listbox for search results, navigation for menus)
+- ARIA expanded/hidden states for collapsible elements
+- Live regions for dynamic cart updates
+
+**Keyboard Navigation**:
+- Skip-to-content link (visible on focus)
+- Full keyboard support for modals and dialogs
+- Focus management with `@alpinejs/focus` plugin
+- Escape key to close overlays and modals
+
+**Visual Accessibility**:
+- High contrast color scheme
+- Focus indicators on interactive elements
+- Accessible form validation with error messages
+- Loading states for async operations
+
+## SEO Features
+
+Built-in SEO optimization for better search engine visibility:
+
+**Meta Tags** (`snippets/head-meta.liquid`):
+- Dynamic page titles with shop name
+- Meta descriptions from page/product content
+- Canonical URLs to prevent duplicate content
+- Charset and viewport meta tags
+
+**Open Graph Tags**:
+- og:title, og:url, og:type, og:description, og:image
+- Dynamic og:type based on template (product, article, website)
+- Product-specific pricing meta tags
+- Featured images for social sharing
+
+**Twitter Cards**:
+- Summary card with large image
+- Twitter site handle support
+- Product and article-specific metadata
+
+**Structured Data**:
+- Proper HTML5 semantic structure
+- Breadcrumb-ready navigation
+- Product schema-ready markup (price, availability, variants)
+
+**Performance**:
+- Preconnect to Shopify CDN
+- Optimized asset loading via Vite
+- Responsive images with srcset
+- Lazy loading support
 
 ## Contributing
 
