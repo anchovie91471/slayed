@@ -7,8 +7,15 @@ import AlpineMorph from '@alpinejs/morph'
 import AlpineGlobals from '../js/alpine/index.js'
 import helpers from '../js/helpers.js'
 
-// Uncomment to use to load the dynamic script demo
-// helpers.hasBodyClass('product-template') && import('../js/dynamicScript')
+// Dynamic imports: Load code only when users interact with features (improves Core Web Vitals)
+// Example: Load image zoom only when user hovers product image
+// document.querySelector('.product-image')?.addEventListener('mouseenter', async () => {
+//   const { initZoom } = await import('./image-zoom.js')
+//   initZoom()
+// }, { once: true })
+//
+// For page-type code splitting, use Liquid conditionals instead:
+// {% if template contains 'product' %}<script src="{{ 'product-features.js' | asset_url }}"></script>{% endif %}
 
 const ns = 'vast'
 

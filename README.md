@@ -378,6 +378,42 @@ The `variantPicker` component provides sophisticated variant handling:
 - Updates URL parameters for shareable variant links
 - Dispatches events when variants change for other components to react
 
+### Dynamic Imports for Performance
+
+VAST uses two strategies for code splitting to optimize Core Web Vitals:
+
+**1. Liquid conditionals for page-type splitting** (Preferred for CWV)
+
+Use Liquid to conditionally load page-specific JavaScript:
+
+```liquid
+{% if template contains 'product' %}
+  <script src="{{ 'product-features.js' | asset_url }}" defer></script>
+{% endif %}
+```
+
+**Why this is better**: The browser only loads the script on product pages, reducing JavaScript execution on other pages. This is more efficient than loading the code and checking page type in JavaScript.
+
+**2. Dynamic imports for interaction-based lazy loading**
+
+Use dynamic imports to load code only when users interact with features:
+
+```javascript
+// Load image zoom only when user hovers product image
+document.querySelector('.product-image')?.addEventListener('mouseenter', async () => {
+  const { initZoom } = await import('./image-zoom.js')
+  initZoom()
+}, { once: true })
+```
+
+**Good use cases**:
+- Image zoom/lightbox (triggered by hover or click)
+- Video players (triggered by play button)
+- Complex product configurators (triggered by "customize" button)
+- Heavy third-party libraries only needed after user interaction
+
+**Key principle**: Use Liquid conditionals for page-type splitting, dynamic imports for user-interaction splitting. This minimizes JavaScript execution during initial page load, improving Core Web Vitals metrics.
+
 ### CSS and Tailwind
 
 **Tailwind v4** is configured via the `@tailwindcss/vite` plugin.
