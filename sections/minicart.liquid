@@ -13,8 +13,7 @@
     <div class="item-count-message">
         You have
         <span
-                class="count"
-                style="font-weight: 600"
+                class="count font-semibold"
                 x-data>{{ cart.item_count }}
     </span>
         <span x-data></span>
@@ -41,7 +40,7 @@
                     <div class="options">
                         {% for option in line_item.options_with_values %}
                             <p class="option" data-option-name="{{ option.name }}">
-                <span style="font-weight: 600">{{ option.name }} :
+                <span class="font-semibold">{{ option.name }} :
                 </span>
                                 <span>{{ option.value }}
                 </span>
@@ -49,7 +48,7 @@
                         {% endfor %}
                     </div>
                     <div class="quantity-row">
-            <span style="font-weight: bold;">Quantity:
+            <span class="font-bold">Quantity:
             </span>
                         <span>{{ line_item.quantity }}
             </span>
