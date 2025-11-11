@@ -5,10 +5,10 @@ import AlpineCollapse from '@alpinejs/collapse'
 import AlpineFocus from '@alpinejs/focus'
 import AlpineMorph from '@alpinejs/morph'
 import AlpineGlobals from '../js/alpine/index.js'
-import helpers, {hasBodyClass} from '../js/helpers.js'
+import helpers from '../js/helpers.js'
 
 // Uncomment to use to load the dynamic script demo
-// hasBodyClass('product-template') && import('../js/dynamicScript')
+// helpers.hasBodyClass('product-template') && import('../js/dynamicScript')
 
 const ns = 'vast'
 

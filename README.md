@@ -38,11 +38,9 @@ A bare-bones, modern Shopify starter theme built for speed and developer experie
 ├── src/
 │   ├── entrypoints/       # Vite entry points (theme.js, theme.css)
 │   ├── js/
-│   │   └── alpine/        # AlpineJS modules
-│   │       ├── components/   # Alpine.data() components
-│   │       ├── stores/       # Alpine.store() state management
-│   │       ├── directives/   # Alpine.directive() custom directives
-│   │       └── magic/        # Alpine.magic() magic properties
+│   │   ├── alpine/        # AlpineJS stores (global utilities)
+│   │   │   └── stores/    # Alpine.store() global state
+│   │   └── helpers.js     # Utility functions
 │   ├── css/
 │   │   └── global.css     # Global styles (not tree-shaken)
 │   ├── schema/            # Schematic schema definitions (.cjs files)
@@ -180,38 +178,48 @@ This compiles all `.cjs` files in `src/schema/` to their corresponding Liquid se
 
 ### Working with AlpineJS
 
-AlpineJS components are auto-registered from `src/js/alpine/` directories.
+VAST uses an **inline-first** approach where Alpine components are defined directly in Liquid files using `<script>` tags. This makes the theme more beginner-friendly and easier to understand.
 
-**Component structure** (`src/js/alpine/components/dropdown.js`):
-
-```javascript
-export default {
-  name: 'dropdown',  // Used as x-data="dropdown()"
-  component: () => ({
-    open: false,
-    toggle() {
-      this.open = !this.open
-    }
-  })
-}
-```
-
-**Usage in Liquid**:
+**Example inline component** (`sections/modal.liquid`):
 
 ```liquid
-<div x-data="dropdown()">
-  <button @click="toggle">Toggle</button>
-  <div x-show="open">Dropdown content</div>
+<div x-data="modal">
+  <button @click="open">Open Modal</button>
+  <div x-show="isOpen" @click.away="close">
+    Modal content
+  </div>
 </div>
+
+<script>
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('modal', () => ({
+      isOpen: false,
+
+      init() {
+        // Initialization code
+      },
+
+      open() {
+        this.isOpen = true
+      },
+
+      close() {
+        this.isOpen = false
+      }
+    }))
+  })
+</script>
 ```
 
-**Directory structure**:
-- `components/` - `Alpine.data()` components
-- `stores/` - `Alpine.store()` global state
-- `directives/` - `Alpine.directive()` custom directives (commented out by default)
-- `magic/` - `Alpine.magic()` magic properties (commented out by default)
+**Real-world examples**:
+- Product page components: `sections/main-product.liquid` (productGallery, priceComponent, productForm)
+- Variant picker: `snippets/product-variant-picker.liquid`
+- Modal: `sections/modal.liquid`
 
-All modules are auto-registered in `src/js/alpine/index.js` using Vite's glob imports.
+**Global utilities** in `src/js/alpine/`:
+- `stores/` - Global Alpine stores auto-registered (e.g., cart state, mobile menu)
+
+Auto-registration happens in `src/js/alpine/index.js` using Vite's glob imports.
 
 **AlpineJS plugins included**:
 - `@alpinejs/collapse` - Collapse/expand animations
