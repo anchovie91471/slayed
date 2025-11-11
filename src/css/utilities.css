@@ -1,9 +1,3 @@
 @layer utilities {
-    .pin {
-        @apply inset-0;
-    }
-
-    .pin-x {
-        @apply inset-x-0;
-    }
+    /* Custom utility classes can be added here */
 }
