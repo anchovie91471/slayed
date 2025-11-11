@@ -7,5 +7,10 @@ module.exports = {
     }),
     "settings": [
         app.paragraph("t:sections.footer.settings.paragraph"),
+        app.make("checkbox", {
+            id: "show_social_icons",
+            label: "Show social icons",
+            default: true
+        })
     ]
 }

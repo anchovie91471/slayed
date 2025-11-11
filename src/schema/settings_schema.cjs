@@ -52,5 +52,56 @@ module.exports = [
                 default: "Modal Description. Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque totam cum cupiditate officia et quaerat blanditiis culpa? Hic, nesciunt id."
             })
         ]
+    },
+    {
+        "name": "Social media",
+        "settings": [
+            app.header("Social media accounts"),
+            app.make("text", {
+                id: "social_facebook_link",
+                label: "Facebook",
+                info: "https://www.facebook.com/shopify"
+            }),
+            app.make("text", {
+                id: "social_instagram_link",
+                label: "Instagram",
+                info: "https://www.instagram.com/shopify"
+            }),
+            app.make("text", {
+                id: "social_youtube_link",
+                label: "YouTube",
+                info: "https://www.youtube.com/shopify"
+            }),
+            app.make("text", {
+                id: "social_tiktok_link",
+                label: "TikTok",
+                info: "https://www.tiktok.com/@shopify"
+            }),
+            app.make("text", {
+                id: "social_twitter_link",
+                label: "X (Twitter)",
+                info: "https://twitter.com/shopify"
+            }),
+            app.make("text", {
+                id: "social_snapchat_link",
+                label: "Snapchat",
+                info: "https://www.snapchat.com/add/shopify"
+            }),
+            app.make("text", {
+                id: "social_pinterest_link",
+                label: "Pinterest",
+                info: "https://www.pinterest.com/shopify"
+            }),
+            app.make("text", {
+                id: "social_tumblr_link",
+                label: "Tumblr",
+                info: "https://shopify.tumblr.com"
+            }),
+            app.make("text", {
+                id: "social_vimeo_link",
+                label: "Vimeo",
+                info: "https://vimeo.com/shopify"
+            })
+        ]
     }
 ]
