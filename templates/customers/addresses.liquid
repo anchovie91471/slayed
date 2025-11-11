@@ -6,13 +6,6 @@
         {%- paginate customer.addresses by 5 -%}
             <div class="customer addresses" data-customer-addresses
                  style="margin-top: 0 !important; margin-bottom: 0 !important; max-width: 100%;">
-                <svg style="display: none">
-                    <symbol id="icon-caret" viewBox="0 0 10 6">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                              d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z"
-                              fill="currentColor">
-                    </symbol>
-                </svg>
                 <h1>{{ 'customer.addresses.title' | t }}</h1>
                 <a href="{{ routes.account_url }}">
                     {{ 'customer.account.return' | t }}
@@ -172,9 +165,7 @@
                                             <select id="AddressProvince_{{ form.id }}" name="address[province]" data-default="{{ form.province }}"
                                                     autocomplete="address-level1">
                                             </select>
-                                            <svg aria-hidden="true" focusable="false" viewBox="0 0 10 6">
-                                                <use href="#icon-caret"/>
-                                            </svg>
+                                            {% render 'icon-caret' %}
                                         </div>
                                     </div>
                                     <div class="field">
@@ -210,11 +201,7 @@
                                 {%- if paginate.previous -%}
                                     <li>
                                         <a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}">
-                                            <svg aria-hidden="true" focusable="false" viewBox="0 0 10 6">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                      d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z"
-                                                      fill="currentColor">
-                                            </svg>
+                                            {% render 'icon-caret' %}
                                         </a>
                                     </li>
                                 {%- endif -%}
@@ -238,11 +225,7 @@
                                 {%- if paginate.next -%}
                                     <li>
                                         <a href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t }}">
-                                            <svg aria-hidden="true" focusable="false" viewBox="0 0 10 6">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                      d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z"
-                                                      fill="currentColor">
-                                            </svg>
+                                            {% render 'icon-caret' %}
                                         </a>
                                     </li>
                                 {%- endif -%}

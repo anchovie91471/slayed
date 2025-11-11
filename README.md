@@ -69,7 +69,7 @@ A bare-bones, modern Shopify starter theme built for speed and developer experie
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/anchovie91471/vast-shopify-theme
    cd <theme-directory>
    ```
 

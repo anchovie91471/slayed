@@ -29,7 +29,7 @@
                             {{ option.name }}
                         </label>
                         <div class="select-wrapper relative flex items-center justify-end">
-                            <span class="select-arrow mr-6"></span>
+                            {% render 'icon-caret' %}
                             <select
                                     id="Option-{{ section.id }}-{{ forloop.index0 }}"
                                     class="input-select"
