@@ -36,6 +36,104 @@ A bare-bones, modern Shopify starter theme built for speed and developer experie
 - **Customer Account Pages** - Complete account management templates (login, register, addresses, orders)
 - **Gift Card Support** - Dedicated gift card template included
 
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher recommended)
+- [Shopify CLI](https://shopify.dev/docs/themes/tools/cli)
+- A Shopify development store
+
+### Quick Start (Recommended)
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/anchovie91471/vast-shopify-theme <theme-directory>
+   cd <theme-directory>
+   ```
+
+2. **Run the setup wizard**
+   ```bash
+   npm run setup
+   ```
+
+   The interactive setup wizard will:
+   - Install dependencies automatically
+   - Connect to your Shopify store and fetch available themes
+   - Generate your `shopify.theme.toml` configuration
+   - Start the development server
+   - Open your browser to accept the SSL certificate
+
+3. **Accept the SSL certificate**
+
+   When your browser opens to `https://127.0.0.1:3000`:
+   - Click "Advanced" and accept the security warning
+   - Navigate to `http://127.0.0.1:9292` to see your theme preview
+
+That's it! Your theme is now running and ready for development.
+
+### Manual Installation (Alternative)
+
+If you prefer to set up manually or the wizard doesn't work:
+
+1. **Install dependencies**
+   ```bash
+   npm install --legacy-peer-deps
+   ```
+
+   > **Note**: The `--legacy-peer-deps` flag is required due to a peer dependency conflict between Vite 7 and `@by-association-only/vite-plugin-shopify-clean` (which currently only supports Vite 5-6). The plugin works correctly with Vite 7 despite the version mismatch.
+
+2. **Configure Shopify CLI**
+
+   Create a `shopify.theme.toml` file in the root directory:
+
+   ```toml
+   [environments.development]
+   store = "your-store-name"
+   theme = "123456789"  # Your theme ID
+
+   [environments.staging]
+   store = "your-store-name"
+   theme = "987654321"
+   ignore = ["templates/*", "config/*"]
+
+   [environments.production]
+   store = "your-store-name"
+   theme = "111222333"
+   ignore = ["templates/*", "config/*"]
+   ```
+
+3. **Start development**
+   ```bash
+   npm run dev
+   ```
+
+   This runs Vite dev server (port 3000) and Shopify CLI dev server concurrently.
+
+### SSL/HTTPS Setup
+
+The theme uses self-signed SSL certificates for local development. If assets aren't loading:
+
+1. Visit `https://127.0.0.1:3000` in your browser
+2. Click "Advanced" and proceed past the security warning
+3. Return to your Shopify dev server at `http://127.0.0.1:9292`
+
+### CORS for Custom Domains
+
+If using a custom domain (not `*.myshopify.com`), add it to `vite.config.js`:
+
+```javascript
+server: {
+  cors: {
+    origin: [
+      /^https?:\/\/(?:(?:[^:]+\.)?localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/,
+      /^https:\/\/[^\/]+\.myshopify\.com$/,
+      'https://yourcustomdomain.com'  // Add your domain
+    ]
+  }
+}
+```
+
 ## Project Structure
 
 ```
@@ -196,104 +294,6 @@ Individual sections have additional settings for:
 - Color schemes
 - Layout options
 - Content blocks (FAQ items, collapsible rows, etc.)
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js (v18 or higher recommended)
-- [Shopify CLI](https://shopify.dev/docs/themes/tools/cli)
-- A Shopify development store
-
-### Quick Start (Recommended)
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/anchovie91471/vast-shopify-theme <theme-directory>
-   cd <theme-directory>
-   ```
-
-2. **Run the setup wizard**
-   ```bash
-   npm run setup
-   ```
-
-   The interactive setup wizard will:
-   - Install dependencies automatically
-   - Connect to your Shopify store and fetch available themes
-   - Generate your `shopify.theme.toml` configuration
-   - Start the development server
-   - Open your browser to accept the SSL certificate
-
-3. **Accept the SSL certificate**
-
-   When your browser opens to `https://127.0.0.1:3000`:
-   - Click "Advanced" and accept the security warning
-   - Navigate to `http://127.0.0.1:9292` to see your theme preview
-
-That's it! Your theme is now running and ready for development.
-
-### Manual Installation (Alternative)
-
-If you prefer to set up manually or the wizard doesn't work:
-
-1. **Install dependencies**
-   ```bash
-   npm install --legacy-peer-deps
-   ```
-
-   > **Note**: The `--legacy-peer-deps` flag is required due to a peer dependency conflict between Vite 7 and `@by-association-only/vite-plugin-shopify-clean` (which currently only supports Vite 5-6). The plugin works correctly with Vite 7 despite the version mismatch.
-
-2. **Configure Shopify CLI**
-
-   Create a `shopify.theme.toml` file in the root directory:
-
-   ```toml
-   [environments.development]
-   store = "your-store-name"
-   theme = "123456789"  # Your theme ID
-
-   [environments.staging]
-   store = "your-store-name"
-   theme = "987654321"
-   ignore = ["templates/*", "config/*"]
-
-   [environments.production]
-   store = "your-store-name"
-   theme = "111222333"
-   ignore = ["templates/*", "config/*"]
-   ```
-
-3. **Start development**
-   ```bash
-   npm run dev
-   ```
-
-   This runs Vite dev server (port 3000) and Shopify CLI dev server concurrently.
-
-### SSL/HTTPS Setup
-
-The theme uses self-signed SSL certificates for local development. If assets aren't loading:
-
-1. Visit `https://127.0.0.1:3000` in your browser
-2. Click "Advanced" and proceed past the security warning
-3. Return to your Shopify dev server at `http://127.0.0.1:9292`
-
-### CORS for Custom Domains
-
-If using a custom domain (not `*.myshopify.com`), add it to `vite.config.js`:
-
-```javascript
-server: {
-  cors: {
-    origin: [
-      /^https?:\/\/(?:(?:[^:]+\.)?localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/,
-      /^https:\/\/[^\/]+\.myshopify\.com$/,
-      'https://yourcustomdomain.com'  // Add your domain
-    ]
-  }
-}
-```
 
 ## Development Workflow
 
