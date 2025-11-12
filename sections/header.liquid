@@ -92,12 +92,11 @@
             {% endif %}
 
 
-            <a
-                    href="{{ routes.cart_url }}"
-                    class="[&>svg]:h-[22px] [&>svg]:w-auto relative text-white p-2"
-                    x-cloak>
+            <a href="{{ routes.cart_url }}"
+               class="[&>svg]:h-[22px] [&>svg]:w-auto relative text-white p-2"
+               x-cloak>
                 {% render 'icon-cart' %}
-                <span data-ajax-cart-bind="item_count" class="rounded-full bg-blue-500 text-white size-4 leading-1 absolute bottom-[58%] left-1/2">
+                <span data-ajax-cart-bind="item_count" class="rounded-full bg-blue-500 text-white size-4 leading-4 absolute bottom-[58%] left-1/2">
           {{- cart.item_count -}}
         </span>
             </a>
