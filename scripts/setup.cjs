@@ -88,7 +88,7 @@ async function setupWithUI() {
   let themeListError = null;
 
   try {
-    const output = execSync(`shopify theme list --store=${storeName} --output=json`, {
+    const output = execSync(`shopify theme list --store=${storeName} --json`, {
       encoding: 'utf-8',
       cwd: path.join(__dirname, '..')
     });
