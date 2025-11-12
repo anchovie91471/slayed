@@ -61,14 +61,19 @@ A bare-bones, modern Shopify starter theme built for speed and developer experie
    - Install dependencies automatically
    - Connect to your Shopify store and fetch available themes
    - Generate your `shopify.theme.toml` configuration
-   - Start the development server
-   - Open your browser to accept the SSL certificate
 
-3. **Accept the SSL certificate**
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```
 
-   When your browser opens to `https://127.0.0.1:3000`:
+   This starts both Vite and Shopify CLI dev servers.
+
+4. **Accept the SSL certificate**
+
+   When Vite starts, visit `https://127.0.0.1:3000` in your browser:
    - Click "Advanced" and accept the security warning
-   - Navigate to `http://127.0.0.1:9292` to see your theme preview
+   - Once accepted, navigate to `http://127.0.0.1:9292` to see your theme preview
 
 That's it! Your theme is now running and ready for development.
 
