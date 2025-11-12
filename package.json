@@ -6,7 +6,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "setup": "node scripts/setup.js",
+    "setup": "node scripts/setup.cjs",
     "dev": "run-p shopify:dev vite:watch",
     "build": "run-s vite:build && schematic",
     "deploy": "run-s vite:build && schematic && shopify theme push -e production",
