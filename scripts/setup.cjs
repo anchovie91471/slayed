@@ -5,7 +5,7 @@
  * Interactive setup script to configure the development environment
  */
 
-const { execSync, spawn } = require('child_process');
+const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
@@ -263,48 +263,19 @@ theme = "${themeId}"
     process.exit(1);
   }
 
-  // Step 8: Start dev server
-  console.log('\n' + chalk.bold('Starting development server...'));
-  console.log(chalk.gray('This will start both Vite and Shopify CLI dev servers.\n'));
-
-  const devProcess = spawn('npm', ['run', 'dev'], {
-    cwd: path.join(__dirname, '..'),
-    detached: true,
-    stdio: 'ignore'
-  });
-
-  devProcess.unref();
-
-  // Step 9: Handle SSL certificate
-  console.log(chalk.cyan('⏳ Waiting for Vite to start...'));
-
-  await new Promise(resolve => setTimeout(resolve, 10000));
-
-  console.log(chalk.cyan('🔓 Opening browser to accept SSL certificate...'));
-
-  const open = (url) => {
-    const platform = process.platform;
-    const cmd = platform === 'darwin' ? 'open' : platform === 'win32' ? 'start' : 'xdg-open';
-
-    try {
-      execSync(`${cmd} ${url}`, { stdio: 'ignore' });
-    } catch (error) {
-      console.log(chalk.yellow(`\n⚠️  Couldn't open browser automatically. Please visit: ${url}`));
-    }
-  };
-
-  open('https://127.0.0.1:3000');
-
-  // Step 10: Success message
+  // Success message
   console.log('\n' + chalk.green.bold('✨ Setup Complete!'));
   console.log(chalk.gray('─'.repeat(50)));
   console.log('\n' + chalk.bold('Next Steps:'));
-  console.log(chalk.gray('1.') + ' In the browser that just opened, click "Advanced" and accept the SSL certificate');
-  console.log(chalk.gray('2.') + ' Your Shopify preview should be available shortly at:');
+  console.log(chalk.gray('1.') + ' Start the development server:');
+  console.log('   ' + chalk.cyan('npm run dev'));
+  console.log(chalk.gray('2.') + ' When prompted, visit ' + chalk.cyan('https://127.0.0.1:3000') + ' in your browser');
+  console.log('   Click "Advanced" and accept the SSL certificate');
+  console.log(chalk.gray('3.') + ' Your Shopify theme preview will be available at:');
   console.log('   ' + chalk.cyan('http://127.0.0.1:9292'));
-  console.log(chalk.gray('3.') + ' Make changes to your theme files and see them update live!');
+  console.log(chalk.gray('4.') + ' Make changes to your theme files and see them update live!');
   console.log('\n' + chalk.gray('─'.repeat(50)));
-  console.log(chalk.gray('\nTip: Press Ctrl+C in the terminal where dev server is running to stop it.\n'));
+  console.log(chalk.gray('\nTip: Press Ctrl+C in the dev server terminal to stop it.\n'));
 }
 
 // Main execution
