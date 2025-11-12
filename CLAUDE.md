@@ -8,6 +8,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **NEVER revert the repository as a way to fix issues.** Do NOT use `git reset`, `git revert`, or any other git commands that undo commits or changes. If there are issues with code, fix them by making forward-progress changes, not by reverting history.
 
+## Repository Contributor Setup
+
+If you're contributing to this repository (not just using the theme), you'll need to configure local git ignore rules to prevent build artifacts from showing up in git status.
+
+**Add to `.git/info/exclude`:**
+```
+/assets/*
+!/assets/.gitkeep
+/snippets/vite.liquid
+```
+
+**Why this approach?**
+- The `.gitignore` file intentionally does NOT ignore `assets/` or `snippets/vite.liquid`
+- This allows theme developers to use Shopify's GitHub integration (which deploys from git)
+- Contributors use `.git/info/exclude` for local-only ignore rules that won't be committed
+- Best of both worlds: clean repo for contributors, working GitHub integration for users
+
 ## Project Overview
 
 This is a Shopify theme starter called "VAST" built with Vite, Alpine.js, TailwindCSS, and the Shopify Vite plugin. It includes Liquid Ajax Cart for AJAX cart functionality and Schematic for schema management.

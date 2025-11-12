@@ -3,10 +3,6 @@ node_modules/
 .idea
 *.log
 
-# ignore all files inside shopify/assets/ except files with 'static' keyword in their filename
-/assets
-/snippets/vite.liquid
-
 # Shopify CLI
 shopify.theme.toml
 
