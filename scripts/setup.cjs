@@ -278,7 +278,7 @@ theme = "${themeId}"
   // Step 9: Handle SSL certificate
   console.log(chalk.cyan('⏳ Waiting for Vite to start...'));
 
-  await new Promise(resolve => setTimeout(resolve, 5000));
+  await new Promise(resolve => setTimeout(resolve, 10000));
 
   console.log(chalk.cyan('🔓 Opening browser to accept SSL certificate...'));
 
