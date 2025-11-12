@@ -11,4 +11,7 @@
         unavailable_with_option: `{{ 'products.product.value_unavailable' | t: option_value: '[value]' }}`,
         soldout_with_option: `{{ 'products.product.value_sold_out' | t: option_value: '[value]' }}`,
     };
+
+    window.theme = window.theme || {};
+    window.theme.moneyFormat = {{ shop.money_format | json }};
 </script>

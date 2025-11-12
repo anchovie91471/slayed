@@ -209,14 +209,16 @@ Individual sections have additional settings for:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/anchovie91471/vast-shopify-theme
+   git clone https://github.com/anchovie91471/vast-shopify-theme <theme-directory>
    cd <theme-directory>
    ```
 
 2. **Install dependencies**
    ```bash
-   npm install
+   npm install --legacy-peer-deps
    ```
+
+   > **Note**: The `--legacy-peer-deps` flag is required due to a peer dependency conflict between Vite 7 and `@by-association-only/vite-plugin-shopify-clean` (which currently only supports Vite 5-6). The plugin works correctly with Vite 7 despite the version mismatch.
 
 3. **Configure Shopify CLI**
 

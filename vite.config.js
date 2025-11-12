@@ -9,106 +9,116 @@ import path from 'path';
 import chokidar from 'chokidar';
 
 function copyFile(src, dest) {
-  fs.mkdirSync(path.dirname(dest), { recursive: true });
-  fs.copyFileSync(src, dest);
+    fs.mkdirSync(path.dirname(dest), {recursive: true});
+    fs.copyFileSync(src, dest);
 }
 
 function removeFile(dest) {
-  if (fs.existsSync(dest)) {
-    try {
-      fs.unlinkSync(dest);
-    } catch (err) {
-      console.error(`Failed to remove file: ${dest}`);
+    if (fs.existsSync(dest)) {
+        try {
+            fs.unlinkSync(dest);
+        } catch (err) {
+            console.error(`Failed to remove file: ${dest}`);
+        }
     }
-  }
 }
 
 function copyPublicToAssetsPlugin() {
-  let config;
+    let config;
 
-  return {
-    name: 'vite-plugin-copy-public',
-    apply: 'serve', // Only apply this during development
-    configResolved(resolvedConfig) {
-      config = resolvedConfig;
-    },
-    buildStart() {
-      const publicDir = path.resolve(config.root, 'public');
-      const assetsDir = path.resolve(config.root, 'assets');
+    return {
+        name: 'vite-plugin-copy-public',
+        apply: 'serve', // Only apply this during development
+        configResolved(resolvedConfig) {
+            config = resolvedConfig;
+        },
+        buildStart() {
+            const publicDir = path.resolve(config.root, 'public');
+            const assetsDir = path.resolve(config.root, 'assets');
 
-      const watcher = chokidar.watch(publicDir, { ignoreInitial: true });
+            const watcher = chokidar.watch(publicDir, {ignoreInitial: true});
 
-      watcher.on('add', (filePath) => {
-        const relativePath = path.relative(publicDir, filePath);
-        const destPath = path.resolve(assetsDir, relativePath);
-        console.log(`Copying new file: ${relativePath}`);
-        copyFile(filePath, destPath);
-      });
+            watcher.on('add', (filePath) => {
+                const relativePath = path.relative(publicDir, filePath);
+                const destPath = path.resolve(assetsDir, relativePath);
+                console.log(`Copying new file: ${relativePath}`);
+                copyFile(filePath, destPath);
+            });
 
-      watcher.on('change', (filePath) => {
-        const relativePath = path.relative(publicDir, filePath);
-        const destPath = path.resolve(assetsDir, relativePath);
-        console.log(`Updating file: ${relativePath}`);
-        copyFile(filePath, destPath);
-      });
+            watcher.on('change', (filePath) => {
+                const relativePath = path.relative(publicDir, filePath);
+                const destPath = path.resolve(assetsDir, relativePath);
+                console.log(`Updating file: ${relativePath}`);
+                copyFile(filePath, destPath);
+            });
 
-      watcher.on('unlink', (filePath) => {
-        const relativePath = path.relative(publicDir, filePath);
-        const destPath = path.resolve(assetsDir, relativePath);
-        console.log(`Removing file: ${relativePath}`);
-        removeFile(destPath);
-      });
-    },
-  };
+            watcher.on('unlink', (filePath) => {
+                const relativePath = path.relative(publicDir, filePath);
+                const destPath = path.resolve(assetsDir, relativePath);
+                console.log(`Removing file: ${relativePath}`);
+                removeFile(destPath);
+            });
+        },
+    };
 }
 
 export default {
-  clearScreen: false,
-  server: {
-    host: '127.0.0.1',
-    https: true,
-    port: 3000,
-    hmr: true,
-    cors: {
-      origin: [
-        /^https?:\/\/(?:(?:[^:]+\.)?localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/,
-        /^https:\/\/[^\/]+\.myshopify\.com$/
-      ]
-    }
-  },
-  publicDir: 'public',
-  build: {
-    manifest: false,
-    emptyOutDir: false,
-    rollupOptions: {
-      output: {
-        entryFileNames: '[name].[hash].min.js',
-        chunkFileNames: '[name].[hash].min.js',
-        assetFileNames: '[name].[hash].min[extname]',
-      },
-    }
-  },
-  plugins: [
-    basicSsl(),
-    cleanup(),
-    copyPublicToAssetsPlugin(),
-    tailwindcss(),
-    shopify({
-      sourceCodeDir: "src",
-      entrypointsDir: 'src/entrypoints',
-      snippetFile: "vite.liquid",
-    }),
-    pageReload('/tmp/theme.update', {
-      delay: 2000
-    }),
-    {
-      name: 'vite-plugin-liquid-tailwind-refresh',
-      handleHotUpdate(ctx) {
-        if (ctx.file.endsWith('.liquid')) {
-          // Filter out the liquid module to prevent a full refresh
-          return [...ctx.modules[0]?.importers ?? [], ...ctx.modules.slice(1)]
+    clearScreen: false,
+    server: {
+        host: '127.0.0.1',
+        https: true,
+        port: 3000,
+        hmr: true,
+        cors: {
+            origin: [
+                /^https?:\/\/(?:(?:[^:]+\.)?localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/,
+                /^https:\/\/[^\/]+\.myshopify\.com$/
+            ]
         }
-      }
-    }
-  ],
+    },
+    publicDir: 'public',
+    build: {
+        manifest: false,
+        emptyOutDir: false,
+        rollupOptions: {
+            output: {
+                entryFileNames: '[name].[hash].min.js',
+                chunkFileNames: '[name].[hash].min.js',
+                assetFileNames: '[name].[hash].min[extname]',
+            },
+        }
+    },
+    plugins: [
+        // Enable Chrome's Private Network Access for requests from public Shopify domains to local dev server
+        {
+            name: 'configure-response-headers',
+            configureServer: (server) => {
+                server.middlewares.use((_req, res, next) => {
+                    res.setHeader('Access-Control-Allow-Private-Network', 'true');
+                    next();
+                });
+            }
+        },
+        basicSsl(),
+        cleanup(),
+        copyPublicToAssetsPlugin(),
+        tailwindcss(),
+        shopify({
+            sourceCodeDir: "src",
+            entrypointsDir: 'src/entrypoints',
+            snippetFile: "vite.liquid",
+        }),
+        pageReload('/tmp/theme.update', {
+            delay: 2000
+        }),
+        {
+            name: 'vite-plugin-liquid-tailwind-refresh',
+            handleHotUpdate(ctx) {
+                if (ctx.file.endsWith('.liquid')) {
+                    // Filter out the liquid module to prevent a full refresh
+                    return [...ctx.modules[0]?.importers ?? [], ...ctx.modules.slice(1)]
+                }
+            }
+        }
+    ],
 }
