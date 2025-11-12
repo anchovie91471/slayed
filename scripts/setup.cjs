@@ -94,7 +94,10 @@ async function setupWithUI() {
     });
 
     const data = JSON.parse(output);
+    console.log('\n' + chalk.gray('DEBUG - Raw API response:'));
+    console.log(chalk.gray(JSON.stringify(data, null, 2)));
     themes = data.themes || [];
+    console.log(chalk.gray(`DEBUG - Parsed ${themes.length} themes\n`));
     spinner.succeed(chalk.green('Themes fetched successfully'));
   } catch (error) {
     spinner.fail(chalk.red('Failed to fetch themes'));
