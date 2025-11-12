@@ -61,7 +61,7 @@ A bare-bones, modern Shopify starter theme built for speed and developer experie
    - Install dependencies automatically
    - Connect to your Shopify store and fetch available themes
    - Generate your `shopify.theme.toml` configuration
-   - Run an initial build to create the assets folder
+   - Run an initial build to create the assets
 
 3. **Start the development server**
    ```bash
@@ -307,12 +307,17 @@ Individual sections have additional settings for:
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start Vite + Shopify CLI dev servers with live reload |
+| `npm run dev` | **Recommended:** Start Vite build watch + Shopify CLI with live reload. Assets written to disk, theme editor & preview URLs work. |
+| `npm run dev:vite-server` | **Alternative:** Start Vite dev server + Shopify CLI. Faster HMR but theme editor/preview URLs won't have styling/JS (memory-only assets). |
 | `npm run build` | Build assets and compile schemas |
 | `npm run deploy` | Build and push to production environment (interactive) |
 | `npm run deploy:dev` | Build and push to development environment |
 | `npm run deploy:staging` | Build and push to staging environment |
 | `npm run deploy:new` | Build and publish as new theme on Shopify |
+
+**Development Mode Comparison:**
+- **`npm run dev` (build watch):** Assets written to disk → Shopify CLI uploads them → Theme editor & preview URLs work ✅
+- **`npm run dev:vite-server` (dev server):** Assets served from memory → Not uploaded → Theme editor & preview broken ❌, but faster rebuilds
 
 For all Shopify CLI commands, see [Shopify CLI documentation](https://shopify.dev/docs/themes/tools/cli/commands).
 

@@ -25,39 +25,42 @@ function removeFile(dest) {
 
 function copyPublicToAssetsPlugin() {
     let config;
+    let watcher;
 
     return {
         name: 'vite-plugin-copy-public',
-        apply: 'serve', // Only apply this during development
         configResolved(resolvedConfig) {
             config = resolvedConfig;
         },
-        buildStart() {
+        closeBundle() {
+            // This runs after each build completes (both initial and watch rebuilds)
             const publicDir = path.resolve(config.root, 'public');
             const assetsDir = path.resolve(config.root, 'assets');
 
-            const watcher = chokidar.watch(publicDir, {ignoreInitial: true});
+            // Only set up watcher once
+            if (!watcher) {
+                watcher = chokidar.watch(publicDir, {ignoreInitial: false});
 
-            watcher.on('add', (filePath) => {
-                const relativePath = path.relative(publicDir, filePath);
-                const destPath = path.resolve(assetsDir, relativePath);
-                console.log(`Copying new file: ${relativePath}`);
-                copyFile(filePath, destPath);
-            });
+                watcher.on('add', (filePath) => {
+                    const relativePath = path.relative(publicDir, filePath);
+                    const destPath = path.resolve(assetsDir, relativePath);
+                    copyFile(filePath, destPath);
+                });
 
-            watcher.on('change', (filePath) => {
-                const relativePath = path.relative(publicDir, filePath);
-                const destPath = path.resolve(assetsDir, relativePath);
-                console.log(`Updating file: ${relativePath}`);
-                copyFile(filePath, destPath);
-            });
+                watcher.on('change', (filePath) => {
+                    const relativePath = path.relative(publicDir, filePath);
+                    const destPath = path.resolve(assetsDir, relativePath);
+                    console.log(`[public] Updated: ${relativePath}`);
+                    copyFile(filePath, destPath);
+                });
 
-            watcher.on('unlink', (filePath) => {
-                const relativePath = path.relative(publicDir, filePath);
-                const destPath = path.resolve(assetsDir, relativePath);
-                console.log(`Removing file: ${relativePath}`);
-                removeFile(destPath);
-            });
+                watcher.on('unlink', (filePath) => {
+                    const relativePath = path.relative(publicDir, filePath);
+                    const destPath = path.resolve(assetsDir, relativePath);
+                    console.log(`[public] Removed: ${relativePath}`);
+                    removeFile(destPath);
+                });
+            }
         },
     };
 }
@@ -80,6 +83,8 @@ export default {
     build: {
         manifest: false,
         emptyOutDir: false,
+        minify: process.env.NODE_ENV === 'production', // Skip minification in development for faster builds
+        sourcemap: process.env.NODE_ENV === 'development', // Add sourcemaps in development for debugging
         rollupOptions: {
             output: {
                 entryFileNames: '[name].[hash].min.js',
