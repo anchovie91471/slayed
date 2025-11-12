@@ -100,9 +100,9 @@ export default {
         emptyOutDir: false,
         minify: process.env.NODE_ENV === 'production', // Skip minification in development for faster builds
         sourcemap: process.env.NODE_ENV === 'development', // Add sourcemaps in development for debugging
-        watch: {
-            ignored: ['**/assets/**'] // Prevent infinite rebuild loop by ignoring output directory
-        },
+        watch: process.argv.includes('--watch') ? {
+            ignored: ['**/assets/**'] // Prevent infinite rebuild loop in watch mode
+        } : null, // Disable watch mode for one-time builds
         rollupOptions: {
             output: {
                 entryFileNames: '[name].[hash].min.js',
