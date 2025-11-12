@@ -12,12 +12,14 @@ const readline = require('readline');
 
 // Bootstrap: Check and install required packages
 async function bootstrap() {
-  const requiredPackages = ['chalk', 'inquirer', 'ora'];
+  const requiredPackages = ['chalk@4', 'inquirer@8', 'ora@5'];
   const missingPackages = [];
 
   for (const pkg of requiredPackages) {
     try {
-      require.resolve(pkg);
+      // Extract package name without version (e.g., 'chalk@4' -> 'chalk')
+      const pkgName = pkg.split('@')[0];
+      require.resolve(pkgName);
     } catch {
       missingPackages.push(pkg);
     }
