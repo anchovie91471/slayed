@@ -28,7 +28,7 @@ async function bootstrap() {
   if (missingPackages.length > 0) {
     console.log('\n📦 Installing setup wizard dependencies...');
     try {
-      execSync(`npm install ${missingPackages.join(' ')} --no-save --legacy-peer-deps`, {
+      execSync(`npm install ${missingPackages.join(' ')} --no-save --legacy-peer-deps --loglevel=error`, {
         stdio: 'inherit',
         cwd: path.join(__dirname, '..')
       });
