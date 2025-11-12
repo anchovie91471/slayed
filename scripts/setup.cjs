@@ -286,13 +286,11 @@ theme = "${themeId}"
   console.log('\n' + chalk.bold('Next Steps:'));
   console.log(chalk.gray('1.') + ' Start the development server:');
   console.log('   ' + chalk.cyan('npm run dev'));
-  console.log(chalk.gray('2.') + ' When prompted, visit ' + chalk.cyan('https://127.0.0.1:3000') + ' in your browser');
-  console.log('   Click "Advanced" and accept the SSL certificate');
-  console.log(chalk.gray('3.') + ' Your Shopify theme preview will be available at:');
+  console.log(chalk.gray('2.') + ' Open your theme preview in the browser:');
   console.log('   ' + chalk.cyan('http://127.0.0.1:9292'));
-  console.log(chalk.gray('4.') + ' Make changes to your theme files and see them update live!');
   console.log('\n' + chalk.gray('─'.repeat(50)));
-  console.log(chalk.gray('\nTip: Press Ctrl+C in the dev server terminal to stop it.\n'));
+  console.log(chalk.gray('\nTip: For faster HMR, use ' + chalk.cyan('npm run dev:vite-server') + ' instead.'));
+  console.log(chalk.gray('     (Requires accepting SSL cert at https://127.0.0.1:3000 first)\n'));
 }
 
 // Main execution
