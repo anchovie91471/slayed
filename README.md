@@ -4,6 +4,13 @@
 
 A bare-bones, modern Shopify starter theme built for speed and developer experience.
 
+## 🎨 Live Demo
+
+**[View Demo Store](https://vast-theme.myshopify.com/)**
+Password: `vast_quik`
+
+See VAST in action with a fully configured store showcasing all features and components.
+
 ## Key Technologies
 
 - **[Vite v7](https://vitejs.dev/)** - Blazing-fast HMR during development and optimized production builds that keep your workflow smooth and your bundles lean
