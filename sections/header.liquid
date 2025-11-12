@@ -96,9 +96,11 @@
                class="[&>svg]:h-[22px] [&>svg]:w-auto relative text-white p-2"
                x-cloak>
                 {% render 'icon-cart' %}
-                <span data-ajax-cart-bind="item_count" class="rounded-full bg-blue-500 text-white size-4 leading-4 absolute bottom-[58%] left-1/2">
-          {{- cart.item_count -}}
-        </span>
+                <span class="flex justify-center items-center bg-blue-500 text-white text-xs size-5 rounded-full absolute bottom-[58%] left-1/2">
+                    <span data-ajax-cart-bind="item_count" class="p-1 leading-4 text-center">
+                        {{- cart.item_count -}}
+                    </span>
+                </span>
             </a>
         </div>
 
