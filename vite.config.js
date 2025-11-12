@@ -37,8 +37,11 @@ function copyPublicToAssetsPlugin() {
             const publicDir = path.resolve(config.root, 'public');
             const assetsDir = path.resolve(config.root, 'assets');
 
-            // Only set up watcher once
-            if (!watcher) {
+            // Detect if we're in watch mode (dev server or vite build --watch)
+            const isWatchMode = config.command === 'serve' || config.build.watch;
+
+            if (!watcher && isWatchMode) {
+                // In watch mode: Set up file watcher
                 watcher = chokidar.watch(publicDir, {ignoreInitial: false});
 
                 watcher.on('add', (filePath) => {
@@ -60,6 +63,18 @@ function copyPublicToAssetsPlugin() {
                     console.log(`[public] Removed: ${relativePath}`);
                     removeFile(destPath);
                 });
+            } else if (!isWatchMode && !watcher) {
+                // In regular build mode: Do one-time copy and exit cleanly
+                if (fs.existsSync(publicDir)) {
+                    const files = fs.readdirSync(publicDir, { recursive: true });
+                    files.forEach(file => {
+                        const srcPath = path.resolve(publicDir, file);
+                        if (fs.statSync(srcPath).isFile()) {
+                            const destPath = path.resolve(assetsDir, file);
+                            copyFile(srcPath, destPath);
+                        }
+                    });
+                }
             }
         },
     };

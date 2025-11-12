@@ -97,6 +97,7 @@ async function setupWithUI() {
     // Shopify CLI returns array directly, not { themes: [...] }
     themes = Array.isArray(data) ? data : (data.themes || []);
     spinner.succeed(chalk.green('Themes fetched successfully'));
+    console.log('');
   } catch (error) {
     spinner.fail(chalk.red('Failed to fetch themes'));
     themeListError = error;
