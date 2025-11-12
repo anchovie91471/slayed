@@ -61,6 +61,7 @@ A bare-bones, modern Shopify starter theme built for speed and developer experie
    - Install dependencies automatically
    - Connect to your Shopify store and fetch available themes
    - Generate your `shopify.theme.toml` configuration
+   - Run an initial build to create the assets folder
 
 3. **Start the development server**
    ```bash

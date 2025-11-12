@@ -263,6 +263,22 @@ theme = "${themeId}"
     process.exit(1);
   }
 
+  // Step 8: Build theme assets
+  console.log('\n' + chalk.bold('Building theme assets...'));
+  const buildSpinner = ora('Running initial build (this creates the assets folder)...').start();
+
+  try {
+    execSync('npm run build', {
+      stdio: 'pipe',
+      cwd: path.join(__dirname, '..')
+    });
+    buildSpinner.succeed(chalk.green('Initial build complete'));
+  } catch (error) {
+    buildSpinner.fail(chalk.red('Build failed'));
+    console.error(chalk.gray(error.message));
+    process.exit(1);
+  }
+
   // Success message
   console.log('\n' + chalk.green.bold('✨ Setup Complete!'));
   console.log(chalk.gray('─'.repeat(50)));
