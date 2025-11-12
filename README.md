@@ -205,7 +205,7 @@ Individual sections have additional settings for:
 - [Shopify CLI](https://shopify.dev/docs/themes/tools/cli)
 - A Shopify development store
 
-### Installation
+### Quick Start (Recommended)
 
 1. **Clone the repository**
    ```bash
@@ -213,14 +213,38 @@ Individual sections have additional settings for:
    cd <theme-directory>
    ```
 
-2. **Install dependencies**
+2. **Run the setup wizard**
+   ```bash
+   npm run setup
+   ```
+
+   The interactive setup wizard will:
+   - Install dependencies automatically
+   - Connect to your Shopify store and fetch available themes
+   - Generate your `shopify.theme.toml` configuration
+   - Start the development server
+   - Open your browser to accept the SSL certificate
+
+3. **Accept the SSL certificate**
+
+   When your browser opens to `https://127.0.0.1:3000`:
+   - Click "Advanced" and accept the security warning
+   - Navigate to `http://127.0.0.1:9292` to see your theme preview
+
+That's it! Your theme is now running and ready for development.
+
+### Manual Installation (Alternative)
+
+If you prefer to set up manually or the wizard doesn't work:
+
+1. **Install dependencies**
    ```bash
    npm install --legacy-peer-deps
    ```
 
    > **Note**: The `--legacy-peer-deps` flag is required due to a peer dependency conflict between Vite 7 and `@by-association-only/vite-plugin-shopify-clean` (which currently only supports Vite 5-6). The plugin works correctly with Vite 7 despite the version mismatch.
 
-3. **Configure Shopify CLI**
+2. **Configure Shopify CLI**
 
    Create a `shopify.theme.toml` file in the root directory:
 
@@ -240,7 +264,7 @@ Individual sections have additional settings for:
    ignore = ["templates/*", "config/*"]
    ```
 
-4. **Start development**
+3. **Start development**
    ```bash
    npm run dev
    ```
