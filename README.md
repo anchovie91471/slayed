@@ -140,6 +140,52 @@ server: {
 }
 ```
 
+## Deployment Strategies
+
+VAST supports two deployment approaches—choose whichever fits your workflow best, or use both!
+
+### Option 1: GitHub Integration (Automatic)
+
+Connect your theme to a GitHub repository for automatic deployment when you push changes.
+
+**How it works:**
+- Push code to GitHub → Shopify automatically syncs changes to your theme
+- Great for teams, CI/CD workflows, and version control-first development
+- `.gitignore` is already configured to work with Shopify's GitHub integration
+
+**Setup:**
+1. Push your theme to a GitHub repository
+2. In Shopify Admin: Online Store → Themes → Add theme → Connect from GitHub
+3. Select your repository and branch
+4. Shopify will automatically deploy on every push
+
+[Learn more about Shopify GitHub integration](https://shopify.dev/docs/storefronts/themes/tools/github)
+
+### Option 2: Shopify CLI Push (Manual)
+
+Use CLI commands for direct deployment from your local machine.
+
+**How it works:**
+- Run deployment commands → Theme pushed directly to Shopify
+- Great for solo developers, manual control, and testing before deploy
+- Uses `shopify.theme.toml` for environment configuration
+
+**Commands:**
+```bash
+npm run deploy        # Push to production (interactive)
+npm run deploy:dev    # Push to development environment
+npm run deploy:staging # Push to staging environment
+npm run deploy:new    # Create new unpublished theme
+```
+
+See [Build and Deployment](#build-and-deployment) section for details.
+
+### Using Both
+
+These approaches aren't mutually exclusive! Many developers use:
+- **GitHub integration** for staging/production (automatic deploys)
+- **CLI push** for development (quick manual testing)
+
 ## Project Structure
 
 ```
