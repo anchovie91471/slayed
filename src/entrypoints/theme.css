@@ -8,7 +8,8 @@
 @theme {
     /* Custom Font */
     --font-family-zalando: "Zalando Sans SemiExpanded", sans-serif;
-    --font-family: var(--font-family-zalando);
+    --default-font-family: var(--font-family-zalando);
+    --font-sans: var(--font-family-zalando);
 }
 
 /* Typography Plugin Customization */
