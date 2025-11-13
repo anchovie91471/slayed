@@ -106,5 +106,26 @@ export default {
             clearTimeout(timeout)
             timeout = setTimeout(() => func.apply(context, args), wait)
         }
+    },
+
+    /**
+     * Format price in cents to currency string using shop money format
+     * @param {number} cents - Price in cents (e.g., 1999 for $19.99)
+     * @param {string} format - Money format string (defaults to theme.moneyFormat)
+     * @returns {string} Formatted price string
+     */
+    formatMoney(cents, format) {
+        if (typeof cents !== 'number') {
+            return ''
+        }
+
+        const moneyFormat = format || window.theme?.moneyFormat || '${{amount}}'
+        const value = (cents / 100.0).toFixed(2)
+
+        return moneyFormat
+            .replace(/\{\{\s*amount\s*\}\}/g, value)
+            .replace(/\{\{\s*amount_no_decimals\s*\}\}/g, Math.round(cents / 100))
+            .replace(/\{\{\s*amount_with_comma_separator\s*\}\}/g, value.replace('.', ','))
+            .replace(/\{\{\s*amount_no_decimals_with_comma_separator\s*\}\}/g, Math.round(cents / 100))
     }
 }

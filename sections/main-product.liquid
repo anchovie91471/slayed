@@ -110,7 +110,7 @@
             },
 
             formatMoney(cents) {
-                return Shopify.formatMoney(cents, theme.moneyFormat || '${{amount}}')
+                return window.vast.helpers.formatMoney(cents, theme.moneyFormat || '${{amount}}')
             }
         }))
 
