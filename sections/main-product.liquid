@@ -204,7 +204,8 @@
                         class: "absolute h-full w-full object-cover inset-0",
                         sizes: "(min-width: 768px) 55vw, 100vw",
                         widths: "800,1000,1426",
-                        loading: "eager" }}
+                        loading: "eager",
+                        fetchpriority: "high" }}
                 </div>
                 <span class="absolute top-0 left-0 z-100 text-[10px]">
           {{ product.selected_or_first_available_variant.id }}

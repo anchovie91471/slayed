@@ -1,16 +1,25 @@
 {% comment %}
   Usage:
   {% render 'product-grid-item',
-    product: {product object}
+    product: {product object},
+    is_first: {boolean} (optional) - Adds fetchpriority="high" for LCP optimization
   %}
 {% endcomment %}
 
 <div class="product-grid-item relative group">
     <div class="block image-wrapper relative pt-[140%]">
-        {{ prod.featured_image | image_url: width: 410 | image_tag:
-            class: "absolute inset-0 object-cover h-full",
-            widths: "205,410",
-            loading: "lazy" }}
+        {% if is_first %}
+            {{ prod.featured_image | image_url: width: 410 | image_tag:
+                class: "absolute inset-0 object-cover h-full",
+                widths: "205,410",
+                loading: "eager",
+                fetchpriority: "high" }}
+        {% else %}
+            {{ prod.featured_image | image_url: width: 410 | image_tag:
+                class: "absolute inset-0 object-cover h-full",
+                widths: "205,410",
+                loading: "lazy" }}
+        {% endif %}
     </div>
     <div class="content">
         <a href="{{ prod.url }}" class="after:content-[''] after:inset-0 after:absolute">

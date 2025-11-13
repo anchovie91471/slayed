@@ -6,7 +6,7 @@
                 {% assign featured_collection = section.settings.featured_collection %}
                 <div class="product-grid">
                     {% for product in featured_collection.products %}
-                        {% render 'product-grid-item', prod: product %}
+                        {% render 'product-grid-item', prod: product, is_first: forloop.first %}
                     {% endfor %}
                 </div>
             </div>
