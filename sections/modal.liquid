@@ -4,12 +4,14 @@
         x-init="init($el)"
         class="max-w-md rounded-md"
         @click="close($event)"
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
 >
     <form action="" class="p-12">
         <div class="prose">
-            <h1>{{ settings.modal_title }}</h1>
-            <p>{{ settings.modal_description }}</p>
-            <button type="button" @click="open = false" class="btn rounded-none">
+            <h1 id="modal-title">{{ settings.modal_title }}</h1>
+            <p id="modal-description">{{ settings.modal_description }}</p>
+            <button type="button" @click="open = false" class="btn rounded-none" aria-label="Close dialog">
                 Close
             </button>
         </div>
@@ -82,6 +84,19 @@
       "name": "Modal"
     }
   ],
-  "settings": []
+  "settings": [
+    {
+      "type": "text",
+      "id": "modal_title",
+      "label": "Modal Title",
+      "default": "Modal Title"
+    },
+    {
+      "type": "textarea",
+      "id": "modal_description",
+      "label": "Modal Description",
+      "default": "This is a modal description."
+    }
+  ]
 }
 {% endschema %}

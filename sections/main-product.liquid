@@ -209,9 +209,6 @@
                             width="{{ media.width }}"
                             class="absolute h-full w-full object-cover inset-0"
                             loading="eager">
-                    <h1 class="text-4xl z-50 relative">
-                        {{ product.selected_or_first_available_variant.options }}
-                    </h1>
                 </div>
                 <span class="absolute top-0 left-0 z-100 text-[10px]">
           {{ product.selected_or_first_available_variant.id }}
@@ -241,16 +238,16 @@
                     <div class="quantity-row">
                         <label for="quantity-control-input">Quantity</label>
                         <div class="quantity-control-container">
-                            <button type="button" @click="decrementQuantity()">
+                            <button type="button" @click="decrementQuantity()" aria-label="Decrease quantity">
                                 {% render 'icon-minus' %}
                             </button>
                             <input
-                                    tabindex="-1"
                                     type="number"
                                     id="quantity-control-input"
                                     x-model.number="quantity"
-                                    disabled="">
-                            <button type="button" @click="incrementQuantity()">
+                                    min="1"
+                                    aria-label="Quantity">
+                            <button type="button" @click="incrementQuantity()" aria-label="Increase quantity">
                                 {% render 'icon-plus' %}
                             </button>
                         </div>
@@ -377,7 +374,6 @@
         appearance: none;
         -webkit-appearance: none;
         border: none;
-        pointer-events: none;
         width: 48px;
         text-align: center;
         padding: 0;

@@ -23,4 +23,46 @@
     dialog {
         margin: auto;
     }
+
+    /* Modern focus styles using focus-visible (2025 best practice) */
+    /* Only show focus outline when keyboard navigating, not on mouse click */
+    *:focus-visible {
+        outline: 2px solid #3B82F6; /* blue-500 */
+        outline-offset: 2px;
+        border-radius: 2px;
+    }
+
+    /* Remove default focus outline when focus-visible is supported */
+    *:focus:not(:focus-visible) {
+        outline: none;
+    }
+
+    /* Skip links - visible on keyboard focus */
+    .skip-to-content-link {
+        position: absolute;
+        left: -9999px;
+        z-index: 999;
+        padding: 1em;
+        background-color: #1F2937; /* gray-800 */
+        color: white;
+        text-decoration: none;
+        border-radius: 0 0 4px 0;
+    }
+
+    .skip-to-content-link:focus {
+        left: 0;
+        top: 0;
+    }
+
+    /* Respect user's motion preferences (2025 accessibility best practice) */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
 }
