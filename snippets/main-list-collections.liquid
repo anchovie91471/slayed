@@ -1,0 +1,52 @@
+{% unless collection %}
+    {% assign collection = collections.all %}
+{% endunless %}
+
+<div class="px-6 md:px-8 py-12">
+    <div class="list-collections-inner container mx-auto">
+        <h1 class="mb-8 mx-auto max-w-max">
+            Collections
+        </h1>
+        {% render 'collections-list' %}
+
+        <div class="grid-wrapper">
+            {%- paginate collection.products by 12 -%}
+                <div class="product-grid">
+                    {% for prod in collection.products %}
+                        {% render 'product-grid-item', prod: prod %}
+                    {% endfor %}
+                </div>
+
+                {% render 'pagination-navigation', paginate: paginate %}
+            {% endpaginate %}
+        </div>
+    </div>
+
+    <style>
+        .list-collections h1 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .list-collections {
+            padding: 20px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        }
+
+        .list-collections .pagination-nav {
+            margin-top: 40px;
+        }
+
+        .list-collections .pagination-nav .pagination {
+            display: flex;
+            gap: 10px;
+            margin: auto;
+            max-width: max-content;
+        }
+    </style>
+</div>

@@ -1,0 +1,112 @@
+{% comment %}
+  Docs on the Shopify search object
+  https://shopify.dev/api/liquid/objects/search#search-results
+{% endcomment %}
+
+<div class="px-6 md:px-8 py-12">
+    <div class="search-inner mx-auto container">
+        {% if search.performed %}
+            <h1>Search Results</h1>
+        {% else %}
+            <h1>Search</h1>
+        {% endif %}
+
+        <form action="{{ routes.search_url }}" class="flex my-8 space-x-2" role="search">
+            <label for="search-input" class="sr-only">Search</label>
+            <input
+                    type="search"
+                    id="search-input"
+                    placeholder="Search"
+                    name="q"
+                    value="{{ search.terms | escape }}"
+                    autocomplete="off"
+                    class="vast-input"
+            >
+            <!-- <input type="hidden" name="type" value="product" /> -->
+            <button type="submit" class="pill-button">Search</button>
+        </form>
+
+        {% if search.performed %}
+            {% if search.results.size > 0 %}
+                <style>
+                    .product-grid {
+                        display: grid;
+                        grid-gap: 1rem;
+                        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                    }
+                </style>
+
+                {%- paginate search.results by 12 -%}
+                    <div class="product-grid">
+                        {% for item in search.results %}
+                            {% case item.object_type %}
+                                {% when 'product' %}
+                                    {% render 'product-grid-item', prod: item %}
+                                {% when 'article' %}
+                                    <div class="article-grid-item">
+                                        <div class="article-grid-item-inner">
+                                            {% if item.image %}
+                                                <img
+                                                        src="{{ item.image | image_url: width: 410 }}"
+                                                        srcset="{{ item.image | image_url: width: 205 }} 1x, {{ item.image | image_url: width: 410 }} 2x"
+                                                        loading="lazy"
+                                                        width="{{ item.image.width }}"
+                                                        height="{{ item.image.height }}"
+                                                        alt="{{ item.image.alt }}"
+                                                >
+                                            {% endif %}
+                                            <div class="content">
+                                                <a href="{{ item.url }}">
+                                                    <h3 class="h3 dark">{{ item.title }}</h3>
+                                                </a>
+                                                <p class="article-excerpt">
+                                                    {{ item.excerpt_or_content | truncate: 100 }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% when 'page' %}
+                                    <div class="page-grid-item">
+                                        <div class="page-grid-item-inner" style="padding-top: 141%; position: relative;">
+                                            {% if item.featured_image %}
+                                                <img
+                                                        src="{{ item.featured_image | image_url: width: 410 }}"
+                                                        srcset="{{ item.featured_image | image_url: width: 205 }} 1x, {{ item.featured_image | image_url: width: 410 }} 2x"
+                                                        loading="lazy"
+                                                        width="{{ item.featured_image.width }}"
+                                                        height="{{ item.featured_image.height }}"
+                                                        alt="{{ item.featured_image.alt }}"
+                                                        class="absolute object-contain inset-0"
+                                                >
+                                            {% else %}
+                                                <img
+                                                        src="{{ 'no-image-found.jpg' | asset_url }}"
+                                                        loading="lazy"
+                                                        width="205"
+                                                        height="auto"
+                                                        alt="no-image-found"
+                                                        class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                                                >
+                                            {% endif %}
+                                            <div class="content">
+                                                <a href="{{ item.url }}">
+                                                    <h3 class="h3 dark">
+                                                        {{ item.title }}
+                                                    </h3>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    This item cannot be displayed.
+                            {% endcase %}
+                        {% endfor %}
+                    </div>
+                    {% render 'pagination-navigation', paginate: paginate %}
+                {% endpaginate %}
+            {% else %}
+                There are no results
+            {% endif %}
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,37 @@
+{% comment %} @todo: Convert to footer-group json {% endcomment %}
+<div class="bg-gray-900 text-white px-6 md:px-8 py-12">
+    <div class="container mx-auto">
+        <nav aria-label="Footer navigation">
+            {% for link in linklists.footer.links %}
+                <a href="{{ link.url }}">
+                    {{ link.title }}
+                </a>
+            {% endfor %}
+        </nav>
+
+        {% if section.settings.show_social_icons %}
+            <div class="flex gap-4 items-center mt-6">
+                {% assign platforms = "facebook,instagram,youtube,tiktok,twitter,snapchat,pinterest,tumblr,vimeo" | split: "," %}
+
+                {% for platform in platforms %}
+                    {% assign setting_key = 'social_' | append: platform | append: '_link' %}
+                    {% assign platform_url = settings[setting_key] %}
+
+                    {% if platform_url != blank %}
+                        <a href="{{ platform_url }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="text-white hover:opacity-70 transition-opacity"
+                           aria-label="{{ platform | capitalize }}">
+                            {% render 'icon-' | append: platform %}
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <small>
+            &copy; {{ "now" | date: "%Y" }} VAST Starter Theme
+        </small>
+    </div>
+</div>
