@@ -7,15 +7,13 @@
 
 <div class="product-grid-item relative group">
     <div class="block image-wrapper relative pt-[140%]">
-        <img
-                width="{{ prod.featured_image.width }}"
-                height="{{ prod.featured_image.height }}"
-                src="{{ prod.featured_image | image_url: width: 410 }}"
-                srcset="{{ prod.featured_image | image_url: width: 205 }} 1x, {{ prod.featured_image | image_url: width: 410 }} 2x"
-                alt="{{ prod.featured_image.alt }}"
-                class="absolute inset-0 object-cover h-full"
-                loading="lazy"
-        >
+        {{ prod.featured_image | image_tag:
+            width: prod.featured_image.width,
+            height: prod.featured_image.height,
+            class: "absolute inset-0 object-cover h-full",
+            alt: prod.featured_image.alt,
+            widths: "205,410",
+            loading: "lazy" }}
     </div>
     <div class="content">
         <a href="{{ prod.url }}" class="after:content-[''] after:inset-0 after:absolute">
