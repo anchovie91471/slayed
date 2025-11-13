@@ -6,8 +6,8 @@
         <h2 id="minicart-label" class="text-blue-500">
             Cart
         </h2>
-        <button @click="$store.global.isMinicartVisible = false">
-            {% render 'icon-close-x' %}
+        <button class="size-6 text-gray-500 hover:text-gray-600" @click="$store.global.isMinicartVisible = false">
+            {% render 'icon-close-x', size: 'size-8' %}
         </button>
     </div>
     <div class="item-count-message">
@@ -176,11 +176,6 @@
         border: none;
         background: transparent;
         cursor: pointer;
-    }
-
-    .minicart .title-row button svg {
-        display: block;
-        height: 16px;
     }
 
     .minicart .items-list {
