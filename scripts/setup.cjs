@@ -420,7 +420,7 @@ theme = "${productionThemeId}"
   }
 
   console.log('\n' + chalk.gray('─'.repeat(50)));
-  console.log(chalk.gray('\nTip: For faster HMR, use ' + chalk.cyan('npm run dev:vite-server') + ' instead.'));
+  console.log(chalk.gray('\nTip: For typical vite HMR, use ' + chalk.cyan('npm run dev:vite-server') + ' instead.'));
   console.log(chalk.gray('     (Requires accepting SSL cert at https://127.0.0.1:3000 first)\n'));
 }
 
