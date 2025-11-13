@@ -3,10 +3,21 @@
 }
 
 @font-face {
-    font-family: 'Open Sans';
-    src: url(@/fonts/OpenSans-Regular.woff2) format('woff2'),
-    url(@/fonts/OpenSans-Regular.woff) format('woff');
-    font-weight: normal;
+    font-family: 'Zalando Sans SemiExpanded';
+    src: url('/ZalandoSans[wdth,wght,slnt].woff2') format('woff2-variations');
+    font-weight: 100 900;
+    font-stretch: 75% 125%;
     font-style: normal;
     font-display: swap;
+    font-variation-settings: 'wdth' 112.5;
+}
+
+@font-face {
+    font-family: 'Zalando Sans SemiExpanded';
+    src: url('/ZalandoSans[wdth,wght,slnt].woff2') format('woff2-variations');
+    font-weight: 100 900;
+    font-stretch: 75% 125%;
+    font-style: italic;
+    font-display: swap;
+    font-variation-settings: 'wdth' 112.5, 'slnt' -12;
 }

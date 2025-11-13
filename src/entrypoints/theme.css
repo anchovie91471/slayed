@@ -7,7 +7,8 @@
 
 @theme {
     /* Custom Font */
-    --font-family-open-sans: "Open Sans", sans-serif;
+    --font-family-zalando: "Zalando Sans SemiExpanded", sans-serif;
+    --font-family: var(--font-family-zalando);
 }
 
 /* Typography Plugin Customization */

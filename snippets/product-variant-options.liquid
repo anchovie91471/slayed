@@ -71,13 +71,13 @@
                 @change="updateVariant('{{ option.name }}', '{{ value | escape }}')"
                 :checked="selectedOptions['{{ option.name }}'] === '{{ value | escape }}'"
                 :disabled="!isOptionAvailable('{{ option.name }}', '{{ value | escape }}', $store.productData.product)"
-                class="hidden [&.disabled+label]:line-through [&:checked+label]:bg-blue-500 [&:checked+label]:text-white"
+                class="sr-only peer"
         >
         <label
                 for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
                 @keyup.enter="$el.click()"
                 tabindex="0"
-                class="bg-slate-100 text-black"
+                class="inline-block px-5 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 cursor-pointer hover:bg-gray-50 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 peer-disabled:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:line-through peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-400 peer-focus:ring-offset-2 transition-colors"
         >
             {{ value -}}
             <span class="sr-only">{{ 'products.product.variant_sold_out_or_unavailable' | t }}</span>
