@@ -1,65 +1,6 @@
-<predictive-search
-        x-data
-        x-cloak
-        id="predictive-search"
-        x-show="$store.global.isPredictiveSearchVisible"
-        x-trap.inert="$store.global.isPredictiveSearchVisible"
-        x-transition.opacity
-        aria-modal="true"
-        @keyup.escape="$store.global.isPredictiveSearchVisible = false"
->
-    <div
-            id="predictive-search-form-wrapper"
-            class="w-full bg-white fixed inset-x-0 top-0 z-40 pt-9 pb-9 shadow-md text-gray-500 hover:text-gray-600 cursor-pointer"
-    >
-        <form
-                action="{{ routes.search_url }}"
-                method="get"
-                role="search"
-                class="w-full max-w-[422px] mx-auto"
-                @click.outside="$store.global.isPredictiveSearchVisible = false"
-        >
-            <div class="flex gap-x-3 w-full relative">
-                <label for="predictive-search-input" class="sr-only">Search</label>
-                <input
-                        placeholder="{{ section.settings.prompt_text | default: "Search" }}"
-                        id="predictive-search-input"
-                        class="vast-input w-full"
-                        type="search"
-                        name="q"
-                        value="{{ search.terms | escape }}"
-                        autocomplete="off"
-                        role="combobox"
-                        aria-expanded="false"
-                        aria-owns="predictive-search-results"
-                        aria-controls="predictive-search-results"
-                        aria-haspopup="listbox"
-                        aria-autocomplete="list"
-                >
-                <button
-                        for="predictive-search-input"
-                        class="pill-button"
-                >
-                    Search
-                </button>
+{%- render 'predictive-search-main' with section as section -%}
 
-                <button
-                        type="button"
-                        class="absolute -right-[15px] top-1/2 -translate-y-1/2 translate-x-full"
-                        @click="$store.global.isPredictiveSearchVisible = false"
-                >
-                    <span class="sr-only">Close</span>
-                    {% render 'icon-close-x' %}
-                </button>
-            </div>
-            <input name="options[prefix]" type="hidden" value="last">
-            <div id="predictive-search-target" tabindex="-1"></div>
-        </form>
-    </div>
-</predictive-search>
-
-<script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
-{%- comment -%} schematic {%- endcomment -%}
+{%- comment -%} schematic writeCodeShort {%- endcomment -%}
 {% schema %}
 {
   "name": "Predictive Search",
