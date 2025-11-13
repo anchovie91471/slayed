@@ -6,72 +6,76 @@
         <div class="cart-inner container mx-auto">
             {% if cart.item_count > 0 %}
                 <table style="width:100%">
-                    <tr style="text-align: left;">
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th></th>
-                        <th>Total</th>
-                    </tr>
-                    {% for line_item in cart.items %}
-                        <tr>
-                            <td>
-                                {{ line_item.title }}
-                                <div data-ajax-cart-errors="{{ line_item.key }}" style="color: red; font-size: 10px;">
-                                    <!-- Error messages appear here -->
-                                </div>
-                            </td>
-                            <td>
-                                {{ line_item.price | money }}
-                            </td>
-                            <td>
-                                <ajax-cart-quantity class="flex">
-                                    <a href="{{ routes.cart_change_url }}?id={{ line_item.key }}&quantity={{ line_item.quantity | minus: 1 | at_least: 1 }}" data-ajax-cart-quantity-minus>
-                                        <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24"
-                                                fill="currentColor"
-                                                class="w-6 h-6">
-                                            <path
-                                                    fill-rule="evenodd"
-                                                    d="M5.25 12a.75.75 0 01.75-.75h12a.75.75 0 010 1.5H6a.75.75 0 01-.75-.75z"
-                                                    clip-rule="evenodd"/>
-                                        </svg>
-
-                                    </a>
-                                    <input
-                                            type="number"
-                                            value="{{ line_item.quantity }}"
-                                            name="updates[]"
-                                            data-ajax-cart-quantity-input="{{ line_item.key }}"
-                                            style="width: 40px;"
-                                            class="noscroll"
-                                            readonly>
-                                    <span class="loading-indicator hidden" role="alert" aria-busy="false">
-                    {% render 'icon-spinner' %}
-                  </span>
-                                    <a href="{{ routes.cart_change_url }}?id={{ line_item.key }}&quantity={{ line_item.quantity | plus: 1 }}" data-ajax-cart-quantity-plus>
-                                        <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24"
-                                                fill="currentColor"
-                                                class="w-6 h-6">
-                                            <path
-                                                    fill-rule="evenodd"
-                                                    d="M12 5.25a.75.75 0 01.75.75v5.25H18a.75.75 0 010 1.5h-5.25V18a.75.75 0 01-1.5 0v-5.25H6a.75.75 0 010-1.5h5.25V6a.75.75 0 01.75-.75z"
-                                                    clip-rule="evenodd"/>
-                                        </svg>
-                                    </a>
-                                </ajax-cart-quantity>
-                            </td>
-                            <td>
-                                <a href="{{ line_item.url_to_remove }}" @click.prevent="window.location.replace($el.href)">Remove</a>
-                            </td>
-                            <td>
-                                {{ line_item.final_line_price | money }}
-                            </td>
+                    <thead>
+                        <tr style="text-align: left;">
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th><span class="sr-only">Remove item</span></th>
+                            <th>Total</th>
                         </tr>
-                    {% endfor %}
+                    </thead>
+                    <tbody>
+                        {% for line_item in cart.items %}
+                            <tr>
+                                <td>
+                                    {{ line_item.title }}
+                                    <div data-ajax-cart-errors="{{ line_item.key }}" style="color: red; font-size: 10px;">
+                                        <!-- Error messages appear here -->
+                                    </div>
+                                </td>
+                                <td>
+                                    {{ line_item.price | money }}
+                                </td>
+                                <td>
+                                    <ajax-cart-quantity class="flex">
+                                        <a href="{{ routes.cart_change_url }}?id={{ line_item.key }}&quantity={{ line_item.quantity | minus: 1 | at_least: 1 }}" data-ajax-cart-quantity-minus>
+                                            <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24"
+                                                    fill="currentColor"
+                                                    class="w-6 h-6">
+                                                <path
+                                                        fill-rule="evenodd"
+                                                        d="M5.25 12a.75.75 0 01.75-.75h12a.75.75 0 010 1.5H6a.75.75 0 01-.75-.75z"
+                                                        clip-rule="evenodd"/>
+                                            </svg>
+
+                                        </a>
+                                        <input
+                                                type="number"
+                                                value="{{ line_item.quantity }}"
+                                                name="updates[]"
+                                                data-ajax-cart-quantity-input="{{ line_item.key }}"
+                                                style="width: 40px;"
+                                                class="noscroll"
+                                                readonly>
+                                        <span class="loading-indicator hidden" role="alert" aria-busy="false">
+                        {% render 'icon-spinner' %}
+                      </span>
+                                        <a href="{{ routes.cart_change_url }}?id={{ line_item.key }}&quantity={{ line_item.quantity | plus: 1 }}" data-ajax-cart-quantity-plus>
+                                            <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24"
+                                                    fill="currentColor"
+                                                    class="w-6 h-6">
+                                                <path
+                                                        fill-rule="evenodd"
+                                                        d="M12 5.25a.75.75 0 01.75.75v5.25H18a.75.75 0 010 1.5h-5.25V18a.75.75 0 01-1.5 0v-5.25H6a.75.75 0 010-1.5h5.25V6a.75.75 0 01.75-.75z"
+                                                        clip-rule="evenodd"/>
+                                            </svg>
+                                        </a>
+                                    </ajax-cart-quantity>
+                                </td>
+                                <td>
+                                    <a href="{{ line_item.url_to_remove }}" @click.prevent="window.location.replace($el.href)">Remove</a>
+                                </td>
+                                <td>
+                                    {{ line_item.final_line_price | money }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
                 </table>
 
                 <div class="cart-summary-row py-8 flex flex-col ">

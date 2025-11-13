@@ -241,7 +241,7 @@
                     <div class="quantity-row">
                         <label for="quantity-control-input">Quantity</label>
                         <div class="quantity-control-container">
-                            <button type="button" @click="decrementQuantity()">
+                            <button type="button" @click="decrementQuantity()" aria-label="Decrease quantity">
                                 {% render 'icon-minus' %}
                             </button>
                             <input
@@ -250,7 +250,7 @@
                                     id="quantity-control-input"
                                     x-model.number="quantity"
                                     disabled="">
-                            <button type="button" @click="incrementQuantity()">
+                            <button type="button" @click="incrementQuantity()" aria-label="Increase quantity">
                                 {% render 'icon-plus' %}
                             </button>
                         </div>
@@ -262,7 +262,8 @@
                                 id="product_form_id"
                                 class="product-form"
                                 novalidate="novalidate"
-                                data-product-form>
+                                data-product-form
+                                aria-describedby="product-form-errors">
                             <input
                                     type="hidden"
                                     name="id"
@@ -284,7 +285,7 @@
                                     <span x-show="isProcessing">Adding to cart...</span>
                                 </button>
                             </div>
-                            <div data-ajax-cart-errors="form" class="text-red-500">
+                            <div id="product-form-errors" data-ajax-cart-errors="form" class="text-red-500" role="alert">
                                 <!-- Error messages appear here -->
                             </div>
 
