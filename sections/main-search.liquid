@@ -11,16 +11,19 @@
             <h1>Search</h1>
         {% endif %}
 
-        <form action="{{ routes.search_url }}" class="flex my-8 space-x-2">
+        <form action="{{ routes.search_url }}" class="flex my-8 space-x-2" role="search">
+            <label for="search-input" class="sr-only">Search</label>
             <input
-                    type="text"
+                    type="search"
+                    id="search-input"
                     placeholder="Search"
                     name="q"
                     value="{{ search.terms | escape }}"
+                    autocomplete="off"
                     class="vast-input"
             >
             <!-- <input type="hidden" name="type" value="product" /> -->
-            <input type="submit" value="Search" class="pill-button"/>
+            <button type="submit" class="pill-button">Search</button>
         </form>
 
         {% if search.performed %}

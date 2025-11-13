@@ -22,6 +22,7 @@
                 @click.outside="$store.global.isPredictiveSearchVisible = false"
         >
             <div class="flex gap-x-3 w-full relative">
+                <label for="predictive-search-input" class="sr-only">Search</label>
                 <input
                         placeholder="{{ section.settings.prompt_text | default: "Search" }}"
                         id="predictive-search-input"
@@ -29,6 +30,7 @@
                         type="search"
                         name="q"
                         value="{{ search.terms | escape }}"
+                        autocomplete="off"
                         role="combobox"
                         aria-expanded="false"
                         aria-owns="predictive-search-results"
@@ -36,7 +38,6 @@
                         aria-haspopup="listbox"
                         aria-autocomplete="list"
                 >
-                <label for="predictive-search-input" class="sr-only"> Search </label>
                 <button
                         for="predictive-search-input"
                         class="pill-button"
