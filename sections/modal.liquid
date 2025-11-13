@@ -1,3 +1,9 @@
+<style>
+    #dialog-modal-example::backdrop {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+</style>
+
 <dialog
         id="dialog-modal-example"
         x-data="modal"
@@ -67,12 +73,6 @@
         }))
     })
 </script>
-
-<style>
-    #dialog-modal-example::backdrop {
-        background-color: rgba(0, 0, 0, 0.5);
-    }
-</style>
 {%- comment -%} schematic {%- endcomment -%}
 {% schema %}
 {

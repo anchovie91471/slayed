@@ -1,3 +1,60 @@
+<style>
+    .cart .cart-inner .cart-summary-row {
+        padding: 30px 0;
+        display: flex;
+        flex-direction: column;
+        align-line_items: flex-end;
+    }
+
+    .cart a {
+        text-decoration: none;
+    }
+
+    .cart .cart-inner .cart-summary-row .btn {
+        max-width: 350px;
+    }
+
+    .cart .error-notif {
+        display: block;
+        font-size: 12px;
+        color: red;
+    }
+
+    .cart tr > td,
+    .cart tr > th {
+        padding-bottom: 1em;
+    }
+
+    .cart .loading-indicator {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 16px;
+        width: 16px;
+    }
+
+    .cart .loading-indicator.hidden {
+        display: none;
+    }
+
+    .cart input[type="number"] {
+        text-align: center;
+    }
+
+    .cart input::-webkit-outer-spin-button,
+    .cart input::-webkit-inner-spin-button {
+        /* display: none; <- Crashes Chrome on hover */
+        -webkit-appearance: none;
+        margin: 0;
+        /* <-- Apparently some margin are still there even though it's hidden */
+    }
+
+    .cart input[type=number] {
+        -moz-appearance: textfield;
+        /* Firefox */
+    }
+</style>
+
 <div class="cart px-6 md:px-8 py-12" data-ajax-cart-section>
     <form
             action="{{ routes.cart_url }}"
@@ -117,63 +174,6 @@
     }
   });
 </script> {% endcomment %}
-
-<style>
-    .cart .cart-inner .cart-summary-row {
-        padding: 30px 0;
-        display: flex;
-        flex-direction: column;
-        align-line_items: flex-end;
-    }
-
-    .cart a {
-        text-decoration: none;
-    }
-
-    .cart .cart-inner .cart-summary-row .btn {
-        max-width: 350px;
-    }
-
-    .cart .error-notif {
-        display: block;
-        font-size: 12px;
-        color: red;
-    }
-
-    .cart tr > td,
-    .cart tr > th {
-        padding-bottom: 1em;
-    }
-
-    .cart .loading-indicator {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        height: 16px;
-        width: 16px;
-    }
-
-    .cart .loading-indicator.hidden {
-        display: none;
-    }
-
-    .cart input[type="number"] {
-        text-align: center;
-    }
-
-    .cart input::-webkit-outer-spin-button,
-    .cart input::-webkit-inner-spin-button {
-        /* display: none; <- Crashes Chrome on hover */
-        -webkit-appearance: none;
-        margin: 0;
-        /* <-- Apparently some margin are still there even though it's hidden */
-    }
-
-    .cart input[type=number] {
-        -moz-appearance: textfield;
-        /* Firefox */
-    }
-</style>
 {%- comment -%} schematic {%- endcomment -%}
 {% schema %}
 {
