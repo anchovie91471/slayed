@@ -2,14 +2,12 @@
         id="mobile-menu-list"
         class="mobile-menu-list z-20 p-[30px] bg-slate-900 w-screen -left-6 absolute top-full"
         x-show="$store.global.isMobileMenuVisible"
-        role="menu"
 >
     {% for link in linklists['main-menu'].links %}
-        <li class="mobile-menu-item" role="presentation">
-            <a href="{{ link.url }}" role="menuitem">{{ link.title }}</a>
+        <li class="mobile-menu-item">
+            <a href="{{ link.url }}">{{ link.title }}</a>
         </li>
     {% endfor %}
-    <li></li>
 </ul>
 
 <style>

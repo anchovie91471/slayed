@@ -10,8 +10,15 @@
                             x-data="{ expanded: false }"
                             class="my-4"
                             x-id="['item-trigger', 'item-panel']">
-                        <h3 class="cursor-pointer" @click="expanded = !expanded" :aria-controls="$id('item-panel')" :aria-expanded="expanded">
-                            {{ block.settings.heading }}
+                        <h3>
+                            <button
+                                    type="button"
+                                    class="faq-trigger w-full text-left cursor-pointer"
+                                    @click="expanded = !expanded"
+                                    :aria-controls="$id('item-panel')"
+                                    :aria-expanded="expanded">
+                                {{ block.settings.heading }}
+                            </button>
                         </h3>
                         <div x-cloak x-show="expanded" x-collapse :id="$id('item-panel')">
                             <p>
@@ -24,6 +31,27 @@
         </div>
     </div>
 </div>
+
+<style>
+    .faq-section .faq-trigger {
+        appearance: none;
+        -webkit-appearance: none;
+        background: transparent;
+        border: none;
+        padding: 0;
+        font-size: inherit;
+        font-weight: inherit;
+        color: inherit;
+        font-family: inherit;
+        line-height: inherit;
+    }
+
+    .faq-section .faq-trigger:focus-visible {
+        outline: 2px solid #08f;
+        outline-offset: 2px;
+    }
+</style>
+
 {%- comment -%} schematic {%- endcomment -%}
 {% schema %}
 {

@@ -1,15 +1,15 @@
 {%- if paginate.pages > 1 -%}
-    <nav class="pagination-nav my-12 max-w-max mx-auto" role="navigation">
-        <ol class="pagination flex items-center space-x-2" role="menu">
+    <nav class="pagination-nav my-12 max-w-max mx-auto" aria-label="Pagination">
+        <ol class="pagination flex items-center space-x-2">
             {%- if paginate.previous -%}
-                <li role="presentation">
-                    <a href="{{ paginate.previous.url }}" role="menuitem">
+                <li>
+                    <a href="{{ paginate.previous.url }}" aria-label="Go to previous page">
                         <span aria-hidden="true">&laquo;</span>
                         Previous
                     </a>
                 </li>
             {%- else -%}
-                <li class="disabled" role="presentation">
+                <li class="disabled">
                     <span aria-hidden="true">&laquo;</span>
                     Previous
                 </li>
@@ -17,19 +17,18 @@
 
             {%- for part in paginate.parts -%}
                 {%- if part.is_link -%}
-                    <li role="presentation">
-                        <a href="{{ part.url }}" role="menuitem">
-                            <span class="visuallyhidden"></span>
+                    <li>
+                        <a href="{{ part.url }}" aria-label="Go to page {{ part.title }}">
                             {{ part.title }}
                         </a>
                     </li>
                 {%- else -%}
                     {%- if part.title == paginate.current_page -%}
-                        <li aria-current="page" class="active" role="presentation">
+                        <li aria-current="page" class="active">
                             {{ part.title }}
                         </li>
                     {%- else -%}
-                        <li role="presentation">
+                        <li>
                             {{ part.title }}
                         </li>
                     {%- endif -%}
@@ -37,14 +36,14 @@
             {%- endfor -%}
 
             {%- if paginate.next -%}
-                <li role="presentation">
-                    <a href="{{ paginate.next.url }}" role="menuitem">
+                <li>
+                    <a href="{{ paginate.next.url }}" aria-label="Go to next page">
                         Next
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
             {%- else -%}
-                <li class="disabled" role="presentation">
+                <li class="disabled">
                     Next
                     <span aria-hidden="true">&raquo;</span>
                 </li>
