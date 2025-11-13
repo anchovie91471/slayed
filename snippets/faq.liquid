@@ -1,53 +1,40 @@
-<div class="section">
-    <div class="px-6 md:px-8">
-        <div class="container mx-auto py-8">
-            <h1>
-                {{ section.settings.heading }}
-            </h1>
-            <div>
-                {% for block in section.blocks %}
-                    <div
-                            x-data="{ expanded: false }"
-                            class="my-4"
-                            x-id="['item-trigger', 'item-panel']">
-                        <h3>
-                            <button
-                                    type="button"
-                                    class="faq-trigger w-full text-left cursor-pointer"
-                                    @click="expanded = !expanded"
-                                    :aria-controls="$id('item-panel')"
-                                    :aria-expanded="expanded">
-                                {{ block.settings.heading }}
-                            </button>
-                        </h3>
-                        <div x-cloak x-show="expanded" x-collapse :id="$id('item-panel')">
-                            <p>
-                                {{ block.settings.body }}
-                            </p>
+<div class="px-6 md:px-8 py-12">
+    <div class="container mx-auto max-w-3xl">
+        <h1 class="text-3xl font-bold text-gray-900 text-center mb-8">
+            {{ section.settings.heading }}
+        </h1>
+        <div class="space-y-4">
+            {% for block in section.blocks %}
+                <div
+                        x-data="{ expanded: false }"
+                        class="border border-gray-200 rounded-lg overflow-hidden"
+                        x-id="['item-trigger', 'item-panel']">
+                    <h3 class="m-0">
+                        <button
+                                type="button"
+                                class="w-full text-left bg-transparent border-0 p-0 appearance-none flex items-center justify-between px-6 py-4 text-lg font-medium text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-400 transition-colors"
+                                @click="expanded = !expanded"
+                                :aria-controls="$id('item-panel')"
+                                :aria-expanded="expanded">
+                            <span>{{ block.settings.heading }}</span>
+                            <svg
+                                    class="w-5 h-5 text-gray-500 transition-transform duration-200"
+                                    :class="{ 'rotate-180': expanded }"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20"
+                                    fill="currentColor"
+                                    aria-hidden="true">
+                                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </h3>
+                    <div x-cloak x-show="expanded" x-collapse :id="$id('item-panel')">
+                        <div class="px-6 pb-4 text-gray-600 [&_a]:text-blue-500 [&_a:hover]:text-blue-600 [&_a:hover]:underline [&_a:focus]:outline-none [&_a:focus]:ring-2 [&_a:focus]:ring-blue-400">
+                            {{ block.settings.body }}
                         </div>
                     </div>
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 </div>
-
-<style>
-    .faq-section .faq-trigger {
-        appearance: none;
-        -webkit-appearance: none;
-        background: transparent;
-        border: none;
-        padding: 0;
-        font-size: inherit;
-        font-weight: inherit;
-        color: inherit;
-        font-family: inherit;
-        line-height: inherit;
-    }
-
-    .faq-section .faq-trigger:focus-visible {
-        outline: 2px solid #08f;
-        outline-offset: 2px;
-    }
-</style>

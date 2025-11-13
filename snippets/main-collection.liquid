@@ -1,11 +1,16 @@
 <div class="px-6 md:px-8 py-12">
-    <div class="collection-inner container mx-auto">
-        <h1 class="mb-12 mx-auto max-w-max">
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 text-center mb-8">
             {{ collection.title }}
         </h1>
-        <div class="grid-wrapper">
+        {% if collection.description != blank %}
+            <div class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+                {{ collection.description }}
+            </div>
+        {% endif %}
+        <div>
             {%- paginate collection.products by 12 -%}
-                <div class="product-grid">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {% for prod in collection.products %}
                         {% render 'product-grid-item', prod: prod %}
                     {% endfor %}
@@ -15,32 +20,4 @@
             {% endpaginate %}
         </div>
     </div>
-
-    <style>
-        .collection h1 {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .collection {
-            padding: 20px;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-gap: 1rem;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        }
-
-        .featured-product-grid .pagination-nav {
-            margin-top: 40px;
-        }
-
-        .featured-product-grid .pagination-nav .pagination {
-            display: flex;
-            gap: 10px;
-            margin: auto;
-            max-width: max-content;
-        }
-    </style>
 </div>

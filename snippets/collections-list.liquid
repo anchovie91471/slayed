@@ -1,21 +1,9 @@
-<ul class="collections-list">
+<ul class="flex justify-center gap-4 mb-10 flex-wrap">
     {% for collection in collections %}
         <li>
-            <a href="{{ collection.url }}">
+            <a href="{{ collection.url }}" class="text-blue-500 hover:text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400">
                 {{ collection.title }}
             </a>
         </li>
     {% endfor %}
 </ul>
-
-<style>
-    .collections-list {
-        display: flex;
-        justify-content: center;
-    }
-
-    .collections-list li + li {
-        margin-left: 1rem;
-        margin-bottom: 40px;
-    }
-</style>

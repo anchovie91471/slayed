@@ -4,14 +4,15 @@
 {% endcomment %}
 
 <div class="px-6 md:px-8 py-12">
-    <div class="search-inner mx-auto container">
+    <div class="mx-auto container">
         {% if search.performed %}
-            <h1>Search Results</h1>
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Search Results</h1>
+            <p class="text-gray-600 mb-8">Found {{ search.results_count }} results for "{{ search.terms }}"</p>
         {% else %}
-            <h1>Search</h1>
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Search</h1>
         {% endif %}
 
-        <form action="{{ routes.search_url }}" class="flex my-8 space-x-2" role="search">
+        <form action="{{ routes.search_url }}" class="flex gap-2 my-8 max-w-2xl" role="search">
             <label for="search-input" class="sr-only">Search</label>
             <input
                     type="search"
@@ -20,7 +21,7 @@
                     name="q"
                     value="{{ search.terms | escape }}"
                     autocomplete="off"
-                    class="vast-input"
+                    class="vast-input flex-1"
             >
             <!-- <input type="hidden" name="type" value="product" /> -->
             <button type="submit" class="pill-button">Search</button>
@@ -28,24 +29,16 @@
 
         {% if search.performed %}
             {% if search.results.size > 0 %}
-                <style>
-                    .product-grid {
-                        display: grid;
-                        grid-gap: 1rem;
-                        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-                    }
-                </style>
-
                 {%- paginate search.results by 12 -%}
-                    <div class="product-grid">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {% for item in search.results %}
                             {% case item.object_type %}
                                 {% when 'product' %}
                                     {% render 'product-grid-item', prod: item %}
                                 {% when 'article' %}
-                                    <div class="article-grid-item">
-                                        <div class="article-grid-item-inner">
-                                            {% if item.image %}
+                                    <div class="border border-gray-200 p-4 group">
+                                        {% if item.image %}
+                                            <div class="relative pt-[66%] overflow-hidden bg-gray-100 mb-4">
                                                 <img
                                                         src="{{ item.image | image_url: width: 410 }}"
                                                         srcset="{{ item.image | image_url: width: 205 }} 1x, {{ item.image | image_url: width: 410 }} 2x"
@@ -53,21 +46,22 @@
                                                         width="{{ item.image.width }}"
                                                         height="{{ item.image.height }}"
                                                         alt="{{ item.image.alt }}"
+                                                        class="absolute inset-0 object-cover h-full w-full group-hover:opacity-75 transition-opacity duration-150"
                                                 >
-                                            {% endif %}
-                                            <div class="content">
-                                                <a href="{{ item.url }}">
-                                                    <h3 class="h3 dark">{{ item.title }}</h3>
-                                                </a>
-                                                <p class="article-excerpt">
-                                                    {{ item.excerpt_or_content | truncate: 100 }}
-                                                </p>
                                             </div>
+                                        {% endif %}
+                                        <div class="space-y-2">
+                                            <a href="{{ item.url }}" class="after:content-[''] after:inset-0 after:absolute focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-inset">
+                                                <h3 class="text-sm font-medium text-gray-900 group-hover:text-blue-500 transition-colors">{{ item.title }}</h3>
+                                            </a>
+                                            <p class="text-sm text-gray-600">
+                                                {{ item.excerpt_or_content | truncate: 100 }}
+                                            </p>
                                         </div>
                                     </div>
                                 {% when 'page' %}
-                                    <div class="page-grid-item">
-                                        <div class="page-grid-item-inner" style="padding-top: 141%; position: relative;">
+                                    <div class="border border-gray-200 p-4 group">
+                                        <div class="relative pt-[140%] overflow-hidden bg-gray-100 mb-4">
                                             {% if item.featured_image %}
                                                 <img
                                                         src="{{ item.featured_image | image_url: width: 410 }}"
@@ -76,36 +70,34 @@
                                                         width="{{ item.featured_image.width }}"
                                                         height="{{ item.featured_image.height }}"
                                                         alt="{{ item.featured_image.alt }}"
-                                                        class="absolute object-contain inset-0"
+                                                        class="absolute inset-0 object-cover h-full w-full group-hover:opacity-75 transition-opacity duration-150"
                                                 >
                                             {% else %}
-                                                <img
-                                                        src="{{ 'no-image-found.jpg' | asset_url }}"
-                                                        loading="lazy"
-                                                        width="205"
-                                                        height="auto"
-                                                        alt="no-image-found"
-                                                        class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-                                                >
+                                                <div class="absolute inset-0 flex items-center justify-center">
+                                                    <span class="text-gray-400 text-sm">No image</span>
+                                                </div>
                                             {% endif %}
-                                            <div class="content">
-                                                <a href="{{ item.url }}">
-                                                    <h3 class="h3 dark">
-                                                        {{ item.title }}
-                                                    </h3>
-                                                </a>
-                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="{{ item.url }}" class="after:content-[''] after:inset-0 after:absolute focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-inset">
+                                                <h3 class="text-sm font-medium text-gray-900 group-hover:text-blue-500 transition-colors">
+                                                    {{ item.title }}
+                                                </h3>
+                                            </a>
                                         </div>
                                     </div>
                                 {% else %}
-                                    This item cannot be displayed.
+                                    <div class="border border-gray-200 p-4 text-center text-gray-500">This item cannot be displayed.</div>
                             {% endcase %}
                         {% endfor %}
                     </div>
                     {% render 'pagination-navigation', paginate: paginate %}
                 {% endpaginate %}
             {% else %}
-                There are no results
+                <div class="text-center py-12">
+                    <p class="text-gray-600 text-lg">No results found for "{{ search.terms }}"</p>
+                    <p class="text-gray-500 text-sm mt-2">Try searching with different keywords</p>
+                </div>
             {% endif %}
         {% endif %}
     </div>

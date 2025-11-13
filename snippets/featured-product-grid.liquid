@@ -1,42 +1,13 @@
 <div class="px-6 md:px-8 py-12">
     {% if section.settings.featured_collection != blank %}
-        <div class="featured-product-grid-inner container mx-auto">
-            <h2 class="mb-12">Featured Product Grid</h2>
-            <div class="grid-wrapper">
-                {% assign featured_collection = section.settings.featured_collection %}
-                <div class="product-grid">
-                    {% for product in featured_collection.products %}
-                        {% render 'product-grid-item', prod: product, is_first: forloop.first %}
-                    {% endfor %}
-                </div>
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold text-gray-900 text-center mb-8">{{ section.settings.heading | default: "Featured Products" }}</h2>
+            {% assign featured_collection = section.settings.featured_collection %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {% for product in featured_collection.products %}
+                    {% render 'product-grid-item', prod: product, is_first: forloop.first %}
+                {% endfor %}
             </div>
         </div>
-
-        <style>
-            .featured-product-grid {
-                padding: 20px;
-            }
-
-            .featured-product-grid h2 {
-                margin-bottom: 40px;
-            }
-
-            .product-grid {
-                display: grid;
-                grid-gap: 1rem;
-                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            }
-
-            .featured-product-grid .pagination-nav {
-                margin-top: 40px;
-            }
-
-            .featured-product-grid .pagination-nav .pagination {
-                display: flex;
-                gap: 10px;
-                margin: auto;
-                max-width: max-content;
-            }
-        </style>
     {% endif %}
 </div>
