@@ -34,9 +34,7 @@
 
         <a href="{{ routes.root_url }}" class="header-logo">
             {% if settings.logo %}
-                {{ settings.logo | image_tag:
-                    width: 200,
-                    alt: shop.name,
+                {{ settings.logo | image_url: width: 200 | image_tag:
                     loading: "lazy",
                     class: "header-logo-image h-[80px] w-auto mr-4" }}
             {% else %}

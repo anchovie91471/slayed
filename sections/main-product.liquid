@@ -200,11 +200,8 @@
                     {% else %}
                         {% assign media = product.featured_image %}
                     {% endif %}
-                    {{ media | image_tag:
-                        width: media.width,
-                        height: media.height,
+                    {{ media | image_url: width: 1426 | image_tag:
                         class: "absolute h-full w-full object-cover inset-0",
-                        alt: media.alt,
                         sizes: "(min-width: 768px) 55vw, 100vw",
                         widths: "800,1000,1426",
                         loading: "eager" }}

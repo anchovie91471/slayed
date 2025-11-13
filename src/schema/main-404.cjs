@@ -5,5 +5,8 @@ module.exports = {
         class: "section-404",
         tag: "section"
     }),
+    "enabled_on": {
+        "template": "404"
+    },
     "settings": []
 }
