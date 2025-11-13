@@ -6,7 +6,7 @@ module.exports = {
         tag: "section"
     }),
     "enabled_on": {
-        "template": "search"
+        "templates": "search"
     },
     "settings": []
 }

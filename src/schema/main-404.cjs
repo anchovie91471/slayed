@@ -6,7 +6,7 @@ module.exports = {
         tag: "section"
     }),
     "enabled_on": {
-        "template": "404"
+        "templates": "404"
     },
     "settings": []
 }

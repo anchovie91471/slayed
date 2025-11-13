@@ -6,7 +6,7 @@ module.exports = {
         tag: "section"
     }),
     "enabled_on": {
-        "template": "product"
+        "templates": "product"
     },
     "settings": [
         app.make("radio", {
