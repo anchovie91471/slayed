@@ -17,7 +17,7 @@
     "vite:watch": "cross-env NODE_ENV=development vite build --watch --mode development",
     "vite:serve": "cross-env NODE_ENV=development vite",
     "vite:build": "cross-env NODE_ENV=production vite build",
-    "shopify:dev": "shopify theme dev --poll --live-reload=\"hot-reload\" --notify=/tmp/theme.update --theme-editor-sync -e development",
+    "shopify:dev": "shopify theme dev --poll --notify=/tmp/theme.update --theme-editor-sync -e development",
     "shopify:pull": "shopify theme pull",
     "shopify:pull-dev": "shopify theme pull -d"
   },
