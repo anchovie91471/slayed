@@ -6,7 +6,7 @@ module.exports = {
         tag: "section"
     }),
     "enabled_on": {
-        "templates": "page"
+        "templates": ["page"]
     },
     "settings": [
         app.make("image_picker", {

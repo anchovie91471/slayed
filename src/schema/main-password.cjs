@@ -6,7 +6,7 @@ module.exports = {
         tag: "section"
     }),
     "enabled_on": {
-        "templates": "password"
+        "templates": ["password"]
     },
     "settings": []
 }

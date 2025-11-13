@@ -6,6 +6,6 @@ module.exports = {
         tag: "section"
     }),
     "enabled_on": {
-        "templates": "index"
+        "templates": ["index"]
     },
 }

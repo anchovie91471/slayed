@@ -6,7 +6,7 @@ module.exports = {
         tag: "section"
     }),
     "enabled_on": {
-        "templates": "cart"
+        "templates": ["cart"]
     },
     "settings": [
         app.make("text", {

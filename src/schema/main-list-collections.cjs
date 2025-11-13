@@ -6,6 +6,6 @@ module.exports = {
         tag: "section"
     }),
     "enabled_on": {
-        "templates": "list-collections"
+        "templates": ["list-collections"]
     }
 }
