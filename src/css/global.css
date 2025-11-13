@@ -4,7 +4,7 @@
 
 @font-face {
     font-family: 'Zalando Sans SemiExpanded';
-    src: url('/ZalandoSans[wdth,wght,slnt].woff2') format('woff2-variations');
+    src: url('/ZalandoSans.woff2') format('woff2-variations');
     font-weight: 100 900;
     font-stretch: 75% 125%;
     font-style: normal;
@@ -14,7 +14,7 @@
 
 @font-face {
     font-family: 'Zalando Sans SemiExpanded';
-    src: url('/ZalandoSans[wdth,wght,slnt].woff2') format('woff2-variations');
+    src: url('/ZalandoSans.woff2') format('woff2-variations');
     font-weight: 100 900;
     font-stretch: 75% 125%;
     font-style: italic;
