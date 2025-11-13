@@ -5,5 +5,8 @@ module.exports = {
         class: "section-main-blog",
         tag: "section"
     }),
+    "enabled_on": {
+        "template": "blog",
+    },
     "settings": []
 }

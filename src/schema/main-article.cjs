@@ -5,5 +5,8 @@ module.exports = {
         class: "section-main-carticle",
         tag: "section"
     }),
+    "enabled_on": {
+        "template": "article",
+    },
     "settings": []
 }

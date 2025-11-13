@@ -5,6 +5,9 @@ module.exports = {
         class: "section-main-page",
         tag: "section"
     }),
+    "enabled_on": {
+        "template": "page"
+    },
     "settings": [
         app.make("image_picker", {
             id: "featured_image_esc",

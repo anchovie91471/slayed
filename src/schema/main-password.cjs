@@ -5,5 +5,8 @@ module.exports = {
         class: "section-main-password",
         tag: "section"
     }),
+    "enabled_on": {
+        "template": "password"
+    },
     "settings": []
 }

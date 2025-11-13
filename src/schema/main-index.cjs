@@ -5,4 +5,7 @@ module.exports = {
         class: "section-main-index",
         tag: "section"
     }),
+    "enabled_on": {
+        "template": "index"
+    },
 }

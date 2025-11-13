@@ -5,5 +5,8 @@ module.exports = {
         class: "section-main-search",
         tag: "section"
     }),
+    "enabled_on": {
+        "template": "search"
+    },
     "settings": []
 }

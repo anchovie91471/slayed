@@ -5,4 +5,7 @@ module.exports = {
         class: "section-main-collection",
         tag: "section"
     }),
+    "enabled_on": {
+        "template": "collection"
+    },
 }

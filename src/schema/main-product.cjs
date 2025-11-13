@@ -5,6 +5,9 @@ module.exports = {
         class: "section-main-product",
         tag: "section"
     }),
+    "enabled_on": {
+        "template": "product"
+    },
     "settings": [
         app.make("radio", {
             id: "picker_type",
