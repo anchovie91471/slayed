@@ -8,6 +8,37 @@ import fs from 'fs';
 import path from 'path';
 import chokidar from 'chokidar';
 
+// Monkey-patch fs.writeFileSync to prevent unnecessary vite.liquid writes
+const originalWriteFileSync = fs.writeFileSync;
+const viteSnippetPath = path.resolve(process.cwd(), 'snippets', 'vite.liquid');
+let lastViteSnippetContent = null;
+
+// Try to read existing content on startup
+try {
+    lastViteSnippetContent = fs.readFileSync(viteSnippetPath, 'utf-8');
+} catch (err) {
+    // File doesn't exist yet, that's OK
+}
+
+fs.writeFileSync = function(filePath, content, options) {
+    // Check if this is a write to snippets/vite.liquid
+    const resolvedPath = typeof filePath === 'string' ? path.resolve(filePath) : filePath;
+
+    if (resolvedPath === viteSnippetPath || resolvedPath.toString().endsWith('snippets/vite.liquid')) {
+        const contentStr = content.toString();
+
+        // Only write if content has actually changed (prevents rebuild loop)
+        if (contentStr === lastViteSnippetContent) {
+            return; // Don't write, return early
+        }
+
+        lastViteSnippetContent = contentStr;
+    }
+
+    // Call original function for all other files or when content changed
+    return originalWriteFileSync.call(fs, filePath, content, options);
+};
+
 function copyFile(src, dest) {
     fs.mkdirSync(path.dirname(dest), {recursive: true});
     fs.copyFileSync(src, dest);
@@ -42,7 +73,14 @@ function copyPublicToAssetsPlugin() {
 
             if (!watcher && isWatchMode) {
                 // In watch mode: Set up file watcher
-                watcher = chokidar.watch(publicDir, {ignoreInitial: false});
+                // Ignore snippets/vite.liquid to prevent triggering this watcher
+                watcher = chokidar.watch(publicDir, {
+                    ignoreInitial: false,
+                    ignored: [
+                        '**/snippets/vite.liquid',
+                        path.resolve(config.root, 'snippets', 'vite.liquid')
+                    ]
+                });
 
                 watcher.on('add', (filePath) => {
                     const relativePath = path.relative(publicDir, filePath);
@@ -92,6 +130,12 @@ export default {
                 /^https?:\/\/(?:(?:[^:]+\.)?localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/,
                 /^https:\/\/[^\/]+\.myshopify\.com$/
             ]
+        },
+        watch: {
+            ignored: [
+                '**/snippets/vite.liquid',
+                '**/assets/**'
+            ]
         }
     },
     publicDir: 'public',
@@ -101,12 +145,37 @@ export default {
         minify: process.env.NODE_ENV === 'production', // Skip minification in development for faster builds
         sourcemap: process.env.NODE_ENV === 'development', // Add sourcemaps in development for debugging
         watch: process.argv.includes('--watch') ? {
-            ignored: [
-                '**/assets/**',
-                '**/snippets/vite.liquid'
-            ] // Prevent infinite rebuild loop in watch mode
+            // Chokidar options to stabilize file watching
+            awaitWriteFinish: {
+                stabilityThreshold: 100,
+                pollInterval: 100
+            },
+            ignored: (testPath) => {
+                // Function-based ignore for explicit control
+                const viteSnippetPath = path.resolve(process.cwd(), 'snippets', 'vite.liquid');
+                const assetsPath = path.resolve(process.cwd(), 'assets');
+
+                // Ignore vite.liquid file (prevents rebuild loop)
+                if (testPath === viteSnippetPath || testPath.endsWith('snippets/vite.liquid')) {
+                    return true;
+                }
+
+                // Ignore entire assets directory
+                if (testPath.startsWith(assetsPath + path.sep) || testPath === assetsPath) {
+                    return true;
+                }
+
+                return false; // Don't ignore other files
+            }
         } : null, // Disable watch mode for one-time builds
         rollupOptions: {
+            watch: {
+                // Rollup-specific watch configuration
+                exclude: [
+                    'snippets/vite.liquid',  // Only exclude vite.liquid, not all snippets
+                    'assets/**'
+                ]
+            },
             output: {
                 entryFileNames: '[name].[hash].min.js',
                 chunkFileNames: '[name].[hash].min.js',

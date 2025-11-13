@@ -25,6 +25,52 @@ If you're contributing to this repository (not just using the theme), you'll nee
 - Contributors use `.git/info/exclude` for local-only ignore rules that won't be committed
 - Best of both worlds: clean repo for contributors, working GitHub integration for users
 
+## Known Issues & Solutions
+
+### Vite Build Watch Rebuild Loop (Fixed)
+
+The default `npm run dev` command uses `vite build --watch` mode, which writes assets to disk for Shopify CLI upload. This configuration has been carefully tuned to prevent infinite rebuild loops.
+
+**Root Cause:**
+- `vite-plugin-shopify` writes `snippets/vite.liquid` on every build (in the `closeBundle()` hook)
+- File writes can trigger Vite's watcher, causing another rebuild
+- Without proper exclusions, this creates an infinite loop
+
+**Solution Implemented:**
+
+Three layers of protection prevent the rebuild loop:
+
+1. **Monkey-patch fs.writeFileSync** (vite.config.js lines 11-40)
+   - Intercepts all file writes to `snippets/vite.liquid`
+   - Only writes when content has actually changed
+   - Prevents unnecessary file system events
+
+2. **Function-based watch ignore** (vite.config.js lines 149-169)
+   - Explicit path checking for `snippets/vite.liquid` and `assets/**`
+   - Uses `awaitWriteFinish` to stabilize file writes
+   - Prevents watch triggers on excluded paths
+
+3. **Rollup watch exclusions** (vite.config.js lines 171-180)
+   - Excludes `snippets/vite.liquid` (not all snippets)
+   - Excludes `assets/**` directory
+   - Ensures Rollup's internal watcher also ignores these paths
+
+**What Triggers Rebuilds:**
+- ✅ Source files in `src/` directory
+- ✅ Snippet files in `snippets/` (except vite.liquid)
+- ✅ Section files in `sections/`
+- ✅ Layout files in `layout/`
+- ❌ `snippets/vite.liquid` (only writes when content changes)
+- ❌ Files in `assets/**` directory
+
+**Testing:**
+The fix has been tested to ensure:
+- Source code changes trigger single rebuild (no loop)
+- Snippet changes trigger single rebuild (no loop)
+- Section changes trigger single rebuild (no loop)
+- Public directory changes copy files without triggering rebuilds
+- One-time builds (`npm run build`) complete without hanging
+
 ## Project Overview
 
 This is a Shopify theme starter called "VAST" built with Vite, Alpine.js, TailwindCSS, and the Shopify Vite plugin. It includes Liquid Ajax Cart for AJAX cart functionality and Schematic for schema management.
