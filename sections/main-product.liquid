@@ -200,15 +200,14 @@
                     {% else %}
                         {% assign media = product.featured_image %}
                     {% endif %}
-                    <img
-                            src="{{ media | image_url }}"
-                            alt="{{ media.alt }}"
-                            srcset="{{ media | image_url: width: 800 }} 800w, {{ media | image_url: width: 1000 }} 1000w, {{ media | image_url: width: 1426 }} 1426w"
-                            sizes="(min-width: 768px) 55vw, 100vw"
-                            height="{{ media.height }}"
-                            width="{{ media.width }}"
-                            class="absolute h-full w-full object-cover inset-0"
-                            loading="eager">
+                    {{ media | image_tag:
+                        width: media.width,
+                        height: media.height,
+                        class: "absolute h-full w-full object-cover inset-0",
+                        alt: media.alt,
+                        sizes: "(min-width: 768px) 55vw, 100vw",
+                        widths: "800,1000,1426",
+                        loading: "eager" }}
                 </div>
                 <span class="absolute top-0 left-0 z-100 text-[10px]">
           {{ product.selected_or_first_available_variant.id }}

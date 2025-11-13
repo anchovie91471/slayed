@@ -34,12 +34,11 @@
 
         <a href="{{ routes.root_url }}" class="header-logo">
             {% if settings.logo %}
-                <img
-                        src="{{ settings.logo | image_url: width: 200 }}"
-                        alt="{{ shop.name }}"
-                        loading="lazy"
-                        class="header-logo-image h-[80px] w-auto mr-4"
-                >
+                {{ settings.logo | image_tag:
+                    width: 200,
+                    alt: shop.name,
+                    loading: "lazy",
+                    class: "header-logo-image h-[80px] w-auto mr-4" }}
             {% else %}
                 <img
                         src="{{ 'logo.svg' | asset_url }}"
