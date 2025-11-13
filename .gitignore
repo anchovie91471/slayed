@@ -1,10 +1,52 @@
+# Dependencies
 node_modules/
-.DS_Store
-.idea
-*.log
 
-# Shopify CLI
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Shopify CLI (local config, not shared)
 shopify.theme.toml
 
-# Docs
-docs
+# Development documentation (for contributors, not theme users)
+CLAUDE.md
+docs/
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+.cache/
+.temp/
+
+# Build artifacts - IMPORTANT NOTE
+# We intentionally DO NOT ignore assets/ or snippets/vite.liquid
+# This allows Shopify GitHub integration to work for theme users
+# Contributors should use .git/info/exclude to hide build artifacts locally
+# See repository documentation for contributor setup details
