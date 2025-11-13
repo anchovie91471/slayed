@@ -216,7 +216,124 @@ async function setupWithUI() {
     process.exit(0);
   }
 
-  // Step 5: Check if shopify.theme.toml already exists
+  // Step 5: Ask about production environment
+  const { addProduction } = await inquirer.prompt([
+    {
+      type: 'confirm',
+      name: 'addProduction',
+      message: 'Would you like to configure a production environment?',
+      default: false
+    }
+  ]);
+
+  let productionThemeId;
+  let productionThemeName;
+
+  if (addProduction) {
+    console.log('\n' + chalk.bold('Configure Production Environment:'));
+    console.log(chalk.gray('Select your live/main theme for production deployments.\n'));
+
+    if (themes.length > 0) {
+      // Find main/live theme and mark it as recommended for production
+      const mainThemes = themes.filter(t => t.role === 'main');
+      const otherThemes = themes.filter(t => t.role !== 'main');
+
+      // Build choices array
+      const prodChoices = [];
+
+      if (mainThemes.length > 0) {
+        mainThemes.forEach(theme => {
+          prodChoices.push({
+            name: chalk.red(`${theme.name} (ID: ${theme.id})`) + chalk.cyan(' [RECOMMENDED FOR PRODUCTION]'),
+            value: { id: theme.id, name: theme.name }
+          });
+        });
+      }
+
+      otherThemes.forEach(theme => {
+        const roleLabel = theme.role === 'development' ? '[DEV]' : '[UNPUBLISHED]';
+        prodChoices.push({
+          name: `${theme.name} (ID: ${theme.id}) ${chalk.gray(roleLabel)}`,
+          value: { id: theme.id, name: theme.name }
+        });
+      });
+
+      prodChoices.push(new inquirer.Separator());
+      prodChoices.push({
+        name: 'Enter theme ID manually',
+        value: 'manual'
+      });
+
+      const { selectedProdTheme } = await inquirer.prompt([
+        {
+          type: 'list',
+          name: 'selectedProdTheme',
+          message: 'Select a theme for production:',
+          choices: prodChoices,
+          pageSize: 10
+        }
+      ]);
+
+      if (selectedProdTheme === 'manual') {
+        const { manualProdId } = await inquirer.prompt([
+          {
+            type: 'input',
+            name: 'manualProdId',
+            message: 'Enter production theme ID:',
+            validate: (input) => {
+              if (!input || isNaN(input)) return 'Please enter a valid theme ID';
+              return true;
+            }
+          }
+        ]);
+        productionThemeId = manualProdId;
+        productionThemeName = 'Production Theme';
+      } else {
+        productionThemeId = selectedProdTheme.id;
+        productionThemeName = selectedProdTheme.name;
+      }
+    } else {
+      // Fallback to manual entry
+      console.log(chalk.yellow('\n⚠️  No themes found. You\'ll need to enter a theme ID manually.\n'));
+
+      const { manualProdId } = await inquirer.prompt([
+        {
+          type: 'input',
+          name: 'manualProdId',
+          message: 'Enter production theme ID:',
+          validate: (input) => {
+            if (!input || isNaN(input)) return 'Please enter a valid theme ID';
+            return true;
+          }
+        }
+      ]);
+      productionThemeId = manualProdId;
+      productionThemeName = 'Production Theme';
+    }
+
+    console.log('\n' + chalk.bold('Final Configuration Summary:'));
+    console.log(chalk.gray('─'.repeat(50)));
+    console.log(`Store:        ${chalk.cyan(storeName)}.myshopify.com`);
+    console.log(`Development:  ${chalk.cyan(themeName)} ${chalk.gray(`(ID: ${themeId})`)}`);
+    console.log(`Production:   ${chalk.red(productionThemeName)} ${chalk.gray(`(ID: ${productionThemeId})`)}`);
+    console.log(chalk.gray('─'.repeat(50)) + '\n');
+
+    const { finalConfirm } = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'finalConfirm',
+        message: 'Does this look correct?',
+        default: true
+      }
+    ]);
+
+    if (!finalConfirm) {
+      console.log(chalk.yellow('\n❌ Setup cancelled. Run npm run setup to try again.\n'));
+      process.exit(0);
+    }
+  }
+
+  // Step 6: Check if shopify.theme.toml already exists
   const tomlPath = path.join(__dirname, '..', 'shopify.theme.toml');
   if (fs.existsSync(tomlPath)) {
     const { overwrite } = await inquirer.prompt([
@@ -234,11 +351,19 @@ async function setupWithUI() {
     }
   }
 
-  // Step 6: Generate shopify.theme.toml
-  const tomlContent = `[environments.development]
+  // Step 7: Generate shopify.theme.toml
+  let tomlContent = `[environments.development]
 store = "${storeName}"
 theme = "${themeId}"
 `;
+
+  if (addProduction) {
+    tomlContent += `
+[environments.production]
+store = "${storeName}"
+theme = "${productionThemeId}"
+`;
+  }
 
   try {
     fs.writeFileSync(tomlPath, tomlContent, 'utf-8');
@@ -248,7 +373,7 @@ theme = "${themeId}"
     process.exit(1);
   }
 
-  // Step 7: Install dependencies
+  // Step 8: Install dependencies
   console.log('\n' + chalk.bold('Installing dependencies...'));
   const installSpinner = ora('Running npm install --legacy-peer-deps...').start();
 
@@ -264,7 +389,7 @@ theme = "${themeId}"
     process.exit(1);
   }
 
-  // Step 8: Build theme assets
+  // Step 9: Build theme assets
   console.log('\n' + chalk.bold('Building theme assets...'));
   const buildSpinner = ora('Running initial build (this creates the assets folder)...').start();
 
@@ -288,6 +413,12 @@ theme = "${themeId}"
   console.log('   ' + chalk.cyan('npm run dev'));
   console.log(chalk.gray('2.') + ' Open your theme preview in the browser:');
   console.log('   ' + chalk.cyan('http://127.0.0.1:9292'));
+
+  if (addProduction) {
+    console.log(chalk.gray('3.') + ' Deploy to production when ready:');
+    console.log('   ' + chalk.cyan('npm run deploy'));
+  }
+
   console.log('\n' + chalk.gray('─'.repeat(50)));
   console.log(chalk.gray('\nTip: For faster HMR, use ' + chalk.cyan('npm run dev:vite-server') + ' instead.'));
   console.log(chalk.gray('     (Requires accepting SSL cert at https://127.0.0.1:3000 first)\n'));
