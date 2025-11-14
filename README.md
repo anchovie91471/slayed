@@ -227,7 +227,7 @@ These approaches aren't mutually exclusive! Many developers use:
 **Product & Collection**
 - `main-product.liquid` - Full product page with gallery, variants, pricing, and add-to-cart
 - `main-collection.liquid` - Collection listing with pagination
-- `featured-product-grid.liquid` - Featured collection showcase
+- `featured-collection.liquid` - Featured collection showcase with customizable layout
 - `main-search.liquid` - Search results grouped by type (products, articles, pages)
 
 **Content Pages**

@@ -13,15 +13,24 @@
       "type": "main-index",
       "settings": {}
     },
-    "featured-product-grid": {
-      "type": "featured-product-grid",
+    "featured-collection": {
+      "type": "featured-collection",
       "settings": {
-        "featured_collection": "frontpage"
+        "collection": "frontpage",
+        "heading": "Featured Products",
+        "description": "",
+        "heading_size": "medium",
+        "text_alignment": "center",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "button_text": "",
+        "button_style": "primary",
+        "background_color": "#ffffff"
       }
     }
   },
   "order": [
     "main",
-    "featured-product-grid"
+    "featured-collection"
   ]
 }
