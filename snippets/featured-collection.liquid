@@ -52,7 +52,7 @@
     {%- if collection != blank and collection.products.size > 0 -%}
       <div class="{{ grid_classes }}">
         {%- for product in collection.products limit: products_to_show -%}
-          {% render 'product-grid-item', prod: product %}
+          {% render 'product-grid-item', prod: product, is_first: forloop.first %}
         {%- endfor -%}
       </div>
 
