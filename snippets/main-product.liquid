@@ -12,20 +12,57 @@
             Skip to product info
         </a>
         <div class="md:flex md:gap-12 pdp-main relative">
-            <div class="media flex-1 mb-8 md:mb-0" x-data="productGallery" x-init="init()">
-                <div class="image-wrapper relative overflow-hidden pt-[137%]">
+            <div class="media flex-1 mb-8 md:mb-0"
+                 x-data="productGallery"
+                 x-init="init()"
+                 :class="galleryLayout === 'left' ? 'flex flex-row-reverse gap-4' : 'flex flex-col gap-4'">
+
+                {%- comment -%} Main Image Display {%- endcomment -%}
+                <div class="image-wrapper relative overflow-hidden pt-[137%] flex-1 group"
+                     {% if section.settings.enable_zoom %}
+                         @mousemove="handleZoomMove($event)"
+                         @mouseleave="resetZoom()"
+                         @click="{% if section.settings.zoom_type == 'lightbox' or section.settings.zoom_type == 'both' %}openLightbox(){% endif %}"
+                         :class="{ 'cursor-zoom-in': zoomType === 'lightbox' || zoomType === 'both' }"
+                     {% endif %}>
                     {% if product.selected_variant and product.selected_variant.image %}
                         {% assign media = product.selected_variant.image %}
                     {% else %}
                         {% assign media = product.featured_image %}
                     {% endif %}
                     {{ media | image_url: width: 1426 | image_tag:
-                        class: "absolute h-full w-full object-cover inset-0",
+                        class: "absolute h-full w-full object-cover inset-0 main-product-image transition-transform duration-200",
                         sizes: "(min-width: 768px) 55vw, 100vw",
                         widths: "800,1000,1426",
                         loading: "eager",
-                        fetchpriority: "high" }}
+                        fetchpriority: "high",
+                        x-ref: "mainImage",
+                        style: "" }}
                 </div>
+
+                {%- comment -%} Thumbnail Navigation {%- endcomment -%}
+                {% if section.settings.enable_gallery and product.images.size > 1 %}
+                    <div class="thumbnail-navigation"
+                         :class="{
+                           'flex gap-2 overflow-x-auto': galleryLayout === 'bottom',
+                           'flex flex-col gap-2 overflow-y-auto max-h-[600px] w-20': galleryLayout === 'left'
+                         }">
+                        {% for image in product.images %}
+                            <button
+                                type="button"
+                                @click="selectImage({{ forloop.index0 }})"
+                                :class="currentImageIndex === {{ forloop.index0 }} ? 'ring-2 ring-blue-500 ring-offset-2' : 'ring-1 ring-gray-200 hover:ring-gray-300'"
+                                class="thumbnail-button flex-shrink-0 overflow-hidden transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+                                :style="`width: ${thumbnailSize}px; height: ${thumbnailSize}px;`"
+                                aria-label="View image {{ forloop.index }}">
+                                {{ image | image_url: width: 200 | image_tag:
+                                    class: "w-full h-full object-cover",
+                                    loading: "lazy",
+                                    alt: image.alt | default: product.title }}
+                            </button>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
             <div class="info flex-1" id="product-info-{{ section.id }}">
                 <p class="caption tracking-wide text-[10px] leading-3 text-gray-500">{{ product.type | upcase }}</p>
@@ -146,6 +183,54 @@
 
 </div>
 
+{%- comment -%} Image Zoom Lightbox {%- endcomment -%}
+{% if section.settings.enable_zoom and section.settings.zoom_type != 'hover' %}
+    <div x-data="lightboxZoom"
+         x-show="isOpen"
+         x-cloak
+         @keydown.escape.window="close()"
+         class="fixed inset-0 z-50 bg-black bg-opacity-95 flex items-center justify-center p-4"
+         @click.self="close()">
+        <button type="button"
+                @click="close()"
+                class="absolute top-4 right-4 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white p-2 z-10"
+                aria-label="Close lightbox">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+
+        <div class="max-w-6xl max-h-full overflow-auto">
+            <img x-ref="lightboxImage"
+                 src=""
+                 alt=""
+                 class="w-full h-auto"
+                 @click.stop="">
+        </div>
+
+        {%- comment -%} Navigation arrows if multiple images {%- endcomment -%}
+        {% if product.images.size > 1 %}
+            <button type="button"
+                    @click="previousImage()"
+                    class="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white p-2"
+                    aria-label="Previous image">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </button>
+
+            <button type="button"
+                    @click="nextImage()"
+                    class="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white p-2"
+                    aria-label="Next image">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </button>
+        {% endif %}
+    </div>
+{% endif %}
+
 <script>
     document.addEventListener('alpine:init', () => {
         let prod = {{ product | json }};
@@ -160,42 +245,67 @@
 
         // Product Gallery Component
         Alpine.data('productGallery', () => ({
-            currentMedia: null,
+            currentImageIndex: 0,
+            images: [],
             sectionId: null,
+            galleryLayout: '{{ section.settings.gallery_layout | default: "bottom" }}',
+            thumbnailSize: {{ section.settings.gallery_thumbnail_size | default: 80 }},
+            zoomEnabled: {{ section.settings.enable_zoom | default: true }},
+            zoomType: '{{ section.settings.zoom_type | default: "hover" }}',
+            zoomLevel: {{ section.settings.zoom_level | default: 2 }},
 
             init() {
                 const productData = Alpine.store('productData')
                 const currentVariant = productData.currentVariant
                 this.sectionId = productData.sectionId
 
-                // Set initial media
+                // Build images array from product data
+                this.images = {{ product.images | json }}
+
+                // Set initial image index based on variant or featured image
                 if (currentVariant && (currentVariant.featured_media || currentVariant.featured_image)) {
-                    this.currentMedia = currentVariant.featured_media || currentVariant.featured_image
+                    const variantMedia = currentVariant.featured_media || currentVariant.featured_image
+                    const index = this.images.findIndex(img => img.id === variantMedia.id)
+                    if (index !== -1) {
+                        this.currentImageIndex = index
+                    }
                 }
 
                 // Listen for variant:change events
                 document.addEventListener('variant:change', (event) => {
                     if (event.detail.sectionId === this.sectionId) {
-                        this.updateMedia(event.detail.variant)
+                        this.updateMediaForVariant(event.detail.variant)
                     }
                 })
             },
 
-            updateMedia(variant) {
+            selectImage(index) {
+                if (index >= 0 && index < this.images.length) {
+                    this.currentImageIndex = index
+                    this.updateMainImage(this.images[index])
+                }
+            },
+
+            updateMediaForVariant(variant) {
                 if (!variant) return
 
                 const newMedia = variant.featured_media || variant.featured_image
-
-                if (newMedia && newMedia.id !== this.currentMedia?.id) {
-                    this.currentMedia = newMedia
-
-                    // Update the image element
-                    const imgElement = this.$el.querySelector('img')
-                    if (imgElement && newMedia.src) {
-                        imgElement.src = this.getImageUrl(newMedia.src)
-                        imgElement.srcset = this.getImageSrcset(newMedia.src)
-                        imgElement.alt = newMedia.alt || ''
+                if (newMedia) {
+                    const index = this.images.findIndex(img => img.id === newMedia.id)
+                    if (index !== -1) {
+                        this.selectImage(index)
                     }
+                }
+            },
+
+            updateMainImage(image) {
+                if (!image) return
+
+                const imgElement = this.$el.querySelector('.main-product-image')
+                if (imgElement && image.src) {
+                    imgElement.src = this.getImageUrl(image.src)
+                    imgElement.srcset = this.getImageSrcset(image.src)
+                    imgElement.alt = image.alt || {{ product.title | json }}
                 }
             },
 
@@ -209,6 +319,39 @@
                 if (!src) return ''
                 const sizes = [800, 1000, 1426]
                 return sizes.map(size => `${this.getImageUrl(src, size)} ${size}w`).join(', ')
+            },
+
+            // Zoom Methods
+            handleZoomMove(event) {
+                if (!this.zoomEnabled || (this.zoomType !== 'hover' && this.zoomType !== 'both')) return
+                if (window.innerWidth < 768) return // Skip on mobile
+
+                const imgElement = this.$refs.mainImage
+                if (!imgElement) return
+
+                const rect = event.currentTarget.getBoundingClientRect()
+                const x = ((event.clientX - rect.left) / rect.width) * 100
+                const y = ((event.clientY - rect.top) / rect.height) * 100
+
+                imgElement.style.transformOrigin = `${x}% ${y}%`
+                imgElement.style.transform = `scale(${this.zoomLevel})`
+            },
+
+            resetZoom() {
+                const imgElement = this.$refs.mainImage
+                if (imgElement) {
+                    imgElement.style.transform = 'scale(1)'
+                }
+            },
+
+            openLightbox() {
+                if (!this.zoomEnabled) return
+                window.dispatchEvent(new CustomEvent('open-lightbox', {
+                    detail: {
+                        imageIndex: this.currentImageIndex,
+                        images: this.images
+                    }
+                }))
             }
         }))
 
@@ -324,6 +467,76 @@
             buyNow() {
                 if (!this.isAvailable) return
                 window.location.href = `/cart/${this.variantId}:${this.quantity}`
+            }
+        }))
+
+        // Lightbox Zoom Component
+        Alpine.data('lightboxZoom', () => ({
+            isOpen: false,
+            currentIndex: 0,
+            images: [],
+
+            init() {
+                // Listen for open-lightbox events from gallery
+                window.addEventListener('open-lightbox', (event) => {
+                    this.open(event.detail.imageIndex, event.detail.images)
+                })
+
+                // Listen for escape key
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && this.isOpen) {
+                        this.close()
+                    }
+                })
+
+                // Listen for left/right arrow keys
+                document.addEventListener('keydown', (e) => {
+                    if (!this.isOpen) return
+                    if (e.key === 'ArrowLeft') {
+                        this.previousImage()
+                    } else if (e.key === 'ArrowRight') {
+                        this.nextImage()
+                    }
+                })
+            },
+
+            open(index, images) {
+                this.currentIndex = index
+                this.images = images
+                this.isOpen = true
+                this.updateLightboxImage()
+
+                // Prevent body scroll
+                document.body.style.overflow = 'hidden'
+            },
+
+            close() {
+                this.isOpen = false
+                document.body.style.overflow = ''
+            },
+
+            nextImage() {
+                this.currentIndex = (this.currentIndex + 1) % this.images.length
+                this.updateLightboxImage()
+            },
+
+            previousImage() {
+                this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length
+                this.updateLightboxImage()
+            },
+
+            updateLightboxImage() {
+                const image = this.images[this.currentIndex]
+                if (image && this.$refs.lightboxImage) {
+                    this.$refs.lightboxImage.src = this.getImageUrl(image.src, 2000)
+                    this.$refs.lightboxImage.alt = image.alt || {{ product.title | json }}
+                }
+            },
+
+            getImageUrl(src, width = null) {
+                if (!src) return ''
+                const baseUrl = src.split('?')[0]
+                return width ? `${baseUrl}?width=${width}` : baseUrl
             }
         }))
     });

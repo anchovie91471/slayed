@@ -18,6 +18,10 @@
   },
   "settings": [
     {
+      "type": "header",
+      "content": "Product Variants"
+    },
+    {
       "type": "radio",
       "id": "picker_type",
       "label": "Variant Picker Type",
@@ -32,6 +36,84 @@
           "label": "Select Dropdowns"
         }
       ]
+    },
+    {
+      "type": "header",
+      "content": "Product Gallery"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_gallery",
+      "label": "Enable Image Gallery",
+      "default": true,
+      "info": "Show all product images with thumbnail navigation"
+    },
+    {
+      "type": "radio",
+      "id": "gallery_layout",
+      "label": "Thumbnail Position",
+      "default": "bottom",
+      "options": [
+        {
+          "value": "bottom",
+          "label": "Below Image (Horizontal)"
+        },
+        {
+          "value": "left",
+          "label": "Left Side (Vertical)"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gallery_thumbnail_size",
+      "label": "Thumbnail Size",
+      "default": 80,
+      "min": 60,
+      "max": 120,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Image Zoom"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_zoom",
+      "label": "Enable Image Zoom",
+      "default": true,
+      "info": "Allow customers to zoom product images"
+    },
+    {
+      "type": "radio",
+      "id": "zoom_type",
+      "label": "Zoom Behavior",
+      "default": "hover",
+      "options": [
+        {
+          "value": "hover",
+          "label": "Hover Zoom (Desktop) / Tap (Mobile)"
+        },
+        {
+          "value": "lightbox",
+          "label": "Click to Open Lightbox"
+        },
+        {
+          "value": "both",
+          "label": "Both Hover and Lightbox"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "zoom_level",
+      "label": "Zoom Magnification",
+      "default": 2,
+      "min": 1.5,
+      "max": 4,
+      "step": 0.5,
+      "unit": "x"
     }
   ],
   "blocks": [

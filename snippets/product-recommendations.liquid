@@ -1,0 +1,163 @@
+{%- if section.settings.enable_recommendations -%}
+  <div class="px-6 md:px-8 py-12 md:py-16 bg-white">
+    <div class="container mx-auto"
+         x-data="productRecommendations"
+         x-init="init()">
+
+      {%- comment -%} Heading {%- endcomment -%}
+      {% if section.settings.heading != blank %}
+        <h2 class="mb-8
+          {% if section.settings.heading_size == 'small' %}text-2xl{% elsif section.settings.heading_size == 'large' %}text-4xl{% else %}text-3xl{% endif %}
+          font-bold
+          {% if section.settings.text_alignment == 'center' %}text-center{% elsif section.settings.text_alignment == 'right' %}text-right{% else %}text-left{% endif %}">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+
+      {%- comment -%} Loading State {%- endcomment -%}
+      <div x-show="loading" class="text-center py-8">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+        <p class="mt-2 text-gray-600">Loading recommendations...</p>
+      </div>
+
+      {%- comment -%} Products Grid {%- endcomment -%}
+      <div x-show="!loading && recommendations.length > 0"
+           x-cloak
+           class="grid grid-cols-1 sm:grid-cols-2
+             {% if section.settings.columns_desktop == 2 %}lg:grid-cols-2
+             {% elsif section.settings.columns_desktop == 3 %}lg:grid-cols-3
+             {% elsif section.settings.columns_desktop == 5 %}lg:grid-cols-5
+             {% else %}lg:grid-cols-4{% endif %}
+             gap-6"
+           x-ref="productsGrid">
+        {%- comment -%} Products will be injected here via Alpine.js {%- endcomment -%}
+      </div>
+
+      {%- comment -%} Empty State {%- endcomment -%}
+      <div x-show="!loading && recommendations.length === 0"
+           x-cloak
+           class="text-center py-8 text-gray-600">
+        <p>No recommendations available at this time.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('productRecommendations', () => ({
+        loading: true,
+        recommendations: [],
+        productId: {{ product.id | json }},
+        limit: {{ section.settings.products_to_show | default: 4 }},
+
+        init() {
+          this.fetchRecommendations()
+        },
+
+        async fetchRecommendations() {
+          try {
+            this.loading = true
+            const url = `/recommendations/products.json?product_id=${this.productId}&limit=${this.limit}`
+
+            const response = await fetch(url)
+            if (!response.ok) {
+              throw new Error('Failed to fetch recommendations')
+            }
+
+            const data = await response.json()
+            this.recommendations = data.products || []
+
+            // Wait for DOM update then render products
+            await this.$nextTick()
+            this.renderProducts()
+          } catch (error) {
+            console.error('Error fetching product recommendations:', error)
+            this.recommendations = []
+          } finally {
+            this.loading = false
+          }
+        },
+
+        renderProducts() {
+          const grid = this.$refs.productsGrid
+          if (!grid || this.recommendations.length === 0) return
+
+          // Clear existing content
+          grid.innerHTML = ''
+
+          // Render each product using the product card template
+          this.recommendations.forEach(product => {
+            const productCard = this.createProductCard(product)
+            grid.appendChild(productCard)
+          })
+        },
+
+        createProductCard(product) {
+          const div = document.createElement('div')
+          div.className = 'product-card'
+
+          // Get product image
+          const imageUrl = product.featured_image || product.images[0] || ''
+          const imageSrc = imageUrl ? this.getImageUrl(imageUrl, 600) : ''
+
+          // Get product price
+          const price = this.formatMoney(product.price)
+          const compareAtPrice = product.compare_at_price > product.price
+            ? this.formatMoney(product.compare_at_price)
+            : null
+
+          // Build product card HTML matching product-grid-item snippet style
+          div.innerHTML = `
+            <a href="/products/${product.handle}" class="group block">
+              <div class="relative overflow-hidden mb-4 bg-gray-100 aspect-[3/4]">
+                ${imageSrc ? `
+                  <img
+                    src="${imageSrc}"
+                    alt="${this.escapeHtml(product.title)}"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                ` : `
+                  <div class="w-full h-full flex items-center justify-center text-gray-400">
+                    No image
+                  </div>
+                `}
+              </div>
+              <div class="space-y-2">
+                <h3 class="text-base font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+                  ${this.escapeHtml(product.title)}
+                </h3>
+                <div class="flex items-center gap-2">
+                  ${compareAtPrice ? `<span class="text-sm text-gray-500 line-through">${compareAtPrice}</span>` : ''}
+                  <span class="text-base font-semibold text-gray-900">${price}</span>
+                </div>
+              </div>
+            </a>
+          `
+
+          return div
+        },
+
+        getImageUrl(src, width = 600) {
+          if (!src) return ''
+          const baseUrl = src.split('?')[0]
+          return `${baseUrl}?width=${width}`
+        },
+
+        formatMoney(cents) {
+          if (window.vast && window.vast.helpers && window.vast.helpers.formatMoney) {
+            return window.vast.helpers.formatMoney(cents, {{ shop.money_format | json }})
+          }
+          // Fallback if helper not available
+          return `$${(cents / 100).toFixed(2)}`
+        },
+
+        escapeHtml(text) {
+          const div = document.createElement('div')
+          div.textContent = text
+          return div.innerHTML
+        }
+      }))
+    })
+  </script>
+{%- endif -%}

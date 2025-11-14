@@ -1,0 +1,176 @@
+{%- if section.settings.enable_recently_viewed -%}
+  <div class="px-6 md:px-8 py-12 md:py-16 bg-white">
+    <div class="container mx-auto"
+         x-data="recentlyViewedSection"
+         x-init="init()">
+
+      {%- comment -%} Heading {%- endcomment -%}
+      {% if section.settings.heading != blank %}
+        <h2 class="mb-8
+          {% if section.settings.heading_size == 'small' %}text-2xl{% elsif section.settings.heading_size == 'large' %}text-4xl{% else %}text-3xl{% endif %}
+          font-bold
+          {% if section.settings.text_alignment == 'center' %}text-center{% elsif section.settings.text_alignment == 'right' %}text-right{% else %}text-left{% endif %}">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+
+      {%- comment -%} Products Grid {%- endcomment -%}
+      <div x-show="displayProducts.length > 0"
+           x-cloak
+           class="grid grid-cols-1 sm:grid-cols-2
+             {% if section.settings.columns_desktop == 2 %}lg:grid-cols-2
+             {% elsif section.settings.columns_desktop == 3 %}lg:grid-cols-3
+             {% elsif section.settings.columns_desktop == 5 %}lg:grid-cols-5
+             {% else %}lg:grid-cols-4{% endif %}
+             gap-6"
+           x-ref="productsGrid">
+        {%- comment -%} Products will be injected here via Alpine.js {%- endcomment -%}
+      </div>
+
+      {%- comment -%} Empty State {%- endcomment -%}
+      <div x-show="displayProducts.length === 0"
+           x-cloak
+           class="text-center py-8 text-gray-600">
+        <p>No recently viewed products.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('recentlyViewedSection', () => ({
+        displayProducts: [],
+        currentProductId: {{ product.id | default: 'null' }},
+        limit: {{ section.settings.products_to_show | default: 4 }},
+        excludeCurrent: {{ section.settings.exclude_current_product | default: true }},
+
+        init() {
+          // Track current product view if on product page
+          if (this.currentProductId && typeof Alpine.store('recentlyViewed') !== 'undefined') {
+            this.trackCurrentProduct()
+          }
+
+          // Load and display recently viewed products
+          this.loadRecentProducts()
+        },
+
+        trackCurrentProduct() {
+          const productData = {
+            id: {{ product.id | json }},
+            handle: {{ product.handle | json }},
+            title: {{ product.title | json }},
+            featured_image: {{ product.featured_image | json }},
+            price: {{ product.price | json }},
+            compare_at_price: {{ product.compare_at_price | json }},
+            available: {{ product.available | json }}
+          }
+
+          // Use store to track view
+          const store = Alpine.store('recentlyViewed')
+          if (store && store.trackView) {
+            store.trackView(productData)
+          }
+        },
+
+        loadRecentProducts() {
+          const store = Alpine.store('recentlyViewed')
+          if (!store) return
+
+          // Get recent products (excluding current if needed)
+          const excludeId = this.excludeCurrent ? this.currentProductId : null
+          const recentProducts = store.getRecentProducts(excludeId, this.limit)
+
+          this.displayProducts = recentProducts
+
+          // Render products
+          this.$nextTick(() => {
+            this.renderProducts()
+          })
+        },
+
+        renderProducts() {
+          const grid = this.$refs.productsGrid
+          if (!grid || this.displayProducts.length === 0) return
+
+          // Clear existing content
+          grid.innerHTML = ''
+
+          // Render each product
+          this.displayProducts.forEach(product => {
+            const productCard = this.createProductCard(product)
+            grid.appendChild(productCard)
+          })
+        },
+
+        createProductCard(product) {
+          const div = document.createElement('div')
+          div.className = 'product-card'
+
+          // Get product image
+          const imageSrc = product.featuredImage ? this.getImageUrl(product.featuredImage, 600) : ''
+
+          // Format prices
+          const price = this.formatMoney(product.price)
+          const compareAtPrice = product.compareAtPrice > product.price
+            ? this.formatMoney(product.compareAtPrice)
+            : null
+
+          // Build product card HTML
+          div.innerHTML = `
+            <a href="/products/${product.handle}" class="group block">
+              <div class="relative overflow-hidden mb-4 bg-gray-100 aspect-[3/4]">
+                ${imageSrc ? `
+                  <img
+                    src="${imageSrc}"
+                    alt="${this.escapeHtml(product.title)}"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                ` : `
+                  <div class="w-full h-full flex items-center justify-center text-gray-400">
+                    No image
+                  </div>
+                `}
+                ${!product.available ? `
+                  <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <span class="text-white font-medium">Sold Out</span>
+                  </div>
+                ` : ''}
+              </div>
+              <div class="space-y-2">
+                <h3 class="text-base font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+                  ${this.escapeHtml(product.title)}
+                </h3>
+                <div class="flex items-center gap-2">
+                  ${compareAtPrice ? `<span class="text-sm text-gray-500 line-through">${compareAtPrice}</span>` : ''}
+                  <span class="text-base font-semibold text-gray-900">${price}</span>
+                </div>
+              </div>
+            </a>
+          `
+
+          return div
+        },
+
+        getImageUrl(src, width = 600) {
+          if (!src) return ''
+          const baseUrl = src.split('?')[0]
+          return `${baseUrl}?width=${width}`
+        },
+
+        formatMoney(cents) {
+          if (window.vast && window.vast.helpers && window.vast.helpers.formatMoney) {
+            return window.vast.helpers.formatMoney(cents, {{ shop.money_format | json }})
+          }
+          return `$${(cents / 100).toFixed(2)}`
+        },
+
+        escapeHtml(text) {
+          const div = document.createElement('div')
+          div.textContent = text
+          return div.innerHTML
+        }
+      }))
+    })
+  </script>
+{%- endif -%}

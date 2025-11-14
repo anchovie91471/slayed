@@ -194,7 +194,10 @@
                     {%- comment -%} Product Grid {%- endcomment -%}
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {% for prod in collection.products %}
-                            {% render 'product-grid-item', prod: prod %}
+                            {% render 'product-grid-item',
+                                prod: prod,
+                                enable_quick_view: section.settings.enable_quick_view,
+                                quick_view_settings: section.settings %}
                         {% endfor %}
                     </div>
 
@@ -492,5 +495,252 @@
         window.location.href = url.toString()
       }
     }))
+
+    // Quick View Modal Component
+    Alpine.data('quickViewModal', () => ({
+      isOpen: false,
+      loading: false,
+      product: null,
+      currentVariant: null,
+      selectedOptions: {},
+      quantity: 1,
+      settings: {},
+
+      init() {
+        // Listen for open-quick-view events
+        this.$el.addEventListener('open-quick-view', (event) => {
+          this.open(event.detail.productHandle, event.detail.settings || {})
+        })
+      },
+
+      async open(productHandle, settings = {}) {
+        this.settings = settings
+        this.loading = true
+        this.isOpen = true
+        document.body.style.overflow = 'hidden'
+
+        try {
+          const response = await fetch(`/products/${productHandle}.js`)
+          if (!response.ok) throw new Error('Failed to fetch product')
+
+          this.product = await response.json()
+          this.currentVariant = this.product.variants[0]
+          this.initializeSelectedOptions()
+
+          await this.$nextTick()
+          this.updateModalContent()
+        } catch (error) {
+          console.error('Error loading product:', error)
+          this.close()
+        } finally {
+          this.loading = false
+        }
+      },
+
+      close() {
+        this.isOpen = false
+        this.product = null
+        this.currentVariant = null
+        this.selectedOptions = {}
+        this.quantity = 1
+        document.body.style.overflow = ''
+      },
+
+      initializeSelectedOptions() {
+        if (!this.product || !this.currentVariant) return
+        this.product.options.forEach((option, index) => {
+          this.selectedOptions[option.name] = this.currentVariant.options[index]
+        })
+      },
+
+      updateModalContent() {
+        // Update product image
+        const imgElement = this.$refs.productImage
+        if (imgElement && this.currentVariant.featured_image) {
+          imgElement.src = this.getImageUrl(this.currentVariant.featured_image.src, 800)
+        } else if (imgElement && this.product.featured_image) {
+          imgElement.src = this.getImageUrl(this.product.featured_image, 800)
+        }
+      },
+
+      handleOptionChange(optionName, value) {
+        this.selectedOptions[optionName] = value
+        this.updateVariant()
+      },
+
+      updateVariant() {
+        const selectedVariant = this.product.variants.find(variant => {
+          return variant.options.every((option, index) => {
+            const optionName = this.product.options[index].name
+            return option === this.selectedOptions[optionName]
+          })
+        })
+
+        if (selectedVariant) {
+          this.currentVariant = selectedVariant
+          this.updateModalContent()
+        }
+      },
+
+      async addToCart() {
+        if (!this.currentVariant.available) return
+
+        try {
+          const formData = {
+            items: [{
+              id: this.currentVariant.id,
+              quantity: this.quantity
+            }]
+          }
+
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+          })
+
+          if (!response.ok) throw new Error('Failed to add to cart')
+
+          // Trigger cart update event
+          window.dispatchEvent(new CustomEvent('cart:updated'))
+
+          // Close modal
+          this.close()
+
+          // Show success message (optional)
+          alert('Product added to cart!')
+        } catch (error) {
+          console.error('Error adding to cart:', error)
+          alert('Failed to add product to cart')
+        }
+      },
+
+      getImageUrl(src, width = 800) {
+        if (!src) return ''
+        const baseUrl = src.split('?')[0]
+        return `${baseUrl}?width=${width}`
+      },
+
+      formatMoney(cents) {
+        if (window.vast && window.vast.helpers && window.vast.helpers.formatMoney) {
+          return window.vast.helpers.formatMoney(cents, {{ shop.money_format | json }})
+        }
+        return `$${(cents / 100).toFixed(2)}`
+      }
+    }))
   })
 </script>
+
+{%- comment -%} Quick View Modal HTML {%- endcomment -%}
+{% if section.settings.enable_quick_view %}
+  <div x-data="quickViewModal"
+       x-show="isOpen"
+       x-cloak
+       @keydown.escape.window="close()"
+       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+
+    <div @click.self="close()" class="absolute inset-0"></div>
+
+    <div class="relative bg-white max-w-4xl w-full max-h-[90vh] overflow-auto" @click.stop="">
+      {%- comment -%} Close Button {%- endcomment -%}
+      <button type="button"
+              @click="close()"
+              class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 z-10"
+              aria-label="Close quick view">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+
+      {%- comment -%} Loading State {%- endcomment -%}
+      <div x-show="loading" class="flex items-center justify-center p-12">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      </div>
+
+      {%- comment -%} Product Content {%- endcomment -%}
+      <div x-show="!loading && product" class="md:flex">
+        {%- comment -%} Product Image {%- endcomment -%}
+        <div class="md:w-1/2 p-6">
+          <div class="relative overflow-hidden bg-gray-100 aspect-square">
+            <img x-ref="productImage"
+                 src=""
+                 alt=""
+                 class="w-full h-full object-cover">
+          </div>
+        </div>
+
+        {%- comment -%} Product Info {%- endcomment -%}
+        <div class="md:w-1/2 p-6">
+          <h2 x-text="product?.title" class="text-2xl font-bold text-gray-900 mb-2"></h2>
+
+          {%- comment -%} Price {%- endcomment -%}
+          <div class="mb-4">
+            <span class="text-xl font-semibold text-gray-900" x-text="formatMoney(currentVariant?.price)"></span>
+            <span x-show="currentVariant?.compare_at_price > currentVariant?.price"
+                  class="text-sm text-gray-500 line-through ml-2"
+                  x-text="formatMoney(currentVariant?.compare_at_price)"></span>
+          </div>
+
+          {%- comment -%} Description {%- endcomment -%}
+          <template x-if="settings.quick_view_show_description">
+            <div x-html="product?.description" class="prose prose-sm text-gray-700 mb-6 max-h-32 overflow-auto"></div>
+          </template>
+
+          {%- comment -%} Variant Options {%- endcomment -%}
+          <template x-if="product?.options && product.options.length > 0">
+            <div class="space-y-4 mb-6">
+              <template x-for="(option, index) in product?.options" :key="index">
+                <div>
+                  <label class="block text-sm font-medium text-gray-900 mb-2" x-text="option.name"></label>
+                  <select @change="handleOptionChange(option.name, $event.target.value)"
+                          class="w-full border-gray-300 rounded-md focus:ring-blue-400 focus:border-blue-400">
+                    <template x-for="value in option.values" :key="value">
+                      <option :value="value"
+                              :selected="selectedOptions[option.name] === value"
+                              x-text="value"></option>
+                    </template>
+                  </select>
+                </div>
+              </template>
+            </div>
+          </template>
+
+          {%- comment -%} Quantity {%- endcomment -%}
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-900 mb-2">Quantity</label>
+            <div class="flex items-center border border-gray-300 w-fit">
+              <button type="button"
+                      @click="quantity = Math.max(1, quantity - 1)"
+                      class="w-10 h-10 flex items-center justify-center hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-400">
+                -
+              </button>
+              <input type="number"
+                     x-model.number="quantity"
+                     min="1"
+                     class="w-16 text-center border-0 focus:ring-0 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none">
+              <button type="button"
+                      @click="quantity++"
+                      class="w-10 h-10 flex items-center justify-center hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-400">
+                +
+              </button>
+            </div>
+          </div>
+
+          {%- comment -%} Add to Cart Button {%- endcomment -%}
+          <button type="button"
+                  @click="addToCart()"
+                  :disabled="!currentVariant?.available"
+                  class="w-full bg-gray-900 text-white px-6 py-3 font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
+            <span x-text="currentVariant?.available ? 'Add to Cart' : 'Sold Out'"></span>
+          </button>
+
+          {%- comment -%} View Full Details Link {%- endcomment -%}
+          <a :href="`/products/${product?.handle}`"
+             class="block text-center mt-4 text-sm text-blue-600 hover:text-blue-700 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400">
+            View full details
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
