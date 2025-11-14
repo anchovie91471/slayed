@@ -1,0 +1,81 @@
+{%- liquid
+  assign collection = collections[section.settings.collection]
+  assign heading = section.settings.heading
+  assign description = section.settings.description
+  assign heading_size = section.settings.heading_size
+  assign text_alignment = section.settings.text_alignment
+  assign products_to_show = section.settings.products_to_show
+  assign columns_desktop = section.settings.columns_desktop
+  assign button_text = section.settings.button_text
+  assign button_style = section.settings.button_style
+  assign bg_color = section.settings.background_color
+
+  # Text alignment classes
+  case text_alignment
+    when 'left'
+      assign align_classes = 'text-left items-start'
+    when 'center'
+      assign align_classes = 'text-center items-center'
+    when 'right'
+      assign align_classes = 'text-right items-end'
+  endcase
+
+  # Column classes
+  case columns_desktop
+    when '3'
+      assign grid_classes = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'
+    when '4'
+      assign grid_classes = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'
+    when '5'
+      assign grid_classes = 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4'
+  endcase
+-%}
+
+<section class="py-12 md:py-20" style="background-color: {{ bg_color }};">
+  <div class="container mx-auto px-6 md:px-8">
+    {%- if heading != blank or description != blank -%}
+      <div class="mb-12 flex flex-col {{ align_classes }} gap-4">
+        {%- if heading != blank -%}
+          <h2 class="{{ heading_size }} font-bold text-gray-900">
+            {{ heading }}
+          </h2>
+        {%- endif -%}
+
+        {%- if description != blank -%}
+          <p class="text-lg text-gray-600 max-w-2xl{% if text_alignment == 'center' %} mx-auto{% endif %}">
+            {{ description }}
+          </p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if collection != blank and collection.products.size > 0 -%}
+      <div class="{{ grid_classes }}">
+        {%- for product in collection.products limit: products_to_show -%}
+          {% render 'product-grid-item', prod: product %}
+        {%- endfor -%}
+      </div>
+
+      {%- if button_text != blank -%}
+        <div class="mt-12 flex {% if text_alignment == 'center' %}justify-center{% elsif text_alignment == 'right' %}justify-end{% else %}justify-start{% endif %}">
+          {% render 'btn',
+            text: button_text,
+            type: button_style,
+            url: collection.url,
+            size: 'large'
+          %}
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <div class="text-center py-12">
+        <p class="text-gray-500">
+          {%- if collection == blank -%}
+            Please select a collection in the section settings.
+          {%- else -%}
+            This collection is empty.
+          {%- endif -%}
+        </p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>

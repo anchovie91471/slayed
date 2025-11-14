@@ -1,0 +1,100 @@
+module.exports = {
+  name: 'Image with Text',
+  tag: 'section',
+  class: 'image-text-section',
+  settings: [
+    {
+      type: 'image_picker',
+      id: 'image',
+      label: 'Image'
+    },
+    {
+      type: 'select',
+      id: 'image_position',
+      label: 'Image Position',
+      options: [
+        { value: 'left', label: 'Left' },
+        { value: 'right', label: 'Right' }
+      ],
+      default: 'left'
+    },
+    {
+      type: 'text',
+      id: 'heading',
+      label: 'Heading',
+      default: 'Image with text'
+    },
+    {
+      type: 'select',
+      id: 'heading_size',
+      label: 'Heading Size',
+      options: [
+        { value: 'text-2xl', label: 'Small' },
+        { value: 'text-3xl', label: 'Medium' },
+        { value: 'text-4xl', label: 'Large' }
+      ],
+      default: 'text-3xl'
+    },
+    {
+      type: 'richtext',
+      id: 'text',
+      label: 'Text',
+      default: '<p>Use this section to tell your brand story, highlight products, or share information.</p>'
+    },
+    {
+      type: 'text',
+      id: 'button_text',
+      label: 'Button Text',
+      info: 'Leave empty to hide button'
+    },
+    {
+      type: 'url',
+      id: 'button_link',
+      label: 'Button Link'
+    },
+    {
+      type: 'select',
+      id: 'button_style',
+      label: 'Button Style',
+      options: [
+        { value: 'primary', label: 'Primary (Gray)' },
+        { value: 'branded', label: 'Branded (Blue)' },
+        { value: 'gradient', label: 'Gradient (Blue to Indigo)' },
+        { value: 'secondary', label: 'Secondary (White)' }
+      ],
+      default: 'branded'
+    },
+    {
+      type: 'select',
+      id: 'content_alignment',
+      label: 'Content Alignment',
+      options: [
+        { value: 'left', label: 'Left' },
+        { value: 'center', label: 'Center' }
+      ],
+      default: 'left'
+    },
+    {
+      type: 'range',
+      id: 'image_width',
+      label: 'Image Width (%)',
+      min: 40,
+      max: 60,
+      step: 5,
+      unit: '%',
+      default: 50,
+      info: 'Percentage of the section width'
+    },
+    {
+      type: 'color',
+      id: 'background_color',
+      label: 'Background Color',
+      default: '#ffffff'
+    }
+  ],
+  presets: [
+    {
+      name: 'Image with Text'
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{% comment %}
+  Reusable form input component
+
+  Usage:
+  {% render 'form-input',
+    name: 'email',
+    label: 'Email Address',
+    type: 'email',
+    required: true
+  %}
+
+  {% render 'form-input',
+    name: 'message',
+    label: 'Your Message',
+    type: 'textarea',
+    rows: 4,
+    helper: 'Tell us what you think'
+  %}
+
+  Parameters:
+  - name: {String} Input name attribute (required)
+  - label: {String} Label text (optional)
+  - type: {String} Input type (default: 'text')
+    Options: 'text', 'email', 'password', 'search', 'tel', 'url', 'number', 'textarea'
+  - id: {String} Input ID (defaults to name if not provided)
+  - value: {String} Input value
+  - placeholder: {String} Placeholder text
+  - required: {Boolean} Is field required (default: false)
+  - disabled: {Boolean} Is field disabled (default: false)
+  - error: {String} Error message to display
+  - helper: {String} Helper text below input
+  - rows: {Number} Number of rows for textarea (default: 3)
+  - classes: {String} Additional CSS classes for input
+  - autocomplete: {String} Autocomplete attribute
+  - attributes: {String} Additional HTML attributes
+{% endcomment %}
+
+{%- liquid
+  assign input_type = type | default: 'text'
+  assign input_id = id | default: name
+  assign input_rows = rows | default: 3
+  assign has_error = false
+  if error != blank
+    assign has_error = true
+  endif
+
+  # Base input classes
+  assign input_classes = 'w-full px-4 py-2 border bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-colors'
+
+  # Error state classes
+  if has_error
+    assign input_classes = input_classes | append: ' border-red-300 focus:ring-red-400'
+  else
+    assign input_classes = input_classes | append: ' border-gray-300 focus:ring-blue-400'
+  endif
+
+  # Disabled state
+  if disabled
+    assign input_classes = input_classes | append: ' bg-gray-100 cursor-not-allowed opacity-60'
+  endif
+
+  # Additional classes
+  if classes != blank
+    assign input_classes = input_classes | append: ' ' | append: classes
+  endif
+
+  # Label classes
+  assign label_classes = 'block text-sm font-medium text-gray-900 mb-1'
+  if required
+    assign label_classes = label_classes | append: ' after:content-["*"] after:ml-0.5 after:text-red-500'
+  endif
+-%}
+
+{%- if label != blank -%}
+  <div class="form-field mb-4">
+    <label for="{{ input_id }}" class="{{ label_classes }}">
+      {{ label }}
+    </label>
+{%- else -%}
+  <div class="form-field mb-4">
+{%- endif -%}
+
+    {%- if input_type == 'textarea' -%}
+      <textarea
+        id="{{ input_id }}"
+        name="{{ name }}"
+        class="{{ input_classes }}"
+        rows="{{ input_rows }}"
+        {% if placeholder != blank %}placeholder="{{ placeholder }}"{% endif %}
+        {% if required %}required{% endif %}
+        {% if disabled %}disabled{% endif %}
+        {% if autocomplete != blank %}autocomplete="{{ autocomplete }}"{% endif %}
+        {% if attributes != blank %}{{ attributes }}{% endif %}
+        {% if has_error %}aria-invalid="true" aria-describedby="{{ input_id }}-error"{% endif %}
+      >{{ value }}</textarea>
+    {%- else -%}
+      <input
+        type="{{ input_type }}"
+        id="{{ input_id }}"
+        name="{{ name }}"
+        class="{{ input_classes }}"
+        {% if value != blank %}value="{{ value }}"{% endif %}
+        {% if placeholder != blank %}placeholder="{{ placeholder }}"{% endif %}
+        {% if required %}required{% endif %}
+        {% if disabled %}disabled{% endif %}
+        {% if autocomplete != blank %}autocomplete="{{ autocomplete }}"{% endif %}
+        {% if attributes != blank %}{{ attributes }}{% endif %}
+        {% if has_error %}aria-invalid="true" aria-describedby="{{ input_id }}-error"{% endif %}
+      >
+    {%- endif -%}
+
+    {%- if has_error -%}
+      <p id="{{ input_id }}-error" class="mt-1 text-sm text-red-600">
+        {{ error }}
+      </p>
+    {%- endif -%}
+
+    {%- if helper != blank and has_error == false -%}
+      <p class="mt-1 text-sm text-gray-500">
+        {{ helper }}
+      </p>
+    {%- endif -%}
+
+  </div>

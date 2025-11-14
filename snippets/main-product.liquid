@@ -117,9 +117,28 @@
                     {{ product.description }}
                 </div>
                 {% for block in section.blocks %}
-                    <div class="collapsable-row border border-gray-200 my-4 p-6">
-                        <h2 class="text-xl font-semibold text-gray-900 mb-2">{{ block.settings.heading }}</h2>
-                        <div class="text-gray-700">{{ block.settings.content }}</div>
+                    <div
+                            x-data="{ expanded: false }"
+                            class="collapsable-row border border-gray-200 my-4 rounded-lg overflow-hidden"
+                            x-id="['collapsible-trigger', 'collapsible-panel']">
+                        <h2 class="m-0">
+                            <button
+                                    type="button"
+                                    class="w-full text-left bg-transparent border-0 p-0 appearance-none flex items-center justify-between px-6 py-4 text-xl font-semibold text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-400 transition-colors cursor-pointer"
+                                    @click="expanded = !expanded"
+                                    :aria-controls="$id('collapsible-panel')"
+                                    :aria-expanded="expanded">
+                                <span>{{ block.settings.heading }}</span>
+                                <span
+                                        class="text-gray-500 transition-transform duration-200"
+                                        :class="{ 'rotate-180': expanded }">
+                                    {% render 'icon-chevron' %}
+                                </span>
+                            </button>
+                        </h2>
+                        <div x-cloak x-show="expanded" x-collapse :id="$id('collapsible-panel')">
+                            <div class="px-6 pb-4 text-gray-700">{{ block.settings.content }}</div>
+                        </div>
                     </div>
                 {% endfor %}
             </div>

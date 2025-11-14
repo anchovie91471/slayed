@@ -1,0 +1,97 @@
+{%- liquid
+  assign heading = section.settings.heading
+  assign heading_size = section.settings.heading_size
+  assign description = section.settings.description
+  assign text_alignment = section.settings.text_alignment
+  assign columns_desktop = section.settings.columns_desktop
+  assign content_alignment = section.settings.content_alignment
+  assign bg_color = section.settings.background_color
+
+  # Header text alignment classes
+  case text_alignment
+    when 'left'
+      assign header_align_classes = 'text-left items-start'
+    when 'center'
+      assign header_align_classes = 'text-center items-center'
+  endcase
+
+  # Feature content alignment classes
+  case content_alignment
+    when 'left'
+      assign feature_align_classes = 'text-left items-start'
+    when 'center'
+      assign feature_align_classes = 'text-center items-center'
+  endcase
+
+  # Column classes
+  case columns_desktop
+    when '2'
+      assign grid_classes = 'grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12'
+    when '3'
+      assign grid_classes = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'
+    when '4'
+      assign grid_classes = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'
+  endcase
+-%}
+
+<section class="py-12 md:py-20" style="background-color: {{ bg_color }};">
+  <div class="container mx-auto px-6 md:px-8">
+    {%- if heading != blank or description != blank -%}
+      <div class="mb-12 flex flex-col {{ header_align_classes }} gap-4">
+        {%- if heading != blank -%}
+          <h2 class="{{ heading_size }} font-bold text-gray-900">
+            {{ heading }}
+          </h2>
+        {%- endif -%}
+
+        {%- if description != blank -%}
+          <p class="text-lg text-gray-600 max-w-2xl{% if text_alignment == 'center' %} mx-auto{% endif %}">
+            {{ description }}
+          </p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="{{ grid_classes }}">
+        {%- for block in section.blocks -%}
+          <div class="flex flex-col {{ feature_align_classes }} gap-4" {{ block.shopify_attributes }}>
+            {%- if block.settings.icon != blank -%}
+              <div class="{% if content_alignment == 'center' %}mx-auto{% endif %}">
+                {{ block.settings.icon | image_url: width: 100 | image_tag:
+                  class: 'w-16 h-16 object-contain',
+                  loading: 'lazy',
+                  widths: '64, 100, 128'
+                }}
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.heading != blank -%}
+              {%- if block.settings.link != blank -%}
+                <h3 class="text-xl font-semibold text-gray-900">
+                  <a href="{{ block.settings.link }}" class="hover:text-blue-500 transition-colors">
+                    {{ block.settings.heading }}
+                  </a>
+                </h3>
+              {%- else -%}
+                <h3 class="text-xl font-semibold text-gray-900">
+                  {{ block.settings.heading }}
+                </h3>
+              {%- endif -%}
+            {%- endif -%}
+
+            {%- if block.settings.text != blank -%}
+              <p class="text-gray-600">
+                {{ block.settings.text }}
+              </p>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="text-center py-12">
+        <p class="text-gray-500">Add feature blocks to display content.</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>

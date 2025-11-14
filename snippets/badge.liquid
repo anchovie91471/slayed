@@ -1,0 +1,69 @@
+{% comment %}
+  Reusable badge component for status indicators
+
+  Usage:
+  {% render 'badge', text: 'Sale', variant: 'error' %}
+  {% render 'badge', text: 'New', variant: 'success' %}
+  {% render 'badge', text: 'Featured', variant: 'info' %}
+
+  Parameters:
+  - text: {String} Badge text (required)
+  - variant: {String} Color variant (default: 'neutral')
+    Options:
+      'success' - green (New, In Stock)
+      'warning' - yellow (Low Stock, Limited)
+      'error' - red (Sale, Out of Stock, Sold Out)
+      'info' - blue (Featured, Popular)
+      'neutral' - gray (General status)
+  - size: {String} Badge size (default: 'default')
+    Options: 'small', 'default', 'large'
+  - classes: {String} Additional CSS classes
+  - pill: {Boolean} Rounded pill shape (default: false)
+{% endcomment %}
+
+{%- liquid
+  assign badge_variant = variant | default: 'neutral'
+  assign badge_size = size | default: 'default'
+
+  # Base classes
+  assign base_classes = 'inline-block font-medium'
+
+  # Variant-specific classes
+  case badge_variant
+    when 'success'
+      assign variant_classes = 'bg-green-100 text-green-800'
+    when 'warning'
+      assign variant_classes = 'bg-yellow-100 text-yellow-800'
+    when 'error'
+      assign variant_classes = 'bg-red-100 text-red-800'
+    when 'info'
+      assign variant_classes = 'bg-blue-100 text-blue-800'
+    when 'neutral'
+      assign variant_classes = 'bg-gray-100 text-gray-800'
+  endcase
+
+  # Size-specific classes
+  case badge_size
+    when 'small'
+      assign size_classes = 'px-2 py-0.5 text-xs'
+    when 'default'
+      assign size_classes = 'px-2 py-1 text-xs'
+    when 'large'
+      assign size_classes = 'px-3 py-1.5 text-sm'
+  endcase
+
+  # Shape classes
+  if pill
+    assign shape_classes = 'rounded-full'
+  else
+    assign shape_classes = 'rounded'
+  endif
+
+  # Combine all classes
+  assign all_classes = base_classes | append: ' ' | append: variant_classes | append: ' ' | append: size_classes | append: ' ' | append: shape_classes
+  if classes != blank
+    assign all_classes = all_classes | append: ' ' | append: classes
+  endif
+-%}
+
+<span class="{{ all_classes }}">{{ text }}</span>

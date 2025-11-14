@@ -1,0 +1,109 @@
+{%- liquid
+  assign image = section.settings.image
+  assign image_position = section.settings.image_position
+  assign heading = section.settings.heading
+  assign heading_size = section.settings.heading_size
+  assign text = section.settings.text
+  assign button_text = section.settings.button_text
+  assign button_link = section.settings.button_link
+  assign button_style = section.settings.button_style
+  assign content_alignment = section.settings.content_alignment
+  assign image_width = section.settings.image_width
+  assign bg_color = section.settings.background_color
+
+  # Content alignment classes
+  case content_alignment
+    when 'left'
+      assign align_classes = 'text-left items-start'
+    when 'center'
+      assign align_classes = 'text-center items-center'
+  endcase
+-%}
+
+<section class="py-12 md:py-20" style="background-color: {{ bg_color }};">
+  <div class="container mx-auto px-6 md:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      {%- if image_position == 'left' -%}
+        {%- comment -%} Image on left {%- endcomment -%}
+        <div class="relative overflow-hidden rounded-lg">
+          {%- if image != blank -%}
+            {{ image | image_url: width: 1200 | image_tag:
+              class: 'w-full h-full object-cover',
+              loading: 'lazy',
+              widths: '400, 600, 800, 1000, 1200'
+            }}
+          {%- else -%}
+            <div class="w-full aspect-[4/3] bg-gray-200 flex items-center justify-center">
+              <span class="text-gray-400 text-lg">Image</span>
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="flex flex-col {{ align_classes }} gap-6">
+          {%- if heading != blank -%}
+            <h2 class="{{ heading_size }} font-bold text-gray-900 leading-tight">
+              {{ heading }}
+            </h2>
+          {%- endif -%}
+
+          {%- if text != blank -%}
+            <div class="text-lg text-gray-600 prose prose-lg max-w-none">
+              {{ text }}
+            </div>
+          {%- endif -%}
+
+          {%- if button_text != blank -%}
+            <div class="mt-2">
+              {% render 'btn',
+                text: button_text,
+                type: button_style,
+                url: button_link,
+                size: 'large'
+              %}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- else -%}
+        {%- comment -%} Image on right {%- endcomment -%}
+        <div class="flex flex-col {{ align_classes }} gap-6">
+          {%- if heading != blank -%}
+            <h2 class="{{ heading_size }} font-bold text-gray-900 leading-tight">
+              {{ heading }}
+            </h2>
+          {%- endif -%}
+
+          {%- if text != blank -%}
+            <div class="text-lg text-gray-600 prose prose-lg max-w-none">
+              {{ text }}
+            </div>
+          {%- endif -%}
+
+          {%- if button_text != blank -%}
+            <div class="mt-2">
+              {% render 'btn',
+                text: button_text,
+                type: button_style,
+                url: button_link,
+                size: 'large'
+              %}
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="relative overflow-hidden rounded-lg lg:order-last">
+          {%- if image != blank -%}
+            {{ image | image_url: width: 1200 | image_tag:
+              class: 'w-full h-full object-cover',
+              loading: 'lazy',
+              widths: '400, 600, 800, 1000, 1200'
+            }}
+          {%- else -%}
+            <div class="w-full aspect-[4/3] bg-gray-200 flex items-center justify-center">
+              <span class="text-gray-400 text-lg">Image</span>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>

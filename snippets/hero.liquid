@@ -1,0 +1,159 @@
+{%- liquid
+  assign layout = section.settings.layout
+  assign text_align = section.settings.text_alignment
+  assign heading_size = section.settings.heading_size
+  assign text_color = section.settings.text_color
+  assign overlay_opacity = section.settings.overlay_opacity
+  assign min_height = section.settings.min_height
+  assign image_position = section.settings.image_position
+  assign button_style = section.settings.button_style
+
+  # Text alignment classes
+  case text_align
+    when 'left'
+      assign align_classes = 'text-left items-start'
+    when 'center'
+      assign align_classes = 'text-center items-center'
+    when 'right'
+      assign align_classes = 'text-right items-end'
+  endcase
+-%}
+
+{%- if layout == 'full-width' -%}
+  {%- comment -%} Full Width Background Layout {%- endcomment -%}
+  <section class="relative overflow-hidden" style="min-height: {{ min_height }}px;">
+    {%- if section.settings.image != blank -%}
+      <div class="absolute inset-0">
+        {{ section.settings.image | image_url: width: 2000 | image_tag:
+          class: 'w-full h-full object-cover',
+          loading: 'eager',
+          widths: '400, 800, 1200, 1600, 2000'
+        }}
+        {%- if overlay_opacity > 0 -%}
+          <div class="absolute inset-0 bg-black" style="opacity: {{ overlay_opacity | divided_by: 100.0 }}"></div>
+        {%- endif -%}
+      </div>
+    {%- else -%}
+      <div class="absolute inset-0 bg-gray-200"></div>
+    {%- endif -%}
+
+    <div class="relative px-6 md:px-8 py-20 md:py-32">
+      <div class="container mx-auto">
+        <div class="max-w-3xl mx-auto flex flex-col {{ align_classes }} gap-6">
+          {%- if section.settings.heading != blank -%}
+            <h1 class="{{ heading_size }} font-bold {{ text_color }} leading-tight">
+              {{ section.settings.heading }}
+            </h1>
+          {%- endif -%}
+
+          {%- if section.settings.text != blank -%}
+            <p class="text-lg md:text-xl {{ text_color }} max-w-2xl">
+              {{ section.settings.text }}
+            </p>
+          {%- endif -%}
+
+          {%- if section.settings.button_text != blank -%}
+            <div class="mt-2">
+              {% render 'btn',
+                text: section.settings.button_text,
+                type: button_style,
+                url: section.settings.button_link,
+                size: 'large'
+              %}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </section>
+
+{%- else -%}
+  {%- comment -%} Split Layout {%- endcomment -%}
+  <section class="px-6 md:px-8 py-12 md:py-20">
+    <div class="container mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        {%- if image_position == 'left' -%}
+          {%- comment -%} Image on left {%- endcomment -%}
+          <div class="relative overflow-hidden rounded-lg" style="min-height: {{ min_height }}px;">
+            {%- if section.settings.image != blank -%}
+              {{ section.settings.image | image_url: width: 1000 | image_tag:
+                class: 'w-full h-full object-cover',
+                loading: 'eager',
+                widths: '400, 600, 800, 1000'
+              }}
+            {%- else -%}
+              <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                <span class="text-gray-400">Image</span>
+              </div>
+            {%- endif -%}
+          </div>
+
+          <div class="flex flex-col {{ align_classes }} gap-6">
+            {%- if section.settings.heading != blank -%}
+              <h2 class="{{ heading_size }} font-bold text-gray-900 leading-tight">
+                {{ section.settings.heading }}
+              </h2>
+            {%- endif -%}
+
+            {%- if section.settings.text != blank -%}
+              <p class="text-lg text-gray-600">
+                {{ section.settings.text }}
+              </p>
+            {%- endif -%}
+
+            {%- if section.settings.button_text != blank -%}
+              <div class="mt-2">
+                {% render 'btn',
+                  text: section.settings.button_text,
+                  type: button_style,
+                  url: section.settings.button_link,
+                  size: 'large'
+                %}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- else -%}
+          {%- comment -%} Image on right {%- endcomment -%}
+          <div class="flex flex-col {{ align_classes }} gap-6">
+            {%- if section.settings.heading != blank -%}
+              <h2 class="{{ heading_size }} font-bold text-gray-900 leading-tight">
+                {{ section.settings.heading }}
+              </h2>
+            {%- endif -%}
+
+            {%- if section.settings.text != blank -%}
+              <p class="text-lg text-gray-600">
+                {{ section.settings.text }}
+              </p>
+            {%- endif -%}
+
+            {%- if section.settings.button_text != blank -%}
+              <div class="mt-2">
+                {% render 'btn',
+                  text: section.settings.button_text,
+                  type: button_style,
+                  url: section.settings.button_link,
+                  size: 'large'
+                %}
+              </div>
+            {%- endif -%}
+          </div>
+
+          <div class="relative overflow-hidden rounded-lg lg:order-last" style="min-height: {{ min_height }}px;">
+            {%- if section.settings.image != blank -%}
+              {{ section.settings.image | image_url: width: 1000 | image_tag:
+                class: 'w-full h-full object-cover',
+                loading: 'eager',
+                widths: '400, 600, 800, 1000'
+              }}
+            {%- else -%}
+              <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                <span class="text-gray-400">Image</span>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}

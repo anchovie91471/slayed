@@ -1,0 +1,80 @@
+{% comment %}
+  Reusable button component
+
+  Usage:
+  {% render 'btn', text: 'Click me', type: 'primary' %}
+  {% render 'btn', text: 'Shop Now', type: 'branded', url: '/collections/all' %}
+  {% render 'btn', text: 'Delete', type: 'destructive', size: 'small' %}
+
+  Parameters:
+  - text: {String} Button text (required)
+  - type: {String} Button style variant (default: 'primary')
+    Options: 'primary', 'branded', 'gradient', 'secondary', 'destructive', 'ghost'
+  - size: {String} Button size (default: 'default')
+    Options: 'small', 'default', 'large'
+  - url: {String} If provided, renders as <a> instead of <button>
+  - classes: {String} Additional CSS classes
+  - attributes: {String} Additional HTML attributes (e.g., 'data-action="submit"')
+  - full_width: {Boolean} Makes button full width (default: false)
+{% endcomment %}
+
+{%- liquid
+  assign btn_type = type | default: 'primary'
+  assign btn_size = size | default: 'default'
+  assign is_link = false
+  if url != blank
+    assign is_link = true
+  endif
+
+  # Base classes for all buttons
+  assign base_classes = 'inline-flex items-center justify-center font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors'
+
+  # Type-specific classes
+  case btn_type
+    when 'primary'
+      assign type_classes = 'bg-gray-900 text-white hover:bg-gray-800 focus:ring-gray-500'
+    when 'branded'
+      assign type_classes = 'bg-blue-500 text-white hover:bg-blue-600 focus:ring-blue-400'
+    when 'gradient'
+      assign type_classes = 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 focus:ring-blue-400'
+    when 'secondary'
+      assign type_classes = 'bg-white text-gray-900 border border-gray-300 hover:bg-gray-50 focus:ring-gray-500'
+    when 'destructive'
+      assign type_classes = 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-400'
+    when 'ghost'
+      assign type_classes = 'bg-transparent text-gray-700 hover:text-gray-900 hover:underline focus:ring-blue-400'
+  endcase
+
+  # Size-specific classes
+  case btn_size
+    when 'small'
+      assign size_classes = 'px-4 py-2 text-sm'
+    when 'default'
+      assign size_classes = 'px-6 py-3 text-base'
+    when 'large'
+      assign size_classes = 'px-8 py-4 text-lg'
+  endcase
+
+  # Full width
+  if full_width
+    assign width_classes = 'w-full'
+  else
+    assign width_classes = ''
+  endif
+
+  # Combine all classes
+  assign all_classes = base_classes | append: ' ' | append: type_classes | append: ' ' | append: size_classes | append: ' ' | append: width_classes
+  if classes != blank
+    assign all_classes = all_classes | append: ' ' | append: classes
+  endif
+-%}
+
+{%- if is_link -%}
+  <a href="{{ url }}" class="{{ all_classes }}" {{ attributes }}>
+    {{ text }}
+  </a>
+{%- else -%}
+  <button class="{{ all_classes }}" {{ attributes }}>
+    {{ text }}
+  </button>
+{%- endif -%}
