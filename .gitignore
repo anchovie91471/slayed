@@ -53,4 +53,3 @@ coverage/
 # The setup script (npm run setup) removes assets/ and snippets/vite.liquid from
 # this file to enable Shopify GitHub integration for store developers
 # Contributors working on VAST should use .git/info/exclude to hide build artifacts
-# See CLAUDE.md for contributor setup details
