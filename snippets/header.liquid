@@ -33,7 +33,7 @@
             {% render 'mobile-menu' %}
         </nav>
 
-        <a href="{{ routes.root_url }}" class="text-white no-underline text-2xl md:text-3xl uppercase ml-4 md:ml-0 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900">
+        <a href="{{ routes.root_url }}" class="text-white no-underline text-2xl md:text-3xl uppercase ml-4 md:ml-0">
             {% if settings.logo %}
                 {{ settings.logo | image_url: width: 200 | image_tag:
                     loading: "lazy",
