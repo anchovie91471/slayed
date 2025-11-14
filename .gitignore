@@ -1,8 +1,9 @@
 # Dependencies
 node_modules/
 
-# Assets
+# Built assets
 assets/
+snippets/vite.liquid
 
 # Environment variables
 .env
