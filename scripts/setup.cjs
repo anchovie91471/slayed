@@ -405,6 +405,34 @@ theme = "${productionThemeId}"
     process.exit(1);
   }
 
+  // Step 10: Configure .gitignore for Shopify GitHub integration
+  const gitignorePath = path.join(__dirname, '..', '.gitignore');
+  const gitignoreSpinner = ora('Configuring .gitignore for Shopify GitHub integration...').start();
+
+  try {
+    if (fs.existsSync(gitignorePath)) {
+      const gitignoreContent = fs.readFileSync(gitignorePath, 'utf-8');
+      const lines = gitignoreContent.split('\n');
+
+      // Remove lines that exactly match "assets/" or "snippets/vite.liquid"
+      // Keep all other lines, including comments and other patterns
+      const filteredLines = lines.filter(line => {
+        const trimmed = line.trim();
+        return trimmed !== 'assets/' && trimmed !== 'snippets/vite.liquid';
+      });
+
+      // Write back the modified content
+      fs.writeFileSync(gitignorePath, filteredLines.join('\n'), 'utf-8');
+      gitignoreSpinner.succeed(chalk.green('Configured .gitignore for Shopify GitHub integration'));
+    } else {
+      gitignoreSpinner.warn(chalk.yellow('.gitignore not found, skipping'));
+    }
+  } catch (error) {
+    gitignoreSpinner.fail(chalk.red('Failed to configure .gitignore'));
+    console.error(chalk.gray(error.message));
+    // Don't exit - this is not critical
+  }
+
   // Success message
   console.log('\n' + chalk.green.bold('✨ Setup Complete!'));
   console.log(chalk.gray('─'.repeat(50)));
