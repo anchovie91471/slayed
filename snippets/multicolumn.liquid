@@ -1,0 +1,27 @@
+{% liquid
+  assign heading = section.settings.heading
+  assign gap = section.settings.gap
+  assign alignment = section.settings.alignment
+  assign padding_top = section.settings.padding_top
+  assign padding_bottom = section.settings.padding_bottom
+%}
+
+<div
+  class="multicolumn-section"
+  style="padding-top: {{ padding_top }}px; padding-bottom: {{ padding_bottom }}px;"
+  {{ section.shopify_attributes }}>
+
+  <div class="container mx-auto px-6 md:px-8">
+    {% if heading != blank %}
+      <h2 class="text-3xl font-bold text-center mb-8">{{ heading }}</h2>
+    {% endif %}
+
+    <div
+      class="flex flex-wrap"
+      style="gap: {{ gap }}px; justify-content: {{ alignment }};">
+      {% for block in section.blocks %}
+        {% render 'column' with block as block %}
+      {% endfor %}
+    </div>
+  </div>
+</div>

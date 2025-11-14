@@ -1,0 +1,56 @@
+{% liquid
+  assign width = block.settings.width
+  assign padding = block.settings.padding
+
+  if width == 'fill'
+    assign width_class = 'flex-1'
+  else
+    assign width_class = 'w-auto'
+  endif
+%}
+
+{%- capture children -%}
+  {% content_for 'blocks' %}
+{%- endcapture -%}
+
+{% render 'column-wrapper', children: children, width_class: width_class, padding: padding, shopify_attributes: block.shopify_attributes %}
+
+{%- comment -%} schematic {%- endcomment -%}
+{% schema %}
+{
+  "name": "Column",
+  "settings": [
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "fill",
+      "options": [
+        {
+          "value": "fit-content",
+          "label": "Fit Content"
+        },
+        {
+          "value": "fill",
+          "label": "Fill Available Space"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Padding (px)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@theme"
+    }
+  ]
+}
+{% endschema %}
