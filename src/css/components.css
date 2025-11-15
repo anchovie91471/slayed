@@ -58,10 +58,6 @@
 
     /* Transition classes for slide-in from right */
     .off-screen-right {
-        transform: translateX(50px);
-    }
-
-    .right-50 {
-        transform: translateX(0);
+        @apply translate-x-4;
     }
 }
