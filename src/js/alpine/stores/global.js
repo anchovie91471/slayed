@@ -20,6 +20,10 @@ export default {
           classes.push('mobile-menu-visible')
         }
 
+        if (this.isMinicartVisible) {
+          classes.push('overflow-hidden')
+        }
+
         return classes || ''
       },
       openMobileMenu() {

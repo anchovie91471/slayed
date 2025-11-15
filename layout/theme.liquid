@@ -64,12 +64,22 @@
 
 {% section 'footer' %}
 
-{% comment %} Styles for minicart wrapper in sections/minicart.liquid {% endcomment %}
+{% comment %} Minicart backdrop overlay {% endcomment %}
+<div
+        x-data
+        x-show="$store.global.isMinicartVisible"
+        x-transition.opacity.duration.300ms
+        class="fixed inset-0 bg-black/50 z-40"
+        @click="$store.global.isMinicartVisible = false"
+        x-cloak
+        :aria-hidden="$store.global.isMinicartVisible ? 'false' : 'true'"
+></div>
+
+{% comment %} Minicart drawer wrapper {% endcomment %}
 <div
         class="minicart-wrapper"
         x-data
         x-show="$store.global.isMinicartVisible"
-        x-on:click.outside="$store.global.isMinicartVisible = false"
         x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="off-screen-right"
         x-transition:enter-end="right-50"
@@ -79,7 +89,8 @@
         x-cloak
         :aria-hidden="$store.global.isMinicartVisible ? 'false' : 'true'"
         aria-modal="true"
-        role="dialog">
+        role="dialog"
+        aria-labelledby="minicart-label">
     {% section 'minicart' %}
 </div>
 

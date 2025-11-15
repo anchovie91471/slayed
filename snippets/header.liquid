@@ -90,17 +90,21 @@
             {% endif %}
 
 
-            <a href="{{ routes.cart_url }}"
-               class="relative text-white p-2 [&>svg]:h-[28px] focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900"
-               aria-label="Shopping cart, {{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %}"
-               x-cloak>
+            <button
+                   type="button"
+                   @click="$store.global.isMinicartVisible = true"
+                   class="relative text-white fill-white p-2 [&>svg]:h-[28px] focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900 bg-transparent border-0 cursor-pointer"
+                   aria-label="Shopping cart, {{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %}"
+                   :aria-expanded="$store.global.isMinicartVisible ? 'true' : 'false'"
+                   aria-controls="minicart-label"
+                   x-cloak>
                 {% render 'icon-cart' %}
                 <span class="flex justify-center items-center bg-blue-500 text-white text-xs size-5 rounded-full absolute bottom-[58%] left-1/2" aria-hidden="true">
                     <span data-ajax-cart-bind="item_count" class="p-1 leading-4 text-center">
                         {{- cart.item_count -}}
                     </span>
                 </span>
-            </a>
+            </button>
         </div>
 
         {% comment %}
