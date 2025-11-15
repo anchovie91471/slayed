@@ -47,7 +47,7 @@
     .minicart-wrapper {
         @apply fixed z-50;
         top: 50px;
-        right: 50px;
+        right: 0px;
         pointer-events: none;
         width: 18rem; /* Match w-72 of minicart card */
     }
@@ -60,7 +60,7 @@
 
     /* Transition classes for slide-in from right */
     .off-screen-right {
-        transform: translateX(calc(100% + 2rem));
+        transform: translateX(50px);
     }
 
     .right-50 {
