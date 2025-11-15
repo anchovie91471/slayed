@@ -45,12 +45,14 @@
 
     /* Minicart drawer styles */
     .minicart-wrapper {
-        @apply fixed top-0 right-0 z-50 h-screen flex items-start justify-end pt-24 pr-8;
+        @apply fixed top-24 right-8 z-50;
         pointer-events: none;
     }
 
     .minicart-wrapper > * {
         pointer-events: auto;
+        max-height: calc(100vh - 8rem);
+        overflow-y: auto;
     }
 
     /* Transition classes for slide-in from right */
