@@ -48,6 +48,7 @@
         @apply fixed top-24 right-8 z-50;
         pointer-events: none;
         width: 18rem; /* Match w-72 of minicart card */
+        transform: translateX(calc(100% + 2rem)); /* Start off-screen by default */
     }
 
     .minicart-wrapper > * {
