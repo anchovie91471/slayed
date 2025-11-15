@@ -7,8 +7,14 @@ export default {
       const store = alpineStores[path]
 
       const name = store.name
+      const storeInstance = store.store()
 
-      Alpine.store(name, store.store())
+      Alpine.store(name, storeInstance)
+
+      // Call init() if the store has one
+      if (typeof storeInstance.init === 'function') {
+        storeInstance.init()
+      }
     }
   },
 }
