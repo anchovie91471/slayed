@@ -7,8 +7,14 @@
   assign products_to_show = section.settings.products_to_show
   assign columns_desktop = section.settings.columns_desktop
   assign button_text = section.settings.button_text
+  assign button_link = section.settings.button_link
   assign button_style = section.settings.button_style
   assign bg_color = section.settings.background_color
+
+  # Use button_link if set, otherwise default to collection URL
+  if button_link == blank and collection != blank
+    assign button_link = collection.url
+  endif
 
   # Text alignment classes
   case text_alignment
@@ -61,7 +67,7 @@
           {% render 'btn',
             text: button_text,
             type: button_style,
-            url: collection.url,
+            url: button_link,
             size: 'large'
           %}
         </div>

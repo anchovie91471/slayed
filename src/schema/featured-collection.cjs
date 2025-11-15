@@ -68,6 +68,11 @@ module.exports = {
       info: 'Leave empty to hide button'
     },
     {
+      type: 'url',
+      id: 'button_link',
+      label: 'Button Link'
+    },
+    {
       type: 'select',
       id: 'button_style',
       label: 'Button Style',
