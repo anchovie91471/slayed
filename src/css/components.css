@@ -58,7 +58,7 @@
 
     /* Transition classes for slide-in from right */
     .off-screen-right {
-        transform: translateX(calc(100%));
+        transform: translateX(calc(100% - 2rem));
     }
 
     .right-50 {
