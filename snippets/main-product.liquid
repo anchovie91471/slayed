@@ -301,7 +301,7 @@
             updateMainImage(image) {
                 if (!image) return
 
-                const imgElement = this.$el.querySelector('.main-product-image')
+                const imgElement = this.$refs.mainImage
                 if (imgElement && image.src) {
                     imgElement.src = this.getImageUrl(image.src)
                     imgElement.srcset = this.getImageSrcset(image.src)
