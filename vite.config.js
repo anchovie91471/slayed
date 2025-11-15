@@ -27,8 +27,8 @@ fs.writeFileSync = function(filePath, content, options) {
     if (resolvedPath === viteSnippetPath || resolvedPath.toString().endsWith('snippets/vite.liquid')) {
         const contentStr = content.toString();
 
-        // Only write if content has actually changed (prevents rebuild loop)
-        if (contentStr === lastViteSnippetContent) {
+        // Only prevent duplicate writes in watch mode (not one-time builds)
+        if (process.argv.includes('--watch') && contentStr === lastViteSnippetContent) {
             return; // Don't write, return early
         }
 
