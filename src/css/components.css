@@ -45,9 +45,7 @@
 
     /* Minicart drawer styles */
     .minicart-wrapper {
-        @apply fixed z-50;
-        top: 50px;
-        right: 0px;
+        @apply fixed z-50 right-4 top-8;
         pointer-events: none;
         width: 18rem; /* Match w-72 of minicart card */
     }
