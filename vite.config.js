@@ -218,10 +218,14 @@ export default {
         // Clean up .vite subdirectory that Shopify doesn't allow
         {
             name: 'remove-vite-subdirectory',
-            closeBundle() {
-                const viteDir = path.resolve(process.cwd(), 'assets', '.vite');
-                if (fs.existsSync(viteDir)) {
-                    fs.rmSync(viteDir, { recursive: true, force: true });
+            enforce: 'post',  // Run after vite-plugin-shopify
+            closeBundle: {
+                sequential: true,  // Wait for all parallel closeBundle hooks to finish first
+                async handler() {
+                    const viteDir = path.resolve(process.cwd(), 'assets', '.vite');
+                    if (fs.existsSync(viteDir)) {
+                        fs.rmSync(viteDir, { recursive: true, force: true });
+                    }
                 }
             }
         }
