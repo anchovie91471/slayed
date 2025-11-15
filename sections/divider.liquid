@@ -1,16 +1,23 @@
 {%- render 'divider' with section as section -%}
 
 {%- comment -%} schematic writeCodeShort {%- endcomment -%}
+
 {% schema %}
 {
   "name": "Divider",
   "tag": "section",
   "class": "divider-section",
+  "presets": [
+    {
+      "name": "Divider"
+    }
+  ],
   "settings": [
     {
       "type": "select",
       "id": "style",
       "label": "Divider Style",
+      "default": "solid",
       "options": [
         {
           "value": "solid",
@@ -24,8 +31,7 @@
           "value": "dashed",
           "label": "Dashed"
         }
-      ],
-      "default": "solid"
+      ]
     },
     {
       "type": "color",
@@ -47,6 +53,7 @@
       "type": "select",
       "id": "width",
       "label": "Width",
+      "default": "container",
       "options": [
         {
           "value": "full",
@@ -60,8 +67,7 @@
           "value": "narrow",
           "label": "Narrow"
         }
-      ],
-      "default": "container"
+      ]
     },
     {
       "type": "range",
@@ -82,11 +88,6 @@
       "step": 5,
       "unit": "px",
       "default": 40
-    }
-  ],
-  "presets": [
-    {
-      "name": "Divider"
     }
   ]
 }
