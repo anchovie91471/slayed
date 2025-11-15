@@ -3,6 +3,7 @@ node_modules/
 
 # Built assets
 assets/
+assets/vite-manifest.json
 snippets/vite.liquid
 
 # Environment variables

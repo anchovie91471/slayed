@@ -140,7 +140,7 @@ export default {
     },
     publicDir: 'public',
     build: {
-        manifest: false,
+        manifest: "vite-manifest.json",
         emptyOutDir: false,
         minify: process.env.NODE_ENV === 'production', // Skip minification in development for faster builds
         sourcemap: process.env.NODE_ENV === 'development', // Add sourcemaps in development for debugging
@@ -195,7 +195,9 @@ export default {
             }
         },
         basicSsl(),
-        cleanup(),
+        cleanup({
+            manifestFileName: 'vite-manifest.json'
+        }),
         copyPublicToAssetsPlugin(),
         tailwindcss(),
         shopify({
@@ -215,7 +217,7 @@ export default {
                 }
             }
         },
-        // Clean up .vite subdirectory that Shopify doesn't allow
+        // Defensively clean up .vite subdirectory if it gets created (Shopify doesn't allow subdirectories)
         {
             name: 'remove-vite-subdirectory',
             enforce: 'post',  // Run after vite-plugin-shopify
