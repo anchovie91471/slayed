@@ -45,10 +45,11 @@
 
     /* Minicart drawer styles */
     .minicart-wrapper {
-        @apply fixed top-24 right-8 z-50;
+        @apply fixed z-50;
+        top: 50px;
+        right: 50px;
         pointer-events: none;
         width: 18rem; /* Match w-72 of minicart card */
-        transform: translateX(calc(100% + 2rem)); /* Start off-screen by default */
     }
 
     .minicart-wrapper > * {
@@ -59,7 +60,7 @@
 
     /* Transition classes for slide-in from right */
     .off-screen-right {
-        transform: translateX(calc(100% - 2rem));
+        transform: translateX(calc(100% + 2rem));
     }
 
     .right-50 {
