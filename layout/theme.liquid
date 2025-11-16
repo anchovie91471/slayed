@@ -77,14 +77,14 @@
 
 {% comment %} Minicart drawer wrapper {% endcomment %}
 <div
-        class="fixed z-50 right-0 top-8 pointer-events-none w-2xs"
+        class="fixed z-50 right-8 top-8 pointer-events-none w-2xs"
         x-data
         x-show="$store.global.isMinicartVisible"
         x-transition:enter="transition-transform ease-out duration-300"
         x-transition:enter-start="translate-x-full"
-        x-transition:enter-end="translate-x-0"
+        x-transition:enter-end="translate-x-8"
         x-transition:leave="transition-transform ease-in duration-300"
-        x-transition:leave-start="translate-x-0"
+        x-transition:leave-start="translate-x-8"
         x-transition:leave-end="translate-x-full"
         x-cloak
         :aria-hidden="$store.global.isMinicartVisible ? 'false' : 'true'"
