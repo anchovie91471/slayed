@@ -1,0 +1,89 @@
+{%- comment -%}
+  Article Previous/Next Navigation
+
+  Params:
+  - blog: required - Blog object
+  - current_article: required - Current article object
+{%- endcomment -%}
+
+{%- liquid
+  # Find previous and next articles
+  assign prev_article = null
+  assign next_article = null
+  assign found_current = false
+
+  for article in blog.articles
+    if found_current
+      assign next_article = article
+      break
+    endif
+
+    if article.id == current_article.id
+      assign found_current = true
+    else
+      assign prev_article = article
+    endif
+  endfor
+-%}
+
+<nav aria-label="Article navigation" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  {%- # Previous Article -%}
+  {%- if prev_article -%}
+    <a
+      href="{{ prev_article.url }}"
+      class="group flex items-center gap-4 p-6 border border-gray-200 hover:border-blue-500 transition-colors"
+    >
+      <div class="flex-shrink-0">
+        <svg class="w-6 h-6 text-gray-400 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm text-gray-500 mb-1">Previous Article</p>
+        <p class="text-lg font-semibold text-gray-900 group-hover:text-blue-500 transition-colors truncate">
+          {{ prev_article.title }}
+        </p>
+      </div>
+      {%- if prev_article.image -%}
+        <div class="hidden sm:block flex-shrink-0 w-20 h-20 bg-gray-100 overflow-hidden">
+          <img
+            src="{{ prev_article.image | image_url: width: 160 }}"
+            alt="{{ prev_article.title }}"
+            class="w-full h-full object-cover"
+          >
+        </div>
+      {%- endif -%}
+    </a>
+  {%- else -%}
+    <div class="hidden md:block"></div>
+  {%- endif -%}
+
+  {%- # Next Article -%}
+  {%- if next_article -%}
+    <a
+      href="{{ next_article.url }}"
+      class="group flex items-center gap-4 p-6 border border-gray-200 hover:border-blue-500 transition-colors"
+    >
+      {%- if next_article.image -%}
+        <div class="hidden sm:block flex-shrink-0 w-20 h-20 bg-gray-100 overflow-hidden">
+          <img
+            src="{{ next_article.image | image_url: width: 160 }}"
+            alt="{{ next_article.title }}"
+            class="w-full h-full object-cover"
+          >
+        </div>
+      {%- endif -%}
+      <div class="flex-1 min-w-0 text-right">
+        <p class="text-sm text-gray-500 mb-1">Next Article</p>
+        <p class="text-lg font-semibold text-gray-900 group-hover:text-blue-500 transition-colors truncate">
+          {{ next_article.title }}
+        </p>
+      </div>
+      <div class="flex-shrink-0">
+        <svg class="w-6 h-6 text-gray-400 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </div>
+    </a>
+  {%- endif -%}
+</nav>

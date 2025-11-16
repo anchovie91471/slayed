@@ -1,0 +1,70 @@
+{%- comment -%}
+  Related Articles Section
+
+  Params:
+  - article: required - Current article object
+  - heading: optional (default: "You might also like")
+  - count: optional (default: 3)
+  - source: optional (default: "same-tags") - Options: "same-tags", "same-blog", "same-author"
+{%- endcomment -%}
+
+{%- liquid
+  assign heading = heading | default: 'You might also like'
+  assign count = count | default: 3
+  assign source = source | default: 'same-tags'
+  assign related_articles = blank
+  assign related_found = 0
+-%}
+
+{%- case source -%}
+  {%- when 'same-tags' -%}
+    {%- # Find articles with matching tags -%}
+    {%- if article.tags.size > 0 -%}
+      {%- assign first_tag = article.tags | first -%}
+      {%- assign related_articles = article.blog.articles | where: 'tags', first_tag -%}
+    {%- endif -%}
+
+  {%- when 'same-author' -%}
+    {%- # Find articles by same author -%}
+    {%- assign related_articles = article.blog.articles -%}
+
+  {%- when 'same-blog' -%}
+    {%- # Get recent articles from same blog -%}
+    {%- assign related_articles = article.blog.articles -%}
+{%- endcase -%}
+
+{%- # Filter out current article and limit count -%}
+{%- assign filtered_articles = blank | split: '' -%}
+{%- for item in related_articles -%}
+  {%- if item.id != article.id -%}
+    {%- if source == 'same-author' and item.author != article.author -%}
+      {%- continue -%}
+    {%- endif -%}
+
+    {%- assign filtered_articles = filtered_articles | push: item -%}
+    {%- assign related_found = related_found | plus: 1 -%}
+
+    {%- if related_found >= count -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if filtered_articles.size > 0 -%}
+  <section class="related-articles">
+    <h2 class="text-3xl font-bold text-gray-900 mb-8">{{ heading }}</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {%- for related_article in filtered_articles -%}
+        {% render 'blog-card',
+          article: related_article,
+          show_tags: true,
+          show_author: false,
+          show_date: true,
+          show_excerpt: true,
+          excerpt_length: 30
+        %}
+      {%- endfor -%}
+    </div>
+  </section>
+{%- endif -%}
