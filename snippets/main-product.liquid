@@ -18,7 +18,7 @@
                  :class="galleryLayout === 'left' ? 'flex flex-row-reverse gap-4' : 'flex flex-col gap-4'">
 
                 {%- comment -%} Main Image Display {%- endcomment -%}
-                <div class="image-wrapper relative overflow-hidden pt-[137%] flex-1 group"
+                <div class="image-wrapper relative overflow-hidden rounded-lg pt-[137%] flex-1 group"
                      {% if section.settings.enable_zoom %}
                          @mousemove="handleZoomMove($event)"
                          @mouseleave="resetZoom()"
@@ -52,7 +52,7 @@
                                 type="button"
                                 @click="selectImage({{ forloop.index0 }})"
                                 :class="currentImageIndex === {{ forloop.index0 }} ? 'ring-2 ring-blue-500 ring-offset-2' : 'ring-1 ring-gray-200 hover:ring-gray-300'"
-                                class="thumbnail-button flex-shrink-0 overflow-hidden transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+                                class="thumbnail-button flex-shrink-0 overflow-hidden rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
                                 :style="`width: ${thumbnailSize}px; height: ${thumbnailSize}px;`"
                                 aria-label="View image {{ forloop.index }}">
                                 {{ image | image_url: width: 200 | image_tag:
