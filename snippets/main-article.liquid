@@ -108,7 +108,7 @@
     {%- # Featured Image -%}
     {%- if show_featured_image and article.image -%}
       <div class="{{ image_container_classes }} mb-12">
-        <div class="aspect-w-16 aspect-h-9 bg-gray-100 overflow-hidden">
+        <div class="aspect-w-16 aspect-h-9 bg-gray-100 overflow-hidden rounded-lg">
           <img
             src="{{ article.image | image_url: width: 1600 }}"
             alt="{{ article.image.alt | default: article.title }}"
