@@ -48,11 +48,29 @@
                             </p>
                         {% endfor %}
                     </div>
-                    <div class="my-0.5 text-xs text-gray-700">
-            <span class="font-bold">Quantity:
-            </span>
-                        <span>{{ line_item.quantity }}
-            </span>
+                    <div class="my-0.5">
+                        <ajax-cart-quantity class="inline-flex items-center border border-gray-300 rounded text-gray-700">
+                            <a href="{{ routes.cart_change_url }}?id={{ line_item.key }}&quantity={{ line_item.quantity | minus: 1 | at_least: 1 }}"
+                               data-ajax-cart-quantity-minus
+                               aria-label="Decrease quantity for {{ line_item.title }}"
+                               class="w-7 h-7 flex items-center justify-center hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-400 transition-colors">
+                                {% render 'icon-minus', size: 'size-3' %}
+                            </a>
+                            <input type="number"
+                                   value="{{ line_item.quantity }}"
+                                   name="updates[]"
+                                   data-ajax-cart-quantity-input="{{ line_item.key }}"
+                                   class="w-8 h-7 border-0 border-l border-r border-gray-300 text-center text-xs [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-400"
+                                   aria-label="Quantity for {{ line_item.title }}"
+                                   readonly>
+                            <a href="{{ routes.cart_change_url }}?id={{ line_item.key }}&quantity={{ line_item.quantity | plus: 1 }}"
+                               data-ajax-cart-quantity-plus
+                               aria-label="Increase quantity for {{ line_item.title }}"
+                               class="w-7 h-7 flex items-center justify-center hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-400 transition-colors">
+                                {% render 'icon-plus', size: 'size-3' %}
+                            </a>
+                        </ajax-cart-quantity>
+                        <div data-ajax-cart-errors="{{ line_item.key }}" class="text-red-600 text-xs mt-1"></div>
                     </div>
                     <p class="mt-auto mb-0 text-sm font-medium text-gray-900">{{ line_item.price | money }}
                     </p>
