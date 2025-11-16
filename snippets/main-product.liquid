@@ -255,12 +255,16 @@
             zoomLevel: {{ section.settings.zoom_level | default: 2 }},
 
             init() {
+                console.log('[productGallery] init() called')
                 const productData = Alpine.store('productData')
+                console.log('[productGallery] productData:', productData)
                 const currentVariant = productData.currentVariant
                 this.sectionId = productData.sectionId
 
                 // Build images array from product data
                 this.images = {{ product.images | json }}
+                console.log('[productGallery] images loaded:', this.images.length, 'images')
+                console.log('[productGallery] first image:', this.images[0])
 
                 // Set initial image index based on variant or featured image
                 if (currentVariant && (currentVariant.featured_media || currentVariant.featured_image)) {
@@ -280,9 +284,16 @@
             },
 
             selectImage(index) {
+                console.log('[productGallery] selectImage called with index:', index)
+                console.log('[productGallery] images.length:', this.images.length)
+                console.log('[productGallery] currentImageIndex before:', this.currentImageIndex)
                 if (index >= 0 && index < this.images.length) {
                     this.currentImageIndex = index
+                    console.log('[productGallery] currentImageIndex updated to:', this.currentImageIndex)
+                    console.log('[productGallery] calling updateMainImage with:', this.images[index])
                     this.updateMainImage(this.images[index])
+                } else {
+                    console.error('[productGallery] index out of bounds:', index, 'length:', this.images.length)
                 }
             },
 
@@ -299,13 +310,25 @@
             },
 
             updateMainImage(image) {
-                if (!image) return
+                console.log('[productGallery] updateMainImage called with:', image)
+                if (!image) {
+                    console.error('[productGallery] image is null/undefined')
+                    return
+                }
 
                 const imgElement = this.$refs.mainImage
+                console.log('[productGallery] imgElement:', imgElement)
+                console.log('[productGallery] image.src:', image.src)
+
                 if (imgElement && image.src) {
-                    imgElement.src = this.getImageUrl(image.src, 1426)
+                    const newSrc = this.getImageUrl(image.src, 1426)
+                    console.log('[productGallery] setting src to:', newSrc)
+                    imgElement.src = newSrc
                     imgElement.srcset = this.getImageSrcset(image.src)
                     imgElement.alt = image.alt || {{ product.title | json }}
+                    console.log('[productGallery] image updated successfully')
+                } else {
+                    console.error('[productGallery] failed to update image. imgElement:', !!imgElement, 'image.src:', image.src)
                 }
             },
 
