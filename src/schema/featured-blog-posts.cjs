@@ -160,6 +160,32 @@ module.exports = {
             "id": "view_all_text",
             "label": "View All Button Text",
             "default": "View All Articles"
+        },
+        {
+            "type": "select",
+            "id": "view_all_button_style",
+            "label": "View All Button Style",
+            "options": [
+                { "value": "primary", "label": "Primary (Gray)" },
+                { "value": "branded", "label": "Branded (Blue)" },
+                { "value": "gradient", "label": "Gradient (Blue to Indigo)" },
+                { "value": "secondary", "label": "Secondary (White)" }
+            ],
+            "default": "secondary"
+        },
+        {
+            "type": "select",
+            "id": "read_more_button_style",
+            "label": "Read More Button Style",
+            "options": [
+                { "value": "primary", "label": "Primary (Gray)" },
+                { "value": "branded", "label": "Branded (Blue)" },
+                { "value": "gradient", "label": "Gradient (Blue to Indigo)" },
+                { "value": "secondary", "label": "Secondary (White)" },
+                { "value": "ghost", "label": "Ghost (Transparent)" }
+            ],
+            "default": "ghost",
+            "info": "Style for 'Read More' buttons on blog cards"
         }
     ]
 }
