@@ -509,12 +509,14 @@
       init() {
         // Listen for open-quick-view events on window (since modal is outside product grid DOM tree)
         window.addEventListener('open-quick-view', (event) => {
-          this.open(event.detail.productHandle, event.detail.settings || {})
+          this.open(event.detail.productHandle)
         })
       },
 
-      async open(productHandle, settings = {}) {
-        this.settings = settings
+      async open(productHandle) {
+        this.settings = {
+          quick_view_show_description: {{ section.settings.quick_view_show_description | default: true | json }}
+        }
         this.loading = true
         this.isOpen = true
         document.body.style.overflow = 'hidden'

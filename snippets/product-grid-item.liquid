@@ -24,7 +24,7 @@
         {%- comment -%} Quick View Button {%- endcomment -%}
         {% if enable_quick_view %}
             <button type="button"
-                    @click="window.dispatchEvent(new CustomEvent('open-quick-view', { detail: { productHandle: '{{ prod.handle }}', settings: {{ quick_view_settings | json }} } }))"
+                    @click="window.dispatchEvent(new CustomEvent('open-quick-view', { detail: { productHandle: '{{ prod.handle }}' } }))"
                     class="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-white text-gray-900 px-4 py-2 text-sm font-medium hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 z-10"
                     aria-label="Quick view {{ prod.title }}">
                 Quick View

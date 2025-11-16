@@ -20,12 +20,13 @@
                     {% assign platform_url = settings[setting_key] %}
 
                     {% if platform_url != blank %}
+                        {% assign icon_name = 'icon-' | append: platform %}
                         <a href="{{ platform_url }}"
                            target="_blank"
                            rel="noopener noreferrer"
                            class="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900 [&>svg]:w-6 [&>svg]:h-6"
                            aria-label="{{ platform | capitalize }}">
-                            {% render 'icon-' | append: platform %}
+                            {% render icon_name %}
                         </a>
                     {% endif %}
                 {% endfor %}

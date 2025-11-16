@@ -85,19 +85,6 @@
                     {% render 'icon-user' %}
                 </a>
             {% endif %}
-
-
-            <button type="button"
-               @click="$store.global.isMinicartVisible = true"
-               class="relative text-white fill-white p-2 [&>svg]:h-[28px] focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900"
-               aria-label="Shopping cart, {{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %}">
-                {% render 'icon-cart' %}
-                <span class="flex justify-center items-center bg-blue-500 text-white text-xs size-5 rounded-full absolute bottom-[58%] left-1/2" aria-hidden="true">
-                    <span data-ajax-cart-bind="item_count" class="p-1 leading-4 text-center">
-                        {{- cart.item_count -}}
-                    </span>
-                </span>
-            </button>
         </div>
 
         {% comment %}
