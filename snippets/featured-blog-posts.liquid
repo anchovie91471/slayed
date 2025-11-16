@@ -1,0 +1,225 @@
+{%- comment -%}
+  Featured Blog Posts
+  Renders a curated selection of blog articles with customizable layout
+{%- endcomment -%}
+
+{%- liquid
+  # Extract settings
+  assign heading = section.settings.heading | default: 'Featured Articles'
+  assign heading_alignment = section.settings.heading_alignment | default: 'left'
+  assign blog = section.settings.blog
+  assign layout = section.settings.layout | default: 'grid-3'
+  assign posts_count = section.settings.posts_count | default: 6
+  assign show_featured_post = section.settings.show_featured_post | default: true
+  assign featured_layout = section.settings.featured_layout | default: 'card-large'
+  assign show_tags = section.settings.show_tags | default: true
+  assign show_author = section.settings.show_author | default: true
+  assign show_date = section.settings.show_date | default: true
+  assign show_excerpt = section.settings.show_excerpt | default: true
+  assign excerpt_length = section.settings.excerpt_length | default: 40
+  assign padding_top = section.settings.padding_top | default: 'medium'
+  assign padding_bottom = section.settings.padding_bottom | default: 'medium'
+  assign show_view_all = section.settings.show_view_all | default: true
+  assign view_all_text = section.settings.view_all_text | default: 'View All Articles'
+
+  # Determine padding classes
+  case padding_top
+    when 'none'
+      assign padding_top_class = 'pt-0'
+    when 'small'
+      assign padding_top_class = 'pt-8'
+    when 'medium'
+      assign padding_top_class = 'pt-12'
+    when 'large'
+      assign padding_top_class = 'pt-16'
+  endcase
+
+  case padding_bottom
+    when 'none'
+      assign padding_bottom_class = 'pb-0'
+    when 'small'
+      assign padding_bottom_class = 'pb-8'
+    when 'medium'
+      assign padding_bottom_class = 'pb-12'
+    when 'large'
+      assign padding_bottom_class = 'pb-16'
+  endcase
+
+  # Determine heading alignment classes
+  case heading_alignment
+    when 'left'
+      assign heading_align_class = 'text-left'
+    when 'center'
+      assign heading_align_class = 'text-center'
+    when 'right'
+      assign heading_align_class = 'text-right'
+  endcase
+
+  # Determine grid classes based on layout
+  case layout
+    when 'grid-2'
+      assign grid_classes = 'grid grid-cols-1 md:grid-cols-2 gap-8'
+    when 'grid-3'
+      assign grid_classes = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+    when 'grid-4'
+      assign grid_classes = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'
+  endcase
+-%}
+
+<div class="px-6 md:px-8 {{ padding_top_class }} {{ padding_bottom_class }}">
+  <div class="container mx-auto">
+    {%- # Section Header -%}
+    {%- if heading != blank -%}
+      <header class="mb-8 {{ heading_align_class }}">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900">{{ heading }}</h2>
+      </header>
+    {%- endif -%}
+
+    {%- # Check if blog is selected -%}
+    {%- if blog == blank -%}
+      <div class="text-center py-16 bg-gray-50 border-2 border-dashed border-gray-300">
+        <p class="text-lg text-gray-500">Please select a blog in the section settings.</p>
+      </div>
+    {%- else -%}
+      {%- # Get blog articles -%}
+      {%- assign blog_handle = blog -%}
+      {%- assign selected_blog = blogs[blog_handle] -%}
+
+      {%- if selected_blog.articles.size == 0 -%}
+        <div class="text-center py-16">
+          <p class="text-xl text-gray-500">No articles found in this blog.</p>
+        </div>
+      {%- else -%}
+        <div class="space-y-12">
+          {%- # Featured Post (First Article) -%}
+          {%- if show_featured_post and selected_blog.articles.size > 0 -%}
+            {%- assign featured_article = selected_blog.articles.first -%}
+
+            <div class="featured-post mb-12">
+              {%- case featured_layout -%}
+                {%- when 'hero' -%}
+                  <div class="relative">
+                    {% render 'blog-card',
+                      article: featured_article,
+                      featured: true,
+                      show_tags: show_tags,
+                      show_author: show_author,
+                      show_date: show_date,
+                      show_excerpt: show_excerpt,
+                      excerpt_length: excerpt_length
+                    %}
+                  </div>
+
+                {%- when 'card-large' -%}
+                  <div class="max-w-4xl mx-auto">
+                    {% render 'blog-card',
+                      article: featured_article,
+                      featured: true,
+                      show_tags: show_tags,
+                      show_author: show_author,
+                      show_date: show_date,
+                      show_excerpt: show_excerpt,
+                      excerpt_length: excerpt_length
+                    %}
+                  </div>
+
+                {%- when 'split' -%}
+                  <div class="grid lg:grid-cols-2 gap-8 items-center">
+                    {%- if featured_article.image -%}
+                      <div class="aspect-w-16 aspect-h-9 bg-gray-100 overflow-hidden">
+                        <img
+                          src="{{ featured_article.image | image_url: width: 1200 }}"
+                          alt="{{ featured_article.image.alt | default: featured_article.title }}"
+                          loading="lazy"
+                          class="w-full h-full object-cover"
+                        >
+                      </div>
+                    {%- endif -%}
+                    <div class="space-y-4">
+                      {%- if show_tags and featured_article.tags.size > 0 -%}
+                        <div class="flex flex-wrap gap-2">
+                          {%- for tag in featured_article.tags limit: 3 -%}
+                            {% render 'badge', text: tag, variant: 'neutral' %}
+                          {%- endfor -%}
+                        </div>
+                      {%- endif -%}
+
+                      <h3 class="text-4xl font-bold text-gray-900">
+                        <a href="{{ featured_article.url }}" class="hover:text-blue-500 transition-colors">
+                          {{ featured_article.title }}
+                        </a>
+                      </h3>
+
+                      {%- if show_author or show_date -%}
+                        <div class="flex items-center gap-3 text-sm text-gray-500">
+                          {%- if show_author and featured_article.author -%}
+                            <span>By {{ featured_article.author }}</span>
+                          {%- endif -%}
+                          {%- if show_author and show_date -%}
+                            <span class="text-gray-300">•</span>
+                          {%- endif -%}
+                          {%- if show_date -%}
+                            <time datetime="{{ featured_article.published_at | date: '%Y-%m-%d' }}">
+                              {{ featured_article.published_at | date: '%B %d, %Y' }}
+                            </time>
+                          {%- endif -%}
+                        </div>
+                      {%- endif -%}
+
+                      {%- if show_excerpt and featured_article.excerpt -%}
+                        <p class="text-lg text-gray-600">
+                          {{ featured_article.excerpt | strip_html | truncatewords: excerpt_length }}
+                        </p>
+                      {%- endif -%}
+
+                      {% render 'btn',
+                        text: 'Read Full Article',
+                        type: 'primary',
+                        url: featured_article.url
+                      %}
+                    </div>
+                  </div>
+              {%- endcase -%}
+            </div>
+          {%- endif -%}
+
+          {%- # Article Grid -%}
+          <div
+            class="{{ grid_classes }}"
+            role="feed"
+            aria-label="Featured blog articles"
+          >
+            {%- assign start_index = 0 -%}
+            {%- if show_featured_post -%}
+              {%- assign start_index = 1 -%}
+            {%- endif -%}
+
+            {%- for article in selected_blog.articles offset: start_index limit: posts_count -%}
+              <div>
+                {% render 'blog-card',
+                  article: article,
+                  show_tags: show_tags,
+                  show_author: show_author,
+                  show_date: show_date,
+                  show_excerpt: show_excerpt,
+                  excerpt_length: excerpt_length
+                %}
+              </div>
+            {%- endfor -%}
+          </div>
+
+          {%- # View All Button -%}
+          {%- if show_view_all and selected_blog.url -%}
+            <div class="text-center mt-8">
+              {% render 'btn',
+                text: view_all_text,
+                type: 'secondary',
+                url: selected_blog.url
+              %}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</div>
