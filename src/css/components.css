@@ -45,6 +45,6 @@
 
     .minicart-wrapper > * {
         @apply pointer-events-auto overflow-y-auto;
-        max-height: calc(100vh - 8rem);
+        max-height: calc(100vh - 4rem);
     }
 }
