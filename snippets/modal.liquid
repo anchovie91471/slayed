@@ -1,7 +1,7 @@
 <dialog
         id="dialog-modal-example"
         x-data="modal"
-        x-init="init($el)"
+        x-init="init($el, {{ section.settings.auto_open_delay | default: 0 }})"
         class="max-w-md rounded-md shadow-2xl backdrop:bg-black/50 p-0 border-0"
         @click="close($event)"
         aria-labelledby="modal-title"
@@ -21,7 +21,7 @@
         Alpine.data('modal', () => ({
             componentElement: document.querySelector('#dialog-modal-example'),
             open: false,
-            init(dialog) {
+            init(dialog, autoOpenDelay = 0) {
                 if (!dialog) {
                     return
                 }
@@ -51,6 +51,13 @@
                 document.addEventListener('close-modal', () => {
                     this.open = false
                 })
+
+                // Auto-open modal after delay if configured
+                if (autoOpenDelay > 0) {
+                    setTimeout(() => {
+                        this.open = true
+                    }, autoOpenDelay * 1000)
+                }
             },
             toggle() {
                 this.open = !this.open
