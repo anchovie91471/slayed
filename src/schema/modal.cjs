@@ -5,26 +5,23 @@ module.exports = {
         class: "section-modal",
     }),
     "settings": [
-        {
-            type: 'text',
-            id: 'title',
-            label: 'Modal Title',
-            default: 'Modal Title'
-        },
-        {
-            type: 'textarea',
-            id: 'text',
-            label: 'Modal Text',
-            default: 'This is modal content. You can customize this text in the theme editor.'
-        },
-        {
-            type: 'number',
-            id: 'auto_open_delay',
-            label: 'Auto-open delay (seconds)',
-            info: 'Set the number of seconds before the modal automatically opens. Set to 0 to disable auto-open.',
-            default: 1,
-            min: 1,
-            max: 60
-        }
+        app.make("text", {
+            id: "title",
+            label: "Modal Title",
+            default: "Modal Title"
+        }),
+        app.make("textarea", {
+            id: "text",
+            label: "Modal Text",
+            default: "This is modal content. You can customize this text in the theme editor."
+        }),
+        app.make("range", {
+            id: "auto_open_delay",
+            label: "Auto-open delay (seconds)",
+            min: 0,
+            max: 60,
+            step: 1,
+            default: 1
+        }),
     ]
 }
