@@ -85,6 +85,22 @@
                     {% render 'icon-user' %}
                 </a>
             {% endif %}
+
+            <button
+                    type="button"
+                    class="relative text-white fill-white p-2 [&>svg]:h-[28px] focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+                    @click="$store.global.isMinicartVisible = true"
+                    :aria-expanded="$store.global.isMinicartVisible ? 'true' : 'false'"
+                    aria-label="Open cart"
+                    aria-controls="minicart"
+                    x-data>
+                {% render 'icon-cart' %}
+                {% if cart.item_count > 0 %}
+                    <span class="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full min-w-[18px]">
+                        {{ cart.item_count }}
+                    </span>
+                {% endif %}
+            </button>
         </div>
 
         {% comment %}
