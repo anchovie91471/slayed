@@ -16,6 +16,15 @@ module.exports = {
             id: 'text',
             label: 'Modal Text',
             default: 'This is modal content. You can customize this text in the theme editor.'
+        },
+        {
+            type: 'number',
+            id: 'auto_open_delay',
+            label: 'Auto-open delay (seconds)',
+            info: 'Set the number of seconds before the modal automatically opens. Set to 0 to disable auto-open.',
+            default: 0,
+            min: 0,
+            max: 60
         }
     ]
 }
