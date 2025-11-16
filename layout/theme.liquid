@@ -59,7 +59,18 @@
         id="main-content"
         role="main"
         class="site-main relative">
-    {{ content_for_layout }}
+    {% if request.path contains '/policies/' %}
+        {%- comment -%} Enhanced styling for policy pages {%- endcomment -%}
+        <div class="px-6 md:px-8">
+            <div class="container mx-auto py-12">
+                <div class="prose max-w-4xl mx-auto">
+                    {{ content_for_layout }}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        {{ content_for_layout }}
+    {% endif %}
 </main>
 
 {% section 'footer' %}
