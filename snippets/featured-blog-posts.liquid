@@ -2,7 +2,7 @@
   Featured Blog Posts
   Renders a curated selection of blog articles with customizable layout
 {%- endcomment -%}
-
+{{ section.settings | json }}
 {%- liquid
   # Extract settings
   assign heading = section.settings.heading | default: 'Featured Articles'
