@@ -507,8 +507,8 @@
       settings: {},
 
       init() {
-        // Listen for open-quick-view events
-        this.$el.addEventListener('open-quick-view', (event) => {
+        // Listen for open-quick-view events on window (since modal is outside product grid DOM tree)
+        window.addEventListener('open-quick-view', (event) => {
           this.open(event.detail.productHandle, event.detail.settings || {})
         })
       },
