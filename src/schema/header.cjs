@@ -1,7 +1,7 @@
 const {app} = require('@anchovie/schematic');
 
 module.exports = {
-    ...app.section("header", {
+    ...app.section("Header", {
         class: "section-header sticky top-0 z-20 shadow-md",
         tag: "header"
     }),

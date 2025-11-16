@@ -1,7 +1,7 @@
 const {app} = require('@anchovie/schematic');
 
 module.exports = {
-    ...app.section("footer", {
+    ...app.section("Footer", {
         class: "footer",
         tag: "footer"
     }),
