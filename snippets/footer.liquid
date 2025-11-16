@@ -1,13 +1,15 @@
 {% comment %} @todo: Convert to footer-group json {% endcomment %}
 <div class="bg-gray-900 text-white px-6 md:px-8 py-12">
     <div class="container mx-auto space-y-8">
-        <nav aria-label="Footer navigation" class="flex flex-wrap gap-6">
-            {% for link in linklists.footer.links %}
-                <a href="{{ link.url }}" class="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900">
-                    {{ link.title }}
-                </a>
-            {% endfor %}
-        </nav>
+        {% if section.settings.footer_menu != blank %}
+            <nav aria-label="Footer navigation" class="flex flex-wrap gap-6">
+                {% for link in linklists[section.settings.footer_menu].links %}
+                    <a href="{{ link.url }}" class="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900">
+                        {{ link.title }}
+                    </a>
+                {% endfor %}
+            </nav>
+        {% endif %}
 
         {% if section.settings.show_social_icons %}
             <div class="flex gap-4 items-center">
