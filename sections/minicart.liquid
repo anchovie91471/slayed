@@ -57,7 +57,7 @@
                     <p class="mt-auto mb-0 text-sm font-medium text-gray-900">{{ line_item.price | money }}
                     </p>
                     <p class="text-[0.6em] mt-1 mb-0">
-                        <a href="{{ line_item.url_to_remove }}" data-ajax-cart-request-button @click.stop class="inline-flex items-center gap-1 text-red-600 hover:text-red-700 hover:underline focus:outline-none focus:ring-2 focus:ring-red-400">
+                        <a href="{{ line_item.url_to_remove }}" data-ajax-cart-request-button class="inline-flex items-center gap-1 text-red-600 hover:text-red-700 hover:underline focus:outline-none focus:ring-2 focus:ring-red-400">
                             {% render 'icon-trash' %}
                             Remove from cart
                         </a>
