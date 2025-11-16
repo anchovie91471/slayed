@@ -45,16 +45,11 @@
 
     /* Minicart drawer styles */
     .minicart-wrapper {
-        @apply fixed z-50 right-4 top-8 pointer-events-none w-2xs;
+        @apply fixed z-50 right-0 top-8 pointer-events-none w-2xs;
     }
 
     .minicart-wrapper > * {
         @apply pointer-events-auto overflow-y-auto;
         max-height: calc(100vh - 8rem);
-    }
-
-    /* Transition classes for slide-in from right */
-    .off-screen-right {
-        @apply translate-x-4;
     }
 }
