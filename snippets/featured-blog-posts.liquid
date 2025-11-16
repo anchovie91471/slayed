@@ -21,6 +21,7 @@
   assign padding_bottom = section.settings.padding_bottom | default: 'medium'
   assign show_view_all = section.settings.show_view_all | default: true
   assign view_all_text = section.settings.view_all_text | default: 'View All Articles'
+  assign background_color = section.settings.background_color | default: ''
 
   # Determine padding classes
   case padding_top
@@ -64,9 +65,15 @@
     when 'grid-4'
       assign grid_classes = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'
   endcase
+
+  # Calculate grid limit (subtract 1 if showing featured post)
+  assign grid_limit = posts_count
+  if show_featured_post
+    assign grid_limit = posts_count | minus: 1
+  endif
 -%}
 
-<div class="px-6 md:px-8 {{ padding_top_class }} {{ padding_bottom_class }}">
+<div class="px-6 md:px-8 {{ padding_top_class }} {{ padding_bottom_class }}" {% if background_color != blank %}style="background-color: {{ background_color }};"{% endif %}>
   <div class="container mx-auto">
     {%- # Section Header -%}
     {%- if heading != blank -%}
@@ -194,7 +201,7 @@
               {%- assign start_index = 1 -%}
             {%- endif -%}
 
-            {%- for article in selected_blog.articles offset: start_index limit: posts_count -%}
+            {%- for article in selected_blog.articles offset: start_index limit: grid_limit -%}
               <div>
                 {% render 'blog-card',
                   article: article,
