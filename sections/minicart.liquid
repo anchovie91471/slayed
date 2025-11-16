@@ -20,7 +20,7 @@
         in your cart!
     </div>
     <hr class="mb-5 border-gray-200"/>
-    <ul class="list-none p-0 max-h-[300px] overflow-y-scroll" data-ajax-cart-section-scroll>
+    <ul class="list-none flex flex-col gap-2 divide-y p-0 max-h-[300px] overflow-y-scroll" data-ajax-cart-section-scroll>
         {% for line_item in cart.items %}
             <li class="flex mb-2.5 w-full">
                 <div class="w-[100px] h-[120px] relative flex-shrink-0">
