@@ -12,12 +12,12 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign show_tags = show_tags | default: true
-  assign show_author = show_author | default: true
-  assign show_date = show_date | default: true
-  assign show_excerpt = show_excerpt | default: true
+  assign show_tags = show_tags
+  assign show_author = show_author
+  assign show_date = show_date
+  assign show_excerpt = show_excerpt
   assign excerpt_length = excerpt_length | default: 40
-  assign featured = featured | default: false
+  assign featured = featured
 
   if featured
     assign card_classes = 'group block space-y-4'
