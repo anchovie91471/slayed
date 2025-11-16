@@ -114,7 +114,12 @@ module.exports = {
         },
         {
             "type": "header",
-            "content": "Spacing"
+            "content": "Spacing & Colors"
+        },
+        {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background Color"
         },
         {
             "type": "select",
