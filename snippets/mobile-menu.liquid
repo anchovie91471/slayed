@@ -10,4 +10,26 @@
             </a>
         </li>
     {% endfor %}
+
+    <li class="mobile-menu-item">
+        <a href="{{ routes.search_url }}" class="block text-2xl font-bold tracking-wide text-white no-underline py-2 hover:bg-gray-800 hover:text-white px-4 -mx-4 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-inset">
+            Search
+        </a>
+    </li>
+
+    {% if shop.customer_accounts_enabled %}
+        <li class="mobile-menu-item">
+            <a href="{{ routes.account_url }}" class="block text-2xl font-bold tracking-wide text-white no-underline py-2 hover:bg-gray-800 hover:text-white px-4 -mx-4 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-inset">
+                Account
+            </a>
+        </li>
+    {% endif %}
+
+    {% if settings.enable_modal %}
+        <li class="mobile-menu-item">
+            <button type="button" @click="$store.global.openModal()" class="block text-2xl font-bold tracking-wide text-white no-underline py-2 hover:bg-gray-800 hover:text-white px-4 -mx-4 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-inset w-full text-left bg-transparent border-0 cursor-pointer appearance-none">
+                Modal
+            </button>
+        </li>
+    {% endif %}
 </ul>
