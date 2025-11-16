@@ -69,7 +69,7 @@
         x-data
         x-show="$store.global.isMinicartVisible"
         x-transition.opacity.duration.300ms
-        class="fixed inset-0 bg-black/50 z-40 pointer-events-none"
+        class="fixed inset-0 bg-black/50 z-40"
         @click="$store.global.isMinicartVisible = false"
         x-cloak
         :aria-hidden="$store.global.isMinicartVisible ? 'false' : 'true'"
