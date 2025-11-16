@@ -19,6 +19,7 @@
   assign show_excerpt = show_excerpt
   assign excerpt_length = excerpt_length | default: 40
   assign featured = featured
+  assign button_style = button_style | default: 'ghost'
 
   if featured
     assign card_classes = 'group block space-y-4'
