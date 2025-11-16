@@ -45,15 +45,12 @@
 
     /* Minicart drawer styles */
     .minicart-wrapper {
-        @apply fixed z-50 right-4 top-8;
-        pointer-events: none;
-        width: 18rem; /* Match w-72 of minicart card */
+        @apply fixed z-50 right-4 top-8 pointer-events-none w-2xs;
     }
 
     .minicart-wrapper > * {
-        pointer-events: auto;
+        @apply pointr-events-auto overflow-y-auto;
         max-height: calc(100vh - 8rem);
-        overflow-y: auto;
     }
 
     /* Transition classes for slide-in from right */
