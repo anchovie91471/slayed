@@ -22,8 +22,8 @@ module.exports = {
             id: 'auto_open_delay',
             label: 'Auto-open delay (seconds)',
             info: 'Set the number of seconds before the modal automatically opens. Set to 0 to disable auto-open.',
-            default: 0,
-            min: 0,
+            default: 1,
+            min: 1,
             max: 60
         }
     ]
