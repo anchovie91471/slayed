@@ -10,16 +10,16 @@
   assign blog = section.settings.blog
   assign layout = section.settings.layout | default: 'grid-3'
   assign posts_count = section.settings.posts_count | default: 6
-  assign show_featured_post = section.settings.show_featured_post | default: true
+  assign show_featured_post = section.settings.show_featured_post
   assign featured_layout = section.settings.featured_layout | default: 'card-large'
-  assign show_tags = section.settings.show_tags | default: true
-  assign show_author = section.settings.show_author | default: true
-  assign show_date = section.settings.show_date | default: true
-  assign show_excerpt = section.settings.show_excerpt | default: true
+  assign show_tags = section.settings.show_tags
+  assign show_author = section.settings.show_author
+  assign show_date = section.settings.show_date
+  assign show_excerpt = section.settings.show_excerpt
   assign excerpt_length = section.settings.excerpt_length | default: 40
   assign padding_top = section.settings.padding_top | default: 'medium'
   assign padding_bottom = section.settings.padding_bottom | default: 'medium'
-  assign show_view_all = section.settings.show_view_all | default: true
+  assign show_view_all = section.settings.show_view_all
   assign view_all_text = section.settings.view_all_text | default: 'View All Articles'
   assign background_color = section.settings.background_color | default: ''
 
