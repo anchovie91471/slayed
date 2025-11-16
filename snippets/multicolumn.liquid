@@ -1,5 +1,6 @@
 {% liquid
   assign heading = section.settings.heading
+  assign heading_size = section.settings.heading_size | default: 'text-3xl'
   assign gap = section.settings.gap
   assign alignment = section.settings.alignment
   assign padding_top = section.settings.padding_top
@@ -13,7 +14,7 @@
 
   <div class="container mx-auto px-6 md:px-8">
     {% if heading != blank %}
-      <h2 class="text-3xl font-bold text-center mb-8">{{ heading }}</h2>
+      <h2 class="{{ heading_size }} font-bold text-center mb-8">{{ heading }}</h2>
     {% endif %}
 
     <div

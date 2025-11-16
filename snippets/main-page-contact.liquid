@@ -1,7 +1,10 @@
+{%- liquid
+    assign heading_size = section.settings.heading_size | default: 'text-3xl'
+-%}
 <div class="bg-white px-6 md:px-8 py-12">
     <div class="container mx-auto">
         <header>
-            <h1 class="mb-4 text-center">
+            <h1 class="{{ heading_size }} font-bold mb-4 text-center">
                 {{ section.settings.heading | escape }}
             </h1>
             <p class="mb-16 font-light text-center text-gray-500 sm:text-xl max-w-[700px] mx-auto">
