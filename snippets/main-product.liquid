@@ -303,7 +303,7 @@
 
                 const imgElement = this.$refs.mainImage
                 if (imgElement && image.src) {
-                    imgElement.src = this.getImageUrl(image.src)
+                    imgElement.src = this.getImageUrl(image.src, 1426)
                     imgElement.srcset = this.getImageSrcset(image.src)
                     imgElement.alt = image.alt || {{ product.title | json }}
                 }
