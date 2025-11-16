@@ -9,6 +9,7 @@
   - show_excerpt: optional (default: true)
   - excerpt_length: optional (default: 40)
   - featured: optional (default: false) - Large featured style
+  - button_style: optional (default: 'primary') - Button style variant
 {%- endcomment -%}
 
 {%- liquid
@@ -91,7 +92,7 @@
       <div class="pt-2">
         {% render 'btn',
           text: 'Read More',
-          type: 'ghost',
+          type: button_style,
           size: 'small',
           url: article.url
         %}

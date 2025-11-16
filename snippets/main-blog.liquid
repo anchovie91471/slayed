@@ -14,6 +14,7 @@
   assign show_date = section.settings.show_date | default: true
   assign show_excerpt = section.settings.show_excerpt | default: true
   assign excerpt_length = section.settings.excerpt_length | default: 40
+  assign button_style = section.settings.button_style | default: 'primary'
   assign pagination_type = section.settings.pagination_type | default: 'load-more'
   assign load_more_text = section.settings.load_more_text | default: 'Load More Articles'
 
@@ -99,7 +100,8 @@
                     show_author: show_author,
                     show_date: show_date,
                     show_excerpt: show_excerpt,
-                    excerpt_length: excerpt_length
+                    excerpt_length: excerpt_length,
+                    button_style: button_style
                   %}
                 </div>
 
@@ -112,7 +114,8 @@
                     show_author: show_author,
                     show_date: show_date,
                     show_excerpt: show_excerpt,
-                    excerpt_length: excerpt_length
+                    excerpt_length: excerpt_length,
+                    button_style: button_style
                   %}
                 </div>
 
@@ -166,7 +169,7 @@
 
                     {% render 'btn',
                       text: 'Read Full Article',
-                      type: 'primary',
+                      type: button_style,
                       url: featured_article.url
                     %}
                   </div>
@@ -199,7 +202,8 @@
                 show_author: show_author,
                 show_date: show_date,
                 show_excerpt: show_excerpt,
-                excerpt_length: excerpt_length
+                excerpt_length: excerpt_length,
+                button_style: button_style
               %}
             </div>
           {%- endfor -%}
