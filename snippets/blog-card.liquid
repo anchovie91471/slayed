@@ -9,6 +9,7 @@
   - show_excerpt: optional (default: true)
   - excerpt_length: optional (default: 40)
   - featured: optional (default: false) - Large featured style
+  - button_style: optional (default: 'ghost') - Button style
 {%- endcomment -%}
 
 {%- liquid
@@ -18,6 +19,7 @@
   assign show_excerpt = show_excerpt
   assign excerpt_length = excerpt_length | default: 40
   assign featured = featured
+  assign button_style = button_style | default: 'ghost'
 
   if featured
     assign card_classes = 'group block space-y-4'
@@ -91,7 +93,7 @@
       <div class="pt-2">
         {% render 'btn',
           text: 'Read More',
-          type: 'ghost',
+          type: button_style,
           size: 'small',
           url: article.url
         %}

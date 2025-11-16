@@ -20,6 +20,8 @@
     assign padding_bottom = section.settings.padding_bottom | default: 'medium'
     assign show_view_all = section.settings.show_view_all
     assign view_all_text = section.settings.view_all_text | default: 'View All Articles'
+    assign view_all_button_style = section.settings.view_all_button_style | default: 'secondary'
+    assign read_more_button_style = section.settings.read_more_button_style | default: 'ghost'
     assign background_color = section.settings.background_color | default: ''
 
     # Determine padding classes
@@ -112,7 +114,8 @@
                                                 show_author: show_author,
                                                 show_date: show_date,
                                                 show_excerpt: show_excerpt,
-                                                excerpt_length: excerpt_length
+                                                excerpt_length: excerpt_length,
+                                                button_style: read_more_button_style
                                         %}
                                     </div>
 
@@ -125,7 +128,8 @@
                                                 show_author: show_author,
                                                 show_date: show_date,
                                                 show_excerpt: show_excerpt,
-                                                excerpt_length: excerpt_length
+                                                excerpt_length: excerpt_length,
+                                                button_style: read_more_button_style
                                         %}
                                     </div>
 
@@ -180,7 +184,7 @@
 
                                             {% render 'btn',
                                                     text: 'Read Full Article',
-                                                    type: 'primary',
+                                                    type: read_more_button_style,
                                                     url: featured_article.url
                                             %}
                                         </div>
@@ -208,7 +212,8 @@
                                         show_author: show_author,
                                         show_date: show_date,
                                         show_excerpt: show_excerpt,
-                                        excerpt_length: excerpt_length
+                                        excerpt_length: excerpt_length,
+                                        button_style: read_more_button_style
                                 %}
                             </div>
                         {%- endfor -%}
@@ -219,7 +224,7 @@
                         <div class="text-center mt-8">
                             {% render 'btn',
                                     text: view_all_text,
-                                    type: 'secondary',
+                                    type: view_all_button_style,
                                     url: selected_blog.url
                             %}
                         </div>
