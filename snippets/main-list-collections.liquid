@@ -1,24 +1,8 @@
-{% unless collection %}
-    {% assign collection = collections.all %}
-{% endunless %}
-
 <div class="px-6 md:px-8 py-12">
     <div class="container mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 text-center mb-8">
             Collections
         </h1>
         {% render 'collections-list' %}
-
-        <div>
-            {%- paginate collection.products by 12 -%}
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {% for prod in collection.products %}
-                        {% render 'product-grid-item', prod: prod %}
-                    {% endfor %}
-                </div>
-
-                {% render 'pagination-navigation', paginate: paginate %}
-            {% endpaginate %}
-        </div>
     </div>
 </div>
