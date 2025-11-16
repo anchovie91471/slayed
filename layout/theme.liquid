@@ -69,7 +69,7 @@
         x-data
         x-show="$store.global.isMinicartVisible"
         x-transition.opacity.duration.300ms
-        class="fixed inset-0 bg-black/50 z-40"
+        class="fixed inset-0 bg-black/50 z-40 pointer-events-none"
         @click="$store.global.isMinicartVisible = false"
         x-cloak
         :aria-hidden="$store.global.isMinicartVisible ? 'false' : 'true'"
@@ -77,7 +77,7 @@
 
 {% comment %} Minicart drawer wrapper {% endcomment %}
 <div
-        class="fixed z-50 right-8 top-8 pointer-events-none w-2xs"
+        class="fixed z-50 right-8 top-8 w-2xs"
         x-data
         x-show="$store.global.isMinicartVisible"
         x-transition:enter="transition-transform ease-out duration-300"
