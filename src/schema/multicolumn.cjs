@@ -8,8 +8,7 @@ module.exports = {
     "settings": [
         app.make("text", {
             id: "heading",
-            label: "Heading",
-            default: ""
+            label: "Heading"
         }),
         {
             "type": "select",
