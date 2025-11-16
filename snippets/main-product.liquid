@@ -269,7 +269,13 @@
                 // Set initial image index based on variant or featured image
                 if (currentVariant && (currentVariant.featured_media || currentVariant.featured_image)) {
                     const variantMedia = currentVariant.featured_media || currentVariant.featured_image
-                    const index = this.images.findIndex(img => img.id === variantMedia.id)
+                    // Images array contains URL strings, not objects with id
+                    // Compare by URL instead of id
+                    const variantMediaSrc = variantMedia.src || variantMedia
+                    const index = this.images.findIndex(img => {
+                        const imgSrc = typeof img === 'string' ? img : img.src
+                        return imgSrc && variantMediaSrc && imgSrc.includes(variantMediaSrc.split('?')[0].split('/').pop())
+                    })
                     if (index !== -1) {
                         this.currentImageIndex = index
                     }
@@ -302,7 +308,13 @@
 
                 const newMedia = variant.featured_media || variant.featured_image
                 if (newMedia) {
-                    const index = this.images.findIndex(img => img.id === newMedia.id)
+                    // Images array contains URL strings, not objects with id
+                    // Compare by URL instead of id
+                    const newMediaSrc = newMedia.src || newMedia
+                    const index = this.images.findIndex(img => {
+                        const imgSrc = typeof img === 'string' ? img : img.src
+                        return imgSrc && newMediaSrc && imgSrc.includes(newMediaSrc.split('?')[0].split('/').pop())
+                    })
                     if (index !== -1) {
                         this.selectImage(index)
                     }
@@ -318,17 +330,22 @@
 
                 const imgElement = this.$refs.mainImage
                 console.log('[productGallery] imgElement:', imgElement)
-                console.log('[productGallery] image.src:', image.src)
 
-                if (imgElement && image.src) {
-                    const newSrc = this.getImageUrl(image.src, 1426)
+                // Handle both string URLs and image objects
+                const imageSrc = typeof image === 'string' ? image : image.src
+                const imageAlt = typeof image === 'object' && image.alt ? image.alt : {{ product.title | json }}
+
+                console.log('[productGallery] imageSrc:', imageSrc)
+
+                if (imgElement && imageSrc) {
+                    const newSrc = this.getImageUrl(imageSrc, 1426)
                     console.log('[productGallery] setting src to:', newSrc)
                     imgElement.src = newSrc
-                    imgElement.srcset = this.getImageSrcset(image.src)
-                    imgElement.alt = image.alt || {{ product.title | json }}
+                    imgElement.srcset = this.getImageSrcset(imageSrc)
+                    imgElement.alt = imageAlt
                     console.log('[productGallery] image updated successfully')
                 } else {
-                    console.error('[productGallery] failed to update image. imgElement:', !!imgElement, 'image.src:', image.src)
+                    console.error('[productGallery] failed to update image. imgElement:', !!imgElement, 'imageSrc:', imageSrc)
                 }
             },
 
@@ -551,8 +568,12 @@
             updateLightboxImage() {
                 const image = this.images[this.currentIndex]
                 if (image && this.$refs.lightboxImage) {
-                    this.$refs.lightboxImage.src = this.getImageUrl(image.src, 2000)
-                    this.$refs.lightboxImage.alt = image.alt || {{ product.title | json }}
+                    // Handle both string URLs and image objects
+                    const imageSrc = typeof image === 'string' ? image : image.src
+                    const imageAlt = typeof image === 'object' && image.alt ? image.alt : {{ product.title | json }}
+
+                    this.$refs.lightboxImage.src = this.getImageUrl(imageSrc, 2000)
+                    this.$refs.lightboxImage.alt = imageAlt
                 }
             },
 
