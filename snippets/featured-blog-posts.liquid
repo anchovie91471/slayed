@@ -5,6 +5,7 @@
 {%- liquid
     # Extract settings
     assign heading = section.settings.heading | default: 'Featured Articles'
+    assign heading_size = section.settings.heading_size | default: 'text-3xl'
     assign heading_alignment = section.settings.heading_alignment | default: 'left'
     assign blog = section.settings.blog
     assign layout = section.settings.layout | default: 'grid-3'
@@ -79,7 +80,7 @@
         {%- # Section Header  -%}
         {%- if heading != blank -%}
             <header class="mb-8 {{ heading_align_class }}">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">{{ heading }}</h2>
+                <h2 class="{{ heading_size }} font-bold text-gray-900">{{ heading }}</h2>
             </header>
         {%- endif -%}
 

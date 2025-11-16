@@ -11,6 +11,17 @@ module.exports = {
             label: "Heading",
             default: ""
         }),
+        {
+            "type": "select",
+            "id": "heading_size",
+            "label": "Heading Size",
+            "options": [
+                { "value": "text-2xl", "label": "Small" },
+                { "value": "text-3xl", "label": "Medium" },
+                { "value": "text-4xl", "label": "Large" }
+            ],
+            "default": "text-3xl"
+        },
         app.make("range", {
             id: "gap",
             label: "Column Gap (px)",

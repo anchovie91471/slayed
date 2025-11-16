@@ -9,6 +9,17 @@ module.exports = {
             id: "heading",
             label: "Heading",
         }),
+        {
+            "type": "select",
+            "id": "heading_size",
+            "label": "Heading Size",
+            "options": [
+                { "value": "text-2xl", "label": "Small" },
+                { "value": "text-3xl", "label": "Medium" },
+                { "value": "text-4xl", "label": "Large" }
+            ],
+            "default": "text-3xl"
+        },
     ],
     "blocks": [
         {
