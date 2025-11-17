@@ -57,7 +57,7 @@
             {% if settings.enable_modal %}
                 <button
                         type="button"
-                        class="text-white fill-white p-2 [&>svg]:h-[28px] focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900 hidden md:block"
+                        class="text-white fill-white p-2 [&>svg]:w-[26px] [&>svg]:h-auto focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900 hidden md:block"
                         @click="$store.global.openModal()"
                         aria-label="Open Modal">
                     {% render 'icon-bubble-bottom' %}
@@ -67,7 +67,7 @@
             {% if settings.enable_predictive_search %}
                 <button
                         type="button"
-                        class="text-white fill-white p-2 [&>svg]:h-[28px] hidden md:block focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+                        class="text-white fill-white p-2 [&>svg]:w-[26px] [&>svg]:h-auto hidden md:block focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900"
                         @click="$store.global.isPredictiveSearchVisible = true"
                         :aria-expanded="$store.global.isPredictiveSearchVisible ? 'true' : 'false'"
                         aria-label="Search"
@@ -75,20 +75,20 @@
                     {% render 'icon-search' %}
                 </button>
             {% else %}
-                <a href="{{ routes.search_url }}" class="text-white fill-white p-2 [&>svg]:h-[28px] focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900 hidden md:block" aria-label="Search">
+                <a href="{{ routes.search_url }}" class="text-white fill-white p-2 [&>svg]:w-[26px] [&>svg]:h-auto focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900 hidden md:block" aria-label="Search">
                     {% render 'icon-search' %}
                 </a>
             {% endif %}
 
             {% if shop.customer_accounts_enabled %}
-                <a href="{{ routes.account_url }}" class="text-white fill-white p-2 [&>svg]:h-[28px] focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900 hidden md:block" aria-label="Account">
+                <a href="{{ routes.account_url }}" class="text-white fill-white p-2 [&>svg]:w-[26px] [&>svg]:h-auto focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900 hidden md:block" aria-label="Account">
                     {% render 'icon-user' %}
                 </a>
             {% endif %}
 
             <button
                     type="button"
-                    class="relative text-white fill-white p-2 [&>svg]:h-[28px] focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+                    class="relative text-white fill-white p-2 [&>svg]:w-[26px] [&>svg]:h-auto focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900"
                     @click="$store.global.isMinicartVisible = true"
                     :aria-expanded="$store.global.isMinicartVisible ? 'true' : 'false'"
                     aria-label="Open cart"
