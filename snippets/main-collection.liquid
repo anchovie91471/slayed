@@ -138,10 +138,10 @@
                                         <button
                                             @click="removeFilter('{{ filter.param_name }}', '{{ value.value }}')"
                                             type="button"
-                                            class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-700 text-sm rounded-full hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors group"
+                                            class="inline-flex items-center gap-2 px-3 py-1 bg-blue-500 text-white text-sm rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors group"
                                         >
-                                            <span>{{ value.label }}</span>
-                                            <svg class="w-4 h-4 group-hover:text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <span class="text-white">{{ value.label }}</span>
+                                            <svg class="w-4 h-4 text-white group-hover:opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                             </svg>
                                         </button>
