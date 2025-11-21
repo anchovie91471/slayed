@@ -1,0 +1,21 @@
+{%- if predictive_search.performed -%}
+    <div id="predictive-search-results" class="mt-6">
+        {%- if predictive_search.resources.products.size > 0 -%}
+            <h3 id="predictive-search-products" class="text-sm font-medium text-gray-900 mb-3">
+                Did you mean?
+            </h3>
+            <ul role="listbox" aria-labelledby="predictive-search-products" class="space-y-2 mb-4">
+                {%- for product in predictive_search.resources.products -%}
+                    <li role="option">
+                        <a href="{{ product.url }}" class="text-blue-600 hover:text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400">
+                            <span>{{ product.title }}</span>
+                        </a>
+                    </li>
+                {%- endfor -%}
+            </ul>
+        {%- endif -%}
+        <button class="bg-gray-900 text-white px-6 py-3 font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors w-full">
+            Search for "{{ predictive_search.terms }}"
+        </button>
+    </div>
+{%- endif -%}

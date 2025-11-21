@@ -1,0 +1,258 @@
+{%- render 'breadcrumbs' -%}
+
+<div class="px-6 md:px-8 py-12">
+    <div
+            class="shopify-section-main-product-inner container mx-auto"
+            data-handle="{{ product.handle }}"
+            data-id="{{ product.id }}"
+            data-url="{{ product.url }}"
+            data-section="{{ section.id }}">
+
+        <a class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400" href="#product-info-{{ section.id }}">
+            Skip to product info
+        </a>
+        <div class="md:flex md:gap-12 pdp-main relative">
+            <div class="media flex-1 mb-8 md:mb-0"
+                 x-data="productGallery"
+                 x-init="init()"
+                 data-images='{{ product.images | json }}'
+                 data-gallery-layout="{{ section.settings.gallery_layout | default: 'bottom' }}"
+                 data-thumbnail-size="{{ section.settings.gallery_thumbnail_size | default: 80 }}"
+                 data-zoom-enabled="{{ section.settings.enable_zoom | default: true }}"
+                 data-zoom-type="{{ section.settings.zoom_type | default: 'hover' }}"
+                 data-zoom-level="{{ section.settings.zoom_level | default: 2 }}"
+                 data-product-title="{{ product.title | json }}"
+                 :class="galleryLayout === 'left' ? 'flex flex-row-reverse gap-4' : 'flex flex-col gap-4'">
+
+                {%- comment -%} Main Image Display {%- endcomment -%}
+                <div class="image-wrapper relative overflow-hidden rounded-lg pt-[137%] flex-1 group cursor-zoom-in"
+                     {% if section.settings.enable_zoom %}
+                         @mousemove="handleZoomMove($event)"
+                         @mouseleave="resetZoom()"
+                         @click="{% if section.settings.zoom_type == 'lightbox' or section.settings.zoom_type == 'both' %}openLightbox(){% endif %}"
+                     {% endif %}>
+                    {% if product.selected_variant and product.selected_variant.image %}
+                        {% assign media = product.selected_variant.image %}
+                    {% else %}
+                        {% assign media = product.featured_image %}
+                    {% endif %}
+                    {{ media | image_url: width: 1426 | image_tag:
+                        class: "absolute h-full w-full object-cover inset-0 main-product-image transition-transform duration-200",
+                        sizes: "(min-width: 768px) 55vw, 100vw",
+                        widths: "800,1000,1426",
+                        loading: "eager",
+                        fetchpriority: "high",
+                        x-ref: "mainImage",
+                        style: "" }}
+                </div>
+
+                {%- comment -%} Thumbnail Navigation {%- endcomment -%}
+                {% if section.settings.enable_gallery and product.images.size > 1 %}
+                    <div class="thumbnail-navigation"
+                         :class="{
+                           'flex gap-2 overflow-x-auto': galleryLayout === 'bottom',
+                           'flex flex-col gap-2 overflow-y-auto max-h-[600px] w-20': galleryLayout === 'left'
+                         }">
+                        {% for image in product.images %}
+                            <button
+                                type="button"
+                                @click="selectImage({{ forloop.index0 }})"
+                                :class="currentImageIndex === {{ forloop.index0 }} ? 'ring-2 ring-blue-600 ring-offset-2' : 'ring-1 ring-gray-200 hover:ring-gray-300'"
+                                class="thumbnail-button flex-shrink-0 overflow-hidden rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 aspect-square"
+                                :style="`width: ${thumbnailSize}px;`"
+                                aria-label="View image {{ forloop.index }}">
+                                {{ image | image_url: width: 200 | image_tag:
+                                    class: "w-full h-full object-cover",
+                                    loading: "lazy",
+                                    width: image.width,
+                                    height: image.height,
+                                    alt: image.alt | default: product.title }}
+                            </button>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="info flex-1" id="product-info-{{ section.id }}">
+                <p class="caption tracking-wide text-[10px] leading-3 text-gray-500">{{ product.type | upcase }}</p>
+                <h1>{{ product.title }}</h1>
+                <div class="flex items-center py-2"
+                     x-data="priceComponent"
+                     x-init="init()"
+                     data-money-format="{{ shop.money_format | json | escape }}">
+                    <span class="sr-only">Regular Price</span>
+                    <span
+                            x-show="compareAtPrice"
+                            x-text="formatMoney(compareAtPrice)"
+                            class="line-through mr-2">
+          </span>
+                    <span
+                            x-text="formatMoney(displayPrice)"
+                            :class="{ 'transition-colors duration-300': flash }">
+          </span>
+                </div>
+                {% render 'product-variant-picker'
+                        , product: product
+                        , product_form_id: 'product-form-id'
+                        , picker_type: section.settings.picker_type %}
+
+                <div x-data="productForm()" x-init="init()">
+                    <div class="quantity-row space-y-1">
+                        <label for="quantity-control-input" class="block text-sm font-medium text-gray-900">Quantity</label>
+                        <div class="flex items-center border border-gray-300 w-fit text-gray-700 text-sm">
+                            <button type="button" @click="decrementQuantity()" aria-label="Decrease quantity" class="w-11 h-11 bg-transparent border-0 flex items-center justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-400 [&>svg]:w-[10px]">
+                                {% render 'icon-minus' %}
+                            </button>
+                            <input
+                                    type="number"
+                                    id="quantity-control-input"
+                                    x-model.number="quantity"
+                                    min="1"
+                                    aria-label="Quantity"
+                                    class="w-12 text-center p-0 border-0 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-400 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none">
+                            <button type="button" @click="incrementQuantity()" aria-label="Increase quantity" class="w-11 h-11 bg-transparent border-0 flex items-center justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-400 [&>svg]:w-[10px]">
+                                {% render 'icon-plus' %}
+                            </button>
+                        </div>
+                    </div>
+
+                    <ajax-cart-product-form>
+                        <form
+                                action="{{ routes.cart_add_url }}"
+                                id="product_form_id"
+                                class="product-form my-6"
+                                novalidate="novalidate"
+                                data-product-form>
+                            <input
+                                    type="hidden"
+                                    name="id"
+                                    x-bind:value="variantId">
+                            <input
+                                    type="hidden"
+                                    name="quantity"
+                                    x-bind:value="quantity">
+                            <div class="mb-2.5">
+                                <button
+                                        type="submit"
+                                        name="add"
+                                        class="bg-gray-900 text-white px-6 py-3 font-medium w-full hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        x-bind:disabled="!isAvailable || isProcessing">
+                  <span x-show="!isProcessing">
+                    <span x-show="isAvailable">Add to cart</span>
+                    <span x-show="!isAvailable">Sold out</span>
+                  </span>
+                                    <span x-show="isProcessing">Adding to cart...</span>
+                                </button>
+                            </div>
+                            <div data-ajax-cart-errors="form" class="text-sm text-red-600">
+                                <!-- Error messages appear here -->
+                            </div>
+
+                            <button
+                                    type="button"
+                                    x-show="isAvailable"
+                                    class="bg-white text-gray-900 border border-gray-300 px-6 py-3 font-medium w-full hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                                    @click="buyNow()">
+                                Buy now
+                            </button>
+
+                            {{ form | payment_button }}
+                        </form>
+                    </ajax-cart-product-form>
+                </div>
+
+                <div class="description prose prose-base text-gray-700 leading-relaxed [&_em]:italic [&_a]:text-blue-600 [&_a:hover]:text-blue-600 [&_a]:underline [&_a:focus]:outline-none [&_a:focus]:ring-2 [&_a:focus]:ring-blue-400">
+                    {{ product.description }}
+                </div>
+                {% for block in section.blocks %}
+                    <div
+                            x-data="{ expanded: false }"
+                            class="collapsable-row border border-gray-200 my-4 rounded-lg overflow-hidden"
+                            x-id="['collapsible-trigger', 'collapsible-panel']">
+                        <h2 class="m-0">
+                            <button
+                                    type="button"
+                                    class="w-full text-left bg-transparent border-0 p-0 appearance-none flex items-center justify-between px-6 py-4 text-xl font-semibold text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-400 transition-colors cursor-pointer"
+                                    @click="expanded = !expanded"
+                                    :aria-controls="$id('collapsible-panel')"
+                                    :aria-expanded="expanded">
+                                <span>{{ block.settings.heading }}</span>
+                                <span
+                                        class="text-gray-500 transition-transform duration-200"
+                                        :class="{ 'rotate-180': expanded }">
+                                    {% render 'icon-chevron' %}
+                                </span>
+                            </button>
+                        </h2>
+                        <div x-cloak x-show="expanded" x-collapse :id="$id('collapsible-panel')">
+                            <div class="px-6 pb-4 text-gray-700">{{ block.settings.content }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{%- comment -%} Image Zoom Lightbox {%- endcomment -%}
+{% if section.settings.enable_zoom and section.settings.zoom_type != 'hover' %}
+    <div x-data="lightboxZoom"
+         x-show="isOpen"
+         x-cloak
+         data-product-title="{{ product.title | json }}"
+         @keydown.escape.window="close()"
+         class="fixed inset-0 z-50 bg-black bg-opacity-95 flex items-center justify-center p-4"
+         @click.self="close()">
+        <button type="button"
+                @click="close()"
+                class="absolute top-4 right-4 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white p-2 z-10"
+                aria-label="Close lightbox">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+
+        <div class="max-w-6xl max-h-full overflow-auto">
+            <img x-ref="lightboxImage"
+                 src=""
+                 alt=""
+                 class="w-full h-auto"
+                 @click.stop="">
+        </div>
+
+        {%- comment -%} Navigation arrows if multiple images {%- endcomment -%}
+        {% if product.images.size > 1 %}
+            <button type="button"
+                    @click="previousImage()"
+                    class="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white p-2"
+                    aria-label="Previous image">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </button>
+
+            <button type="button"
+                    @click="nextImage()"
+                    class="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white p-2"
+                    aria-label="Next image">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </button>
+        {% endif %}
+    </div>
+{% endif %}
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        let prod = {{ product | json }};
+        prod.options_with_values = {{ product.options_with_values | json }};
+
+        Alpine.store('productData', {
+            product: prod,
+            currentVariant: {{ product.selected_or_first_available_variant | json }},
+            sectionId: '{{ section.id }}',
+            optionsWithValues: {{ product.options_with_values | json }},
+        });
+    });
+</script>

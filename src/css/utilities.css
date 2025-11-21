@@ -1,0 +1,4 @@
+@layer utilities {
+    /* Add custom utility classes here */
+    /* Note: Tailwind already provides sr-only - use that instead of defining your own */
+}

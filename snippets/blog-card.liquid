@@ -1,0 +1,103 @@
+{%- comment -%}
+  Blog Card Component
+
+  Params:
+  - article: required - Article object
+  - show_tags: optional (default: true)
+  - show_author: optional (default: true)
+  - show_date: optional (default: true)
+  - show_excerpt: optional (default: true)
+  - excerpt_length: optional (default: 40)
+  - featured: optional (default: false) - Large featured style
+  - button_style: optional (default: 'primary') - Button style variant
+{%- endcomment -%}
+
+{%- liquid
+  assign show_tags = show_tags
+  assign show_author = show_author
+  assign show_date = show_date
+  assign show_excerpt = show_excerpt
+  assign excerpt_length = excerpt_length | default: 40
+  assign featured = featured
+  assign button_style = button_style | default: 'ghost'
+
+  if featured
+    assign card_classes = 'group block space-y-4'
+    assign image_classes = 'aspect-w-16 aspect-h-9 bg-gray-100 overflow-hidden rounded-lg'
+    assign title_classes = 'text-3xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors'
+    assign excerpt_classes = 'text-base text-gray-600 line-clamp-3'
+  else
+    assign card_classes = 'group block space-y-3'
+    assign image_classes = 'aspect-w-4 aspect-h-3 bg-gray-100 overflow-hidden rounded-lg'
+    assign title_classes = 'text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors'
+    assign excerpt_classes = 'text-sm text-gray-600 line-clamp-2'
+  endif
+-%}
+
+<article class="{{ card_classes }}" role="article" aria-labelledby="article-{{ article.id }}">
+  <a href="{{ article.url }}" class="block" aria-label="Read article: {{ article.title }}">
+    {%- if article.image -%}
+      <div class="{{ image_classes }}" role="img" aria-label="{{ article.image.alt | default: article.title }}">
+        <img
+          src="{{ article.image | image_url: width: 800 }}"
+          alt="{{ article.image.alt | default: article.title }}"
+          loading="lazy"
+          class="w-full h-full object-cover group-hover:opacity-90 transition-opacity"
+        >
+      </div>
+    {%- else -%}
+      <div class="{{ image_classes }}" role="img" aria-label="No image available">
+        <div class="w-full h-full flex items-center justify-center bg-gray-200">
+          <span class="text-gray-400 text-sm font-medium" aria-hidden="true">No Image</span>
+        </div>
+      </div>
+    {%- endif -%}
+
+    <div class="space-y-2">
+      {%- if show_tags and article.tags.size > 0 -%}
+        <div class="flex flex-wrap gap-2" role="list" aria-label="Article tags">
+          {%- for tag in article.tags limit: 3 -%}
+            <span role="listitem">
+              {% render 'badge', text: tag, variant: 'neutral', size: 'small' %}
+            </span>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      <h3 id="article-{{ article.id }}" class="{{ title_classes }}">
+        {{ article.title }}
+      </h3>
+
+      {%- if show_author or show_date -%}
+        <div class="flex items-center gap-3 text-sm text-gray-500">
+          {%- if show_author and article.author -%}
+            <span aria-label="Author">By {{ article.author }}</span>
+          {%- endif -%}
+          {%- if show_author and show_date -%}
+            <span class="text-gray-300" aria-hidden="true">•</span>
+          {%- endif -%}
+          {%- if show_date -%}
+            <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}" aria-label="Published date">
+              {{ article.published_at | date: '%B %d, %Y' }}
+            </time>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- if show_excerpt and article.excerpt -%}
+        <p class="{{ excerpt_classes }}">
+          {{ article.excerpt | strip_html | truncatewords: excerpt_length }}
+        </p>
+      {%- endif -%}
+
+      <div class="pt-2">
+        {% render 'btn',
+          text: 'Read More',
+          type: button_style,
+          size: 'small',
+          url: article.url
+        %}
+      </div>
+    </div>
+  </a>
+</article>

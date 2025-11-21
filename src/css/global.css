@@ -1,0 +1,2 @@
+/* Global styles that should NOT be tree-shaken by Tailwind */
+/* @font-face declarations moved to snippets/font-face.liquid for Shopify asset_url support */

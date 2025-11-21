@@ -1,0 +1,60 @@
+{%- render 'faq' with section as section -%}
+
+{%- comment -%} schematic writeCodeShort {%- endcomment -%}
+{% schema %}
+{
+  "name": "FAQ Section",
+  "tag": "section",
+  "class": "faq-section",
+  "presets": [
+    {
+      "name": "FAQ Section"
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        {
+          "value": "text-2xl",
+          "label": "Small"
+        },
+        {
+          "value": "text-3xl",
+          "label": "Medium"
+        },
+        {
+          "value": "text-4xl",
+          "label": "Large"
+        }
+      ],
+      "default": "text-3xl"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Body Text"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

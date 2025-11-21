@@ -1,0 +1,275 @@
+{%- comment -%}
+  Main Blog Listing
+  Renders blog article grid with optional featured post and tag filtering
+{%- endcomment -%}
+
+{%- liquid
+  # Extract settings
+  assign layout = section.settings.layout | default: 'grid-3'
+  assign posts_per_page = section.settings.posts_per_page | default: 12
+  assign show_featured_post = section.settings.show_featured_post | default: true
+  assign featured_layout = section.settings.featured_layout | default: 'hero'
+  assign show_tags = section.settings.show_tags | default: true
+  assign show_author = section.settings.show_author | default: true
+  assign show_date = section.settings.show_date | default: true
+  assign show_excerpt = section.settings.show_excerpt | default: true
+  assign excerpt_length = section.settings.excerpt_length | default: 40
+  assign button_style = section.settings.button_style | default: 'primary'
+  assign pagination_type = section.settings.pagination_type | default: 'load-more'
+  assign load_more_text = section.settings.load_more_text | default: 'Load More Articles'
+
+  # Determine grid classes based on layout
+  case layout
+    when 'grid-2'
+      assign grid_classes = 'grid grid-cols-1 md:grid-cols-2 gap-8'
+    when 'grid-3'
+      assign grid_classes = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+    when 'grid-4'
+      assign grid_classes = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'
+    when 'masonry'
+      assign grid_classes = 'columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6'
+  endcase
+
+  # Get current tag filter
+  assign current_tag = ''
+  if current_tags
+    assign current_tag = current_tags | first
+  endif
+-%}
+
+{% render 'breadcrumbs' %}
+
+<div class="px-6 md:px-8 py-12"
+     x-data="blogListing"
+     data-pagination-type="{{ pagination_type }}"
+     data-blog-url="{{ blog.url }}"
+     data-current-tag="{{ current_tag }}"
+     data-current-page="{{ paginate.current_page | default: 1 }}"
+     data-total-pages="{{ paginate.pages | default: 1 }}">
+  <div class="container mx-auto">
+
+    {%- # Blog Header -%}
+    <header class="mb-8 space-y-4">
+      <h1 class="text-4xl font-bold text-gray-900">{{ blog.title }}</h1>
+
+      {%- if blog.all_tags.size > 0 -%}
+        {%- # Tag Filter Pills -%}
+        <nav aria-label="Blog tag filter">
+          <div class="flex flex-wrap gap-2 items-center" role="list">
+            <span class="text-sm font-medium text-gray-700" id="filter-label">Filter by tag:</span>
+
+            <a
+              href="{{ blog.url }}"
+              role="listitem"
+              aria-label="Show all posts"
+              aria-current="{%- if current_tag == blank -%}page{%- else -%}false{%- endif -%}"
+              class="inline-block px-3 py-1 text-sm font-medium border transition-colors
+                {%- if current_tag == blank %} bg-blue-600 text-white border-blue-600
+                {%- else %} bg-white text-gray-700 border-gray-300 hover:border-blue-600 hover:text-blue-600{%- endif -%}"
+            >
+              All Posts
+            </a>
+
+            {%- for tag in blog.all_tags -%}
+              {%- assign tag_handle = tag | handleize -%}
+              {%- assign tag_url = blog.url | append: '/tagged/' | append: tag_handle -%}
+              <a
+                href="{{ tag_url }}"
+                role="listitem"
+                aria-label="Filter by {{ tag }}"
+                aria-current="{%- if current_tag == tag -%}page{%- else -%}false{%- endif -%}"
+                class="inline-block px-3 py-1 text-sm font-medium border transition-colors
+                  {%- if current_tag == tag %} bg-blue-600 text-white border-blue-600
+                  {%- else %} bg-white text-gray-700 border-gray-300 hover:border-blue-600 hover:text-blue-600{%- endif -%}"
+              >
+                {{ tag }}
+              </a>
+            {%- endfor -%}
+          </div>
+        </nav>
+      {%- endif -%}
+    </header>
+
+    {%- paginate blog.articles by posts_per_page -%}
+      <main class="space-y-12">
+        {%- # Featured Post (First Article) -%}
+        {%- if show_featured_post and paginate.current_page == 1 and blog.articles.size > 0 -%}
+          {%- assign featured_article = blog.articles.first -%}
+
+          <div class="featured-post mb-12">
+            {%- case featured_layout -%}
+              {%- when 'hero' -%}
+                <div class="relative">
+                  {% render 'blog-card',
+                    article: featured_article,
+                    featured: true,
+                    show_tags: show_tags,
+                    show_author: show_author,
+                    show_date: show_date,
+                    show_excerpt: show_excerpt,
+                    excerpt_length: excerpt_length,
+                    button_style: button_style
+                  %}
+                </div>
+
+              {%- when 'card-large' -%}
+                <div class="max-w-4xl mx-auto">
+                  {% render 'blog-card',
+                    article: featured_article,
+                    featured: true,
+                    show_tags: show_tags,
+                    show_author: show_author,
+                    show_date: show_date,
+                    show_excerpt: show_excerpt,
+                    excerpt_length: excerpt_length,
+                    button_style: button_style
+                  %}
+                </div>
+
+              {%- when 'split' -%}
+                <div class="grid lg:grid-cols-2 gap-8 items-center">
+                  {%- if featured_article.image -%}
+                    <div class="aspect-w-16 aspect-h-9 bg-gray-100 overflow-hidden">
+                      <img
+                        src="{{ featured_article.image | image_url: width: 1200 }}"
+                        alt="{{ featured_article.image.alt | default: featured_article.title }}"
+                        class="w-full h-full object-cover"
+                      >
+                    </div>
+                  {%- endif -%}
+                  <div class="space-y-4">
+                    {%- if show_tags and featured_article.tags.size > 0 -%}
+                      <div class="flex flex-wrap gap-2">
+                        {%- for tag in featured_article.tags limit: 3 -%}
+                          {% render 'badge', text: tag, variant: 'neutral' %}
+                        {%- endfor -%}
+                      </div>
+                    {%- endif -%}
+
+                    <h2 class="text-4xl font-bold text-gray-900">
+                      <a href="{{ featured_article.url }}" class="hover:text-blue-600 transition-colors">
+                        {{ featured_article.title }}
+                      </a>
+                    </h2>
+
+                    {%- if show_author or show_date -%}
+                      <div class="flex items-center gap-3 text-sm text-gray-500">
+                        {%- if show_author and featured_article.author -%}
+                          <span>By {{ featured_article.author }}</span>
+                        {%- endif -%}
+                        {%- if show_author and show_date -%}
+                          <span class="text-gray-300">•</span>
+                        {%- endif -%}
+                        {%- if show_date -%}
+                          <time datetime="{{ featured_article.published_at | date: '%Y-%m-%d' }}">
+                            {{ featured_article.published_at | date: '%B %d, %Y' }}
+                          </time>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+
+                    {%- if show_excerpt and featured_article.excerpt -%}
+                      <p class="text-lg text-gray-600">
+                        {{ featured_article.excerpt | strip_html | truncatewords: excerpt_length }}
+                      </p>
+                    {%- endif -%}
+
+                    {% render 'btn',
+                      text: 'Read Full Article',
+                      type: button_style,
+                      url: featured_article.url
+                    %}
+                  </div>
+                </div>
+            {%- endcase -%}
+          </div>
+        {%- endif -%}
+
+        {%- # Article Grid -%}
+        <div
+          class="{{ grid_classes }}"
+          x-ref="articleGrid"
+          role="feed"
+          aria-label="Blog articles"
+          data-blog-url="{{ blog.url }}"
+          data-current-page="{{ paginate.current_page }}"
+          data-total-pages="{{ paginate.pages }}"
+          data-current-tag="{{ current_tag }}"
+        >
+          {%- assign start_index = 0 -%}
+          {%- if show_featured_post and paginate.current_page == 1 -%}
+            {%- assign start_index = 1 -%}
+          {%- endif -%}
+
+          {%- for article in blog.articles offset: start_index -%}
+            <div class="{%- if layout == 'masonry' -%}break-inside-avoid{%- endif -%}">
+              {% render 'blog-card',
+                article: article,
+                show_tags: show_tags,
+                show_author: show_author,
+                show_date: show_date,
+                show_excerpt: show_excerpt,
+                excerpt_length: excerpt_length,
+                button_style: button_style
+              %}
+            </div>
+          {%- endfor -%}
+        </div>
+
+        {%- # Empty State -%}
+        {%- if blog.articles.size == 0 -%}
+          <div class="text-center py-16">
+            <p class="text-xl text-gray-500">No articles found.</p>
+            {%- if current_tag != blank -%}
+              <a href="{{ blog.url }}" class="inline-block mt-4 text-blue-600 hover:text-blue-600 underline">
+                Clear filter and view all posts
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- # Pagination -%}
+        {%- if paginate.pages > 1 -%}
+          <div class="mt-12">
+            {%- case pagination_type -%}
+              {%- when 'standard' -%}
+                {% render 'pagination-navigation', paginate: paginate %}
+
+              {%- when 'load-more' -%}
+                <div class="text-center space-y-4" x-show="hasMore || error">
+                  <div x-show="error" class="text-red-600 text-sm" x-text="error"></div>
+                  <button
+                    @click="loadMore"
+                    :disabled="loading"
+                    x-show="hasMore"
+                    class="bg-gray-900 text-white px-8 py-3 font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    <span x-show="!loading">{{ load_more_text }}</span>
+                    <span x-show="loading" class="flex items-center gap-2 justify-center">
+                      <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Loading...
+                    </span>
+                  </button>
+                </div>
+
+              {%- when 'infinite' -%}
+                <div x-ref="infiniteScrollTrigger" class="text-center py-8 space-y-2">
+                  <div x-show="loading" class="flex items-center justify-center gap-2 text-gray-500">
+                    <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Loading more articles...</span>
+                  </div>
+                  <div x-show="error" class="text-red-600 text-sm" x-text="error"></div>
+                </div>
+            {%- endcase -%}
+          </div>
+        {%- endif -%}
+      </main>
+    {%- endpaginate -%}
+  </div>
+</div>

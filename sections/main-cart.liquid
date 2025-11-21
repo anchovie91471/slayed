@@ -1,0 +1,28 @@
+{%- render 'main-cart' with section as section -%}
+
+{%- comment -%} schematic writeCodeShort {%- endcomment -%}
+{% schema %}
+{
+  "name": "Cart Section",
+  "tag": "section",
+  "class": "section-main-collection",
+  "presets": [
+    {
+      "name": "Cart Section"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "cart"
+    ]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "summary-message",
+      "label": "Cart Summary Message",
+      "default": "Taxes and shipping calculated at checkout"
+    }
+  ]
+}
+{% endschema %}

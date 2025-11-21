@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+
+@custom-variant scrolled .scrolled &;
+@custom-variant mobile-menu-visible .mobile-menu-visible &;
+
+@theme {
+    /* Custom Font */
+    --font-family-zalando: "Zalando Sans SemiExpanded", sans-serif;
+    --default-font-family: var(--font-family-zalando);
+    --font-sans: var(--font-family-zalando);
+}
+
+/* Typography Plugin Customization */
+.prose {
+    max-width: none;
+    color: var(--color-neutral-400);
+}
+
+.prose a {
+    color: var(--color-blue-600);
+}
+
+.prose a:hover {
+    color: var(--color-blue-400);
+}
+
+.prose iframe {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16/9;
+}
+
+@import '../css/base.css';
+@import '../css/components.css';
+@import '../css/utilities.css';
+@import '../css/global.css';

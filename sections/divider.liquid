@@ -1,0 +1,94 @@
+{%- render 'divider' with section as section -%}
+
+{%- comment -%} schematic writeCodeShort {%- endcomment -%}
+
+{% schema %}
+{
+  "name": "Divider",
+  "tag": "section",
+  "class": "divider-section",
+  "presets": [
+    {
+      "name": "Divider"
+    }
+  ],
+  "settings": [
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Divider Style",
+      "default": "solid",
+      "options": [
+        {
+          "value": "solid",
+          "label": "Solid"
+        },
+        {
+          "value": "dotted",
+          "label": "Dotted"
+        },
+        {
+          "value": "dashed",
+          "label": "Dashed"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Divider Color",
+      "default": "#e5e7eb"
+    },
+    {
+      "type": "range",
+      "id": "thickness",
+      "label": "Thickness",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "container",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full Width"
+        },
+        {
+          "value": "container",
+          "label": "Container Width"
+        },
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "spacing_top",
+      "label": "Spacing Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "spacing_bottom",
+      "label": "Spacing Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    }
+  ]
+}
+{% endschema %}

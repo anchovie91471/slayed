@@ -1,0 +1,33 @@
+# Dependencies
+node_modules
+
+# Build configuration
+package.json
+package-lock.json
+vite.config.ts
+jsconfig.json
+tsconfig.json
+postcss.config.cjs
+
+# Documentation
+README.md
+CLAUDE.md
+
+# Source files (compiled by Vite)
+src
+public
+
+# Build artifacts
+assets/.vite
+
+# Environment & Git
+.env
+.env.*
+.git
+shopify.theme.toml
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo

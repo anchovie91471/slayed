@@ -1,0 +1,100 @@
+{% comment %}
+  Reusable product card component
+
+  Usage:
+  {% render 'product-grid-item',
+    prod: product,
+    is_first: true,
+    enable_quick_view: true,
+    prefetch_enabled: true
+  %}
+
+  Parameters:
+  - prod: {Object} Shopify product object (required)
+  - is_first: {Boolean} Adds fetchpriority="high" for LCP optimization (default: false)
+  - enable_quick_view: {Boolean} Show Quick View button on hover (default: false)
+  - prefetch_enabled: {Boolean} Prefetch product data on hover (default: false)
+  - show_vendor: {Boolean} Display product vendor (default: false)
+  - image_ratio: {String} Image aspect ratio override (default: 140% = portrait)
+  - show_badges: {Boolean} Show sale/status badges (default: true)
+  - classes: {String} Additional CSS classes for wrapper
+{% endcomment %}
+
+{%- liquid
+  # Set defaults
+  assign show_badges = true
+  if show_badges == false
+    assign show_badges = false
+  endif
+  assign image_ratio = image_ratio | default: '140%'
+-%}
+
+<div class="product-grid-item relative group border border-gray-200 p-4 {{ classes }}">
+    <div class="block image-wrapper relative overflow-hidden rounded-lg bg-gray-100 mb-4" style="padding-top: {{ image_ratio}};">
+        {% if is_first %}
+            {{ prod.featured_image | image_url: width: 410 | image_tag:
+                class: "absolute inset-0 object-cover h-full w-full transition-transform duration-300 group-hover:scale-105",
+                widths: "205,410,620,820",
+                sizes: "(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw",
+                loading: "eager",
+                fetchpriority: "high" }}
+        {% else %}
+            {{ prod.featured_image | image_url: width: 410 | image_tag:
+                class: "absolute inset-0 object-cover h-full w-full transition-transform duration-300 group-hover:scale-105",
+                widths: "205,410,620,820",
+                sizes: "(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw",
+                loading: "lazy" }}
+        {% endif %}
+
+        {%- comment -%} Quick View Button {%- endcomment -%}
+        {% if enable_quick_view %}
+            <button type="button"
+                    @click="window.dispatchEvent(new CustomEvent('open-quick-view', { detail: { productHandle: '{{ prod.handle }}' } }))"
+                    {% if prefetch_enabled %}
+                    @mouseenter.once="window.dispatchEvent(new CustomEvent('prefetch-product', { detail: { productHandle: '{{ prod.handle }}' } }))"
+                    {% endif %}
+                    class="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-white text-gray-900 px-4 py-2 text-sm font-medium hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 z-10"
+                    aria-label="Quick view {{ prod.title }}">
+                Quick View
+            </button>
+        {% endif %}
+    </div>
+    <div class="content space-y-2">
+        <a href="{{ prod.url }}" class="after:content-[''] after:inset-0 after:absolute focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-inset">
+            {%- if show_vendor and prod.vendor != blank -%}
+                <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">{{ prod.vendor }}</p>
+            {%- endif -%}
+
+            <h3 class="text-lg font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+                {{ prod.title }}
+            </h3>
+        </a>
+        <div class="flex flex-wrap items-center gap-2">
+            {% if prod.price_varies %}
+                <span class="text-sm text-gray-600">
+            From
+          </span>
+            {% endif %}
+            <span class="text-sm text-gray-900 font-medium">
+          {{ prod.price | money_with_currency }}
+        </span>
+            {% if prod.compare_at_price_max != blank and prod.compare_at_price_max > prod.price %}
+                <span class="text-sm text-gray-500 line-through">{{ prod.compare_at_price_max | money_with_currency }}</span>
+                {% if show_badges %}
+                    {% render 'badge', text: 'Sale', variant: 'error' %}
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    {% comment %}
+      {% form 'product', prod %}
+        <input type="hidden" name="id" value="{{ prod.selected_or_first_available_variant.id }}">
+        <input type="hidden" name="quantity" value="1">
+        <input type="submit" value="Add to cart">
+        <div data-ajax-cart-messages="form">
+          <!-- Error messages appear here -->
+        </div>
+        </button>
+      {% endform %}
+    {% endcomment %}
+</div>

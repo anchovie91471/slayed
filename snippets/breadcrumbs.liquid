@@ -1,0 +1,127 @@
+{%- comment -%}
+  Breadcrumbs snippet with structured data for SEO
+  Usage: {% render 'breadcrumbs' %}
+{%- endcomment -%}
+
+{%- assign show_breadcrumbs = false -%}
+
+{%- comment -%} Determine breadcrumb context {%- endcomment -%}
+{%- if template contains 'product' or template contains 'collection' or template contains 'page' or template contains 'blog' or template contains 'article' -%}
+  {%- assign show_breadcrumbs = true -%}
+{%- endif -%}
+
+{%- if show_breadcrumbs -%}
+  <nav aria-label="Breadcrumb" class="px-6 md:px-8 py-4 border-b border-gray-200">
+    <div class="container mx-auto">
+      <ol class="flex flex-wrap items-center gap-2 text-sm" itemscope itemtype="https://schema.org/BreadcrumbList">
+        {%- comment -%} Home {%- endcomment -%}
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="flex items-center gap-2">
+          <a
+            href="/"
+            itemprop="item"
+            class="text-gray-600 hover:text-gray-900 focus:outline-none focus:underline transition-colors"
+          >
+            <span itemprop="name">Home</span>
+          </a>
+          <meta itemprop="position" content="1" />
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </li>
+
+        {%- comment -%} Product Page {%- endcomment -%}
+        {%- if template contains 'product' -%}
+          {%- if collection -%}
+            {%- comment -%} Show collection if coming from collection page {%- endcomment -%}
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="flex items-center gap-2">
+              <a
+                href="{{ collection.url }}"
+                itemprop="item"
+                class="text-gray-600 hover:text-gray-900 focus:outline-none focus:underline transition-colors"
+              >
+                <span itemprop="name">{{ collection.title }}</span>
+              </a>
+              <meta itemprop="position" content="2" />
+              <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </li>
+          {%- elsif product.type != blank -%}
+            {%- comment -%} Show product type as fallback {%- endcomment -%}
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="flex items-center gap-2">
+              <a
+                href="/collections/types?q={{ product.type | url_encode }}"
+                itemprop="item"
+                class="text-gray-600 hover:text-gray-900 focus:outline-none focus:underline transition-colors"
+              >
+                <span itemprop="name">{{ product.type }}</span>
+              </a>
+              <meta itemprop="position" content="2" />
+              <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </li>
+          {%- endif -%}
+
+          {%- comment -%} Current Product {%- endcomment -%}
+          <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="flex items-center">
+            <span itemprop="name" class="text-gray-900 font-medium truncate max-w-xs md:max-w-md">
+              {{ product.title }}
+            </span>
+            <meta itemprop="position" content="{% if collection or product.type != blank %}3{% else %}2{% endif %}" />
+          </li>
+
+        {%- comment -%} Collection Page {%- endcomment -%}
+        {%- elsif template contains 'collection' -%}
+          <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="flex items-center">
+            <span itemprop="name" class="text-gray-900 font-medium">
+              {{ collection.title }}
+            </span>
+            <meta itemprop="position" content="2" />
+          </li>
+
+        {%- comment -%} Page {%- endcomment -%}
+        {%- elsif template contains 'page' -%}
+          <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="flex items-center">
+            <span itemprop="name" class="text-gray-900 font-medium">
+              {{ page.title }}
+            </span>
+            <meta itemprop="position" content="2" />
+          </li>
+
+        {%- comment -%} Blog {%- endcomment -%}
+        {%- elsif template contains 'blog' -%}
+          <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="flex items-center">
+            <span itemprop="name" class="text-gray-900 font-medium">
+              {{ blog.title }}
+            </span>
+            <meta itemprop="position" content="2" />
+          </li>
+
+        {%- comment -%} Article {%- endcomment -%}
+        {%- elsif template contains 'article' -%}
+          <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="flex items-center gap-2">
+            <a
+              href="{{ blog.url }}"
+              itemprop="item"
+              class="text-gray-600 hover:text-gray-900 focus:outline-none focus:underline transition-colors"
+            >
+              <span itemprop="name">{{ blog.title }}</span>
+            </a>
+            <meta itemprop="position" content="2" />
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </li>
+
+          <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="flex items-center">
+            <span itemprop="name" class="text-gray-900 font-medium truncate max-w-xs md:max-w-md">
+              {{ article.title }}
+            </span>
+            <meta itemprop="position" content="3" />
+          </li>
+        {%- endif -%}
+      </ol>
+    </div>
+  </nav>
+{%- endif -%}

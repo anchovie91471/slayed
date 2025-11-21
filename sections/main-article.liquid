@@ -1,0 +1,165 @@
+{%- render 'main-article' with section as section -%}
+
+{%- comment -%} schematic {%- endcomment -%}
+{% schema %}
+{
+  "name": "Main Article Section",
+  "tag": "section",
+  "class": "section-main-article",
+  "presets": [
+    {
+      "name": "Main Article Section"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "article"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Article Display"
+    },
+    {
+      "type": "select",
+      "id": "featured_image_size",
+      "label": "Featured Image Size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small (Contained)"
+        },
+        {
+          "value": "medium",
+          "label": "Medium (Wider)"
+        },
+        {
+          "value": "large",
+          "label": "Large (Full Width)"
+        },
+        {
+          "value": "hero",
+          "label": "Hero (Full Bleed)"
+        }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_featured_image",
+      "label": "Show Featured Image",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show Published Date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show Author",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show Tags",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "Content Width",
+      "options": [
+        {
+          "value": "narrow",
+          "label": "Narrow (Better for reading)"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        }
+      ],
+      "default": "narrow"
+    },
+    {
+      "type": "header",
+      "content": "Social Sharing"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_sharing",
+      "label": "Show Social Share Buttons",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "social_sharing_title",
+      "label": "Social Sharing Section Title",
+      "default": "Share this article"
+    },
+    {
+      "type": "header",
+      "content": "Related Articles"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_related_articles",
+      "label": "Show Related Articles",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "related_articles_heading",
+      "label": "Related Articles Heading",
+      "default": "You might also like"
+    },
+    {
+      "type": "range",
+      "id": "related_articles_count",
+      "label": "Number of Related Articles",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "related_articles_source",
+      "label": "Show Articles From",
+      "options": [
+        {
+          "value": "same-tags",
+          "label": "Same Tags"
+        },
+        {
+          "value": "same-blog",
+          "label": "Same Blog (Recent)"
+        },
+        {
+          "value": "same-author",
+          "label": "Same Author"
+        }
+      ],
+      "default": "same-tags"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_prev_next",
+      "label": "Show Previous/Next Article Links",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

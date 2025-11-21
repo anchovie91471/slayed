@@ -1,0 +1,30 @@
+{%- liquid
+  assign style = section.settings.style
+  assign color = section.settings.color
+  assign thickness = section.settings.thickness
+  assign width = section.settings.width
+  assign spacing_top = section.settings.spacing_top
+  assign spacing_bottom = section.settings.spacing_bottom
+
+  # Width classes
+  case width
+    when 'full'
+      assign width_class = 'w-full'
+      assign container_class = 'px-0'
+    when 'container'
+      assign width_class = 'w-full'
+      assign container_class = 'container mx-auto px-6 md:px-8'
+    when 'narrow'
+      assign width_class = 'w-full max-w-3xl mx-auto'
+      assign container_class = 'px-6 md:px-8'
+  endcase
+-%}
+
+<section style="padding-top: {{ spacing_top }}px; padding-bottom: {{ spacing_bottom }}px;">
+  <div class="{{ container_class }}">
+    <hr
+      class="{{ width_class }}"
+      style="border: none; border-top: {{ thickness }}px {{ style }} {{ color }}; margin: 0;"
+    >
+  </div>
+</section>

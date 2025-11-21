@@ -1,0 +1,9 @@
+<ul class="hidden sm:flex items-center gap-4 p-4">
+    {% for link in linklists.main-menu.links %}
+        <li>
+            <a href="{{ link.url }}" class="text-white no-underline hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition-colors {% if link.active %}underline{% endif %}">
+                {{ link.title | escape }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

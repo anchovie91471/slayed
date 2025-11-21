@@ -1,0 +1,38 @@
+{%- render 'modal' with section as section -%}
+
+{%- comment -%} schematic writeCodeShort {%- endcomment -%}
+{% schema %}
+{
+  "name": "Modal",
+  "tag": "section",
+  "class": "section-modal",
+  "presets": [
+    {
+      "name": "Modal"
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Modal Title",
+      "default": "Modal Title"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Modal Text",
+      "default": "This is modal content. You can customize this text in the theme editor."
+    },
+    {
+      "type": "range",
+      "id": "auto_open_delay",
+      "label": "Auto-open delay (seconds)",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "default": 1
+    }
+  ]
+}
+{% endschema %}

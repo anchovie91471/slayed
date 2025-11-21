@@ -1,0 +1,21 @@
+{%- render 'main-search' with section as section -%}
+
+{%- comment -%} schematic writeCodeShort {%- endcomment -%}
+{% schema %}
+{
+  "name": "Search Section",
+  "tag": "section",
+  "class": "section-main-search",
+  "presets": [
+    {
+      "name": "Search Section"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "search"
+    ]
+  },
+  "settings": []
+}
+{% endschema %}

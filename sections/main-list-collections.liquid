@@ -1,0 +1,20 @@
+{%- render 'main-list-collections' with section as section -%}
+
+{%- comment -%} schematic writeCodeShort {%- endcomment -%}
+{% schema %}
+{
+  "name": "Main List Collections",
+  "tag": "section",
+  "class": "section-main-list-collections",
+  "presets": [
+    {
+      "name": "Main List Collections"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "list-collections"
+    ]
+  }
+}
+{% endschema %}

@@ -1,0 +1,110 @@
+{% liquid
+  assign image = block.settings.image
+  assign image_ratio = block.settings.image_ratio
+  assign link = block.settings.link
+  assign width = block.settings.width
+
+  if width == 'fill'
+    assign width_class = 'w-full'
+  else
+    assign width_class = 'w-auto'
+  endif
+
+  case image_ratio
+    when 'landscape'
+      assign ratio = '16 / 9'
+    when 'portrait'
+      assign ratio = '4 / 5'
+    when 'square'
+      assign ratio = '1 / 1'
+    when 'adapt'
+      if image != blank
+        assign ratio = image.aspect_ratio
+      else
+        assign ratio = '1 / 1'
+      endif
+  endcase
+%}
+
+<div class="{{ width_class }}" {{ block.shopify_attributes }}>
+  {% if link != blank %}
+    <a href="{{ link }}" class="block">
+  {% endif %}
+
+  <div class="relative overflow-hidden" style="aspect-ratio: {{ ratio }};">
+    {% if image != blank %}
+      {{ image | image_url: width: 1200 | image_tag:
+        loading: 'lazy',
+        class: 'w-full h-full object-cover',
+        widths: '240, 352, 832, 1200, 1600, 1920'
+      }}
+    {% else %}
+      <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+        <span class="text-gray-400">No image</span>
+      </div>
+    {% endif %}
+  </div>
+
+  {% if link != blank %}
+    </a>
+  {% endif %}
+</div>
+
+{%- comment -%} schematic {%- endcomment -%}
+{% schema %}
+{
+  "name": "Image",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image Aspect Ratio",
+      "default": "adapt",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt to Image"
+        },
+        {
+          "value": "square",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait (4:5)"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape (16:9)"
+        }
+      ]
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "fill",
+      "options": [
+        {
+          "value": "fit-content",
+          "label": "Fit Content"
+        },
+        {
+          "value": "fill",
+          "label": "Fill Available Space"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

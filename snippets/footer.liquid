@@ -1,0 +1,40 @@
+{% comment %} @todo: Convert to footer-group json {% endcomment %}
+<div class="bg-gray-900 text-white px-6 md:px-8 py-12">
+    <div class="container mx-auto space-y-8">
+        {% if section.settings.footer_menu != blank %}
+            <nav aria-label="Footer navigation" class="flex flex-wrap gap-6">
+                {% for link in linklists[section.settings.footer_menu].links %}
+                    <a href="{{ link.url }}" class="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900">
+                        {{ link.title }}
+                    </a>
+                {% endfor %}
+            </nav>
+        {% endif %}
+
+        {% if section.settings.show_social_icons %}
+            <div class="flex gap-4 items-center">
+                {% assign platforms = "facebook,instagram,youtube,tiktok,twitter,snapchat,pinterest,tumblr,vimeo" | split: "," %}
+
+                {% for platform in platforms %}
+                    {% assign setting_key = 'social_' | append: platform | append: '_link' %}
+                    {% assign platform_url = settings[setting_key] %}
+
+                    {% if platform_url != blank %}
+                        {% assign icon_name = 'icon-' | append: platform %}
+                        <a href="{{ platform_url }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900 [&>svg]:w-6 [&>svg]:h-6"
+                           aria-label="{{ platform | capitalize }}">
+                            {% render icon_name %}
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <p class="text-sm text-gray-400">
+            &copy; {{ "now" | date: "%Y" }} VAST Starter Theme
+        </p>
+    </div>
+</div>

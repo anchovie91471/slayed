@@ -1,0 +1,57 @@
+# Dependencies
+node_modules/
+
+# Built assets
+assets/
+assets/vite-manifest.json
+snippets/vite.liquid
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Shopify CLI (local config, not shared)
+shopify.theme.toml
+
+# Development documentation (for contributors, not theme users)
+CLAUDE.md
+docs/
+.plans
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+.cache/
+.temp/
+
+# Build artifacts - IMPORTANT NOTE
+# The setup script (npm run setup) removes assets/ and snippets/vite.liquid from
+# this file to enable Shopify GitHub integration for store developers
+# Contributors working on VAST should use .git/info/exclude to hide build artifacts

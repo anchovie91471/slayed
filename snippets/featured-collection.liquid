@@ -1,0 +1,212 @@
+{%- liquid
+  assign collection = collections[section.settings.collection]
+  assign heading = section.settings.heading
+  assign description = section.settings.description
+  assign heading_size = section.settings.heading_size
+  assign text_alignment = section.settings.text_alignment
+  assign products_to_show = section.settings.products_to_show
+  assign columns_desktop = section.settings.columns_desktop
+  assign button_text = section.settings.button_text
+  assign button_link = section.settings.button_link
+  assign button_style = section.settings.button_style
+  assign bg_color = section.settings.background_color
+
+  # Use button_link if set, otherwise default to collection URL
+  if button_link == blank and collection != blank
+    assign button_link = collection.url
+  endif
+
+  # Text alignment classes
+  case text_alignment
+    when 'left'
+      assign align_classes = 'text-left items-start'
+    when 'center'
+      assign align_classes = 'text-center items-center'
+    when 'right'
+      assign align_classes = 'text-right items-end'
+  endcase
+
+  # Column classes
+  case columns_desktop
+    when '3'
+      assign grid_classes = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'
+    when '4'
+      assign grid_classes = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'
+    when '5'
+      assign grid_classes = 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4'
+  endcase
+-%}
+
+<section class="py-12 md:py-20" style="background-color: {{ bg_color }};">
+  <div class="container mx-auto px-6 md:px-8">
+    {%- if heading != blank or description != blank -%}
+      <div class="mb-12 flex flex-col {{ align_classes }} gap-4">
+        {%- if heading != blank -%}
+          <h2 class="{{ heading_size }} font-bold text-gray-900">
+            {{ heading }}
+          </h2>
+        {%- endif -%}
+
+        {%- if description != blank -%}
+          <p class="text-lg text-gray-600 max-w-2xl{% if text_alignment == 'center' %} mx-auto{% endif %}">
+            {{ description }}
+          </p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if collection != blank and collection.products.size > 0 -%}
+      <div class="{{ grid_classes }}">
+        {%- for product in collection.products limit: products_to_show -%}
+          {% render 'product-grid-item',
+              prod: product,
+              is_first: forloop.first,
+              enable_quick_view: section.settings.enable_quick_view,
+              quick_view_settings: section.settings,
+              prefetch_enabled: forloop.index <= 3 %}
+        {%- endfor -%}
+      </div>
+
+      {%- if button_text != blank -%}
+        <div class="mt-12 flex {% if text_alignment == 'center' %}justify-center{% elsif text_alignment == 'right' %}justify-end{% else %}justify-start{% endif %}">
+          {% render 'btn',
+            text: button_text,
+            type: button_style,
+            url: button_link,
+            size: 'large'
+          %}
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <div class="text-center py-12">
+        <p class="text-gray-500">
+          {%- if collection == blank -%}
+            Please select a collection in the section settings.
+          {%- else -%}
+            This collection is empty.
+          {%- endif -%}
+        </p>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Quick View Modal HTML {%- endcomment -%}
+  {% if section.settings.enable_quick_view %}
+    <div x-data="quickViewModal"
+         data-show-description="{% if section.settings.quick_view_show_description %}true{% else %}false{% endif %}"
+         data-money-format="{{ shop.money_format | json | escape }}"
+         x-show="isOpen"
+         x-cloak
+         @keydown.escape.window="close()"
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+
+      <div @click.self="close()" class="absolute inset-0"></div>
+
+      <div class="relative bg-white max-w-4xl w-full max-h-[90vh] overflow-auto" @click.stop="">
+        {%- comment -%} Close Button {%- endcomment -%}
+        <button type="button"
+                @click="close()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 z-10"
+                aria-label="Close quick view">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+
+        {%- comment -%} Loading State {%- endcomment -%}
+        <div x-show="loading" class="flex items-center justify-center p-12">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+        </div>
+
+        {%- comment -%} Product Content {%- endcomment -%}
+        <div x-show="!loading && product" class="md:flex">
+          {%- comment -%} Product Image {%- endcomment -%}
+          <div class="md:w-1/2 p-6">
+            <div class="relative overflow-hidden bg-gray-100 aspect-square">
+              <img x-ref="productImage"
+                   src=""
+                   alt=""
+                   class="w-full h-full object-cover">
+            </div>
+          </div>
+
+          {%- comment -%} Product Info {%- endcomment -%}
+          <div class="md:w-1/2 p-6">
+            <h2 x-text="product?.title" class="text-2xl font-bold text-gray-900 mb-2"></h2>
+
+            {%- comment -%} Price {%- endcomment -%}
+            <div class="mb-4">
+              <span class="text-xl font-semibold text-gray-900" x-text="formatMoney(currentVariant?.price)"></span>
+              <span x-show="currentVariant?.compare_at_price > currentVariant?.price"
+                    class="text-sm text-gray-500 line-through ml-2"
+                    x-text="formatMoney(currentVariant?.compare_at_price)"></span>
+            </div>
+
+            {%- comment -%} Description {%- endcomment -%}
+            <template x-if="settings.quick_view_show_description">
+              <div x-html="product?.description" class="prose prose-sm text-gray-700 mb-6 max-h-32 overflow-auto"></div>
+            </template>
+
+            {%- comment -%} Variant Options {%- endcomment -%}
+            <template x-if="product?.options && product.options.length > 0">
+              <div class="space-y-4 mb-6">
+                <template x-for="(option, index) in product?.options" :key="index">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-900 mb-2" x-text="option.name"></label>
+                    <select @change="handleOptionChange(option.name, $event.target.value)"
+                            class="w-full border-gray-300 rounded-md focus:ring-blue-400 focus:border-blue-400">
+                      <template x-for="value in option.values" :key="value">
+                        <option :value="value"
+                                :selected="selectedOptions[option.name] === value"
+                                x-text="value"></option>
+                      </template>
+                    </select>
+                  </div>
+                </template>
+              </div>
+            </template>
+
+            {%- comment -%} Quantity {%- endcomment -%}
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-900 mb-2">Quantity</label>
+              <div class="flex items-center border border-gray-300 w-fit">
+                <button type="button"
+                        @click="quantity = Math.max(1, quantity - 1)"
+                        class="w-10 h-10 flex items-center justify-center hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-400">
+                  -
+                </button>
+                <input type="number"
+                       x-model.number="quantity"
+                       min="1"
+                       class="w-16 text-center border-0 focus:ring-0 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none">
+                <button type="button"
+                        @click="quantity++"
+                        class="w-10 h-10 flex items-center justify-center hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-400">
+                  +
+                </button>
+              </div>
+            </div>
+
+            {%- comment -%} Add to Cart Button {%- endcomment -%}
+            <button type="button"
+                    @click="addToCart()"
+                    :disabled="!currentVariant?.available || isAdding"
+                    class="w-full bg-gray-900 text-white px-6 py-3 font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
+              <span x-show="!isAdding">
+                <span x-show="currentVariant?.available">Add to Cart</span>
+                <span x-show="!currentVariant?.available">Sold Out</span>
+              </span>
+              <span x-show="isAdding">Adding to cart...</span>
+            </button>
+
+            {%- comment -%} View Full Details Link {%- endcomment -%}
+            <a :href="`/products/${product?.handle}`"
+               class="block text-center mt-4 text-sm text-blue-600 hover:text-blue-700 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400">
+              View full details
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</section>

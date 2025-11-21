@@ -1,0 +1,19 @@
+<dialog
+        id="dialog-modal"
+        x-data="modal"
+        data-auto-open="{{ section.settings.auto_open_delay }}"
+        data-delay="{{ section.settings.auto_open_delay | default: 0 }}"
+        class="max-w-md rounded-md shadow-2xl backdrop:bg-black/50 p-0 border-0 m-auto"
+        @click="close($event)"
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+        x-trap="$el.open"
+>
+    <form action="" class="p-6 space-y-4 prose">
+        <h1 id="modal-title" class="text-2xl font-bold text-gray-900 m-0">{{ section.settings.title }}</h1>
+        <div id="modal-description" class="mb-4">{{ section.settings.text }}</div>
+        <button type="button" @click.stop="$el.closest('dialog').close()" class="bg-gray-900 text-white px-6 py-3 font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors w-full" aria-label="Close dialog">
+            Close
+        </button>
+    </form>
+</dialog>

@@ -1,0 +1,39 @@
+{
+  "sections": {
+    "faq_BzizYk": {
+      "type": "faq",
+      "blocks": {
+        "item_qmT3Hm": {
+          "type": "item",
+          "settings": {
+            "heading": "FAQ Item 1",
+            "body": "<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque totam cum cupiditate officia et quaerat blanditiis culpa? Hic, nesciunt id.<\/p>"
+          }
+        },
+        "item_EBEdYH": {
+          "type": "item",
+          "settings": {
+            "heading": "FAQ Item 2",
+            "body": "<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque totam cum cupiditate officia et quaerat blanditiis culpa? Hic, nesciunt id.<\/p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque totam cum cupiditate officia et quaerat blanditiis culpa? Hic, nesciunt id.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_qmT3Hm",
+        "item_EBEdYH"
+      ],
+      "settings": {
+        "heading": "FAQ Demo Section"
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "faq_BzizYk",
+    "main"
+  ]
+}

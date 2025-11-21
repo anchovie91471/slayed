@@ -1,0 +1,106 @@
+module.exports = {
+  name: 'Feature Grid',
+  tag: 'section',
+  class: 'feature-grid-section',
+  settings: [
+    {
+      type: 'text',
+      id: 'heading',
+      label: 'Heading'
+    },
+    {
+      type: 'select',
+      id: 'heading_size',
+      label: 'Heading Size',
+      options: [
+        { value: 'text-2xl', label: 'Small' },
+        { value: 'text-3xl', label: 'Medium' },
+        { value: 'text-4xl', label: 'Large' }
+      ],
+      default: 'text-3xl'
+    },
+    {
+      type: 'textarea',
+      id: 'description',
+      label: 'Description'
+    },
+    {
+      type: 'select',
+      id: 'text_alignment',
+      label: 'Header Text Alignment',
+      options: [
+        { value: 'left', label: 'Left' },
+        { value: 'center', label: 'Center' }
+      ],
+      default: 'center'
+    },
+    {
+      type: 'select',
+      id: 'columns_desktop',
+      label: 'Columns (Desktop)',
+      options: [
+        { value: '2', label: '2 columns' },
+        { value: '3', label: '3 columns' },
+        { value: '4', label: '4 columns' }
+      ],
+      default: '3'
+    },
+    {
+      type: 'select',
+      id: 'content_alignment',
+      label: 'Feature Content Alignment',
+      options: [
+        { value: 'left', label: 'Left' },
+        { value: 'center', label: 'Center' }
+      ],
+      default: 'center'
+    },
+    {
+      type: 'color',
+      id: 'background_color',
+      label: 'Background Color',
+      default: '#ffffff'
+    }
+  ],
+  blocks: [
+    {
+      type: 'feature',
+      name: 'Feature',
+      settings: [
+        {
+          type: 'image_picker',
+          id: 'icon',
+          label: 'Icon/Image',
+          info: 'Recommended: square icon, 100x100px'
+        },
+        {
+          type: 'text',
+          id: 'heading',
+          label: 'Heading',
+          default: 'Feature heading'
+        },
+        {
+          type: 'textarea',
+          id: 'text',
+          label: 'Description',
+          default: 'Feature description goes here'
+        },
+        {
+          type: 'url',
+          id: 'link',
+          label: 'Link (optional)'
+        }
+      ]
+    }
+  ],
+  presets: [
+    {
+      name: 'Feature Grid',
+      blocks: [
+        { type: 'feature' },
+        { type: 'feature' },
+        { type: 'feature' }
+      ]
+    }
+  ]
+}

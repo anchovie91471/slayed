@@ -1,0 +1,31 @@
+<div class="flex gap-4 items-center" {{ block.shopify_attributes }}>
+    {% assign platforms = "facebook,instagram,youtube,tiktok,twitter,snapchat,pinterest,tumblr,vimeo" | split: "," %}
+
+    {% for platform in platforms %}
+        {% assign setting_key = 'social_' | append: platform | append: '_link' %}
+        {% assign platform_url = settings[setting_key] %}
+
+        {% if platform_url != blank %}
+            <a href="{{ platform_url }}"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="hover:opacity-70 transition-opacity"
+               aria-label="{{ platform | capitalize }}">
+                {% render 'icon-' | append: platform %}
+            </a>
+        {% endif %}
+    {% endfor %}
+</div>
+{%- comment -%} schematic {%- endcomment -%}
+
+{% schema %}
+{
+  "name": "Social Icons",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Icons will display for any social media links configured in Theme Settings > Social Media. Add this block to any section to display your social media links."
+    }
+  ]
+}
+{% endschema %}

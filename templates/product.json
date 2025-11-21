@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "collapsable_row_7EjzKy": {
+          "type": "collapsable_row",
+          "settings": {
+            "heading": "Some Heading",
+            "content": "<p>Model Name: <\/p><p>Model Bust: <\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "collapsable_row_7EjzKy"
+      ],
+      "settings": {
+        "picker_type": "radio"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

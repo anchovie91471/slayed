@@ -1,0 +1,61 @@
+{%- if paginate.pages > 1 -%}
+    <nav class="my-12 flex justify-center" aria-label="Pagination">
+        <ol class="flex items-center gap-2">
+            {%- if paginate.previous -%}
+                <li>
+                    <a href="{{ paginate.previous.url }}" aria-label="Go to previous page" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="ml-1">Previous</span>
+                    </a>
+                </li>
+            {%- else -%}
+                <li>
+                    <span class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-200 cursor-not-allowed">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="ml-1">Previous</span>
+                    </span>
+                </li>
+            {%- endif -%}
+
+            {%- for part in paginate.parts -%}
+                {%- if part.is_link -%}
+                    <li>
+                        <a href="{{ part.url }}" aria-label="Go to page {{ part.title }}" class="inline-flex items-center justify-center w-10 h-10 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors">
+                            {{ part.title }}
+                        </a>
+                    </li>
+                {%- else -%}
+                    {%- if part.title == paginate.current_page -%}
+                        <li aria-current="page">
+                            <span class="inline-flex items-center justify-center w-10 h-10 text-sm font-medium text-white bg-blue-600 border border-blue-600">
+                                {{ part.title }}
+                            </span>
+                        </li>
+                    {%- else -%}
+                        <li>
+                            <span class="inline-flex items-center justify-center w-10 h-10 text-sm font-medium text-gray-700">
+                                {{ part.title }}
+                            </span>
+                        </li>
+                    {%- endif -%}
+                {%- endif -%}
+            {%- endfor -%}
+
+            {%- if paginate.next -%}
+                <li>
+                    <a href="{{ paginate.next.url }}" aria-label="Go to next page" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors">
+                        <span class="mr-1">Next</span>
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {%- else -%}
+                <li>
+                    <span class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-200 cursor-not-allowed">
+                        <span class="mr-1">Next</span>
+                        <span aria-hidden="true">&raquo;</span>
+                    </span>
+                </li>
+            {%- endif -%}
+        </ol>
+    </nav>
+{%- endif -%}
