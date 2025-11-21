@@ -1,3 +1,7 @@
+<p align="left">
+  <img src="logo.svg" alt="VAST Logo" width="250">
+</p>
+
 # VAST - Shopify Starter Theme
 
 **V**ITE + **A**LPINE + **S**CHEMATIC + **T**AILWIND
